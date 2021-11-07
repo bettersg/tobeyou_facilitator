@@ -2,8 +2,12 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/AuthContext';
-import Home from './components/Home';
-import Login from './components/Login';
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import Home from './components/dashboard/Home';
+import NewClass from './components/dashboard/NewClass';
+import AuthLayout from './components/auth/AuthLayout';
+import Login from './components/auth/Login';
+import SignUp from './components/auth/SignUp';
 import RequireAuth from './components/RequireAuth';
 
 import './App.css';
@@ -13,8 +17,14 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={<RequireAuth><Home/></RequireAuth>} />
-          <Route exact path='/login' element={<Login/>} />
+          <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
+            <Route exact path='/' element={<Home/>} />
+            <Route path='newclass' element={<NewClass/>} />
+          </Route>
+          <Route element={<AuthLayout/>}>
+            <Route path='/login' element={<Login/>} />
+            <Route path='/signup' element={<SignUp/>} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
