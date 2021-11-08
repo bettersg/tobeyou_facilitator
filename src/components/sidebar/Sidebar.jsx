@@ -10,15 +10,14 @@ const Sidebar = () => {
     <div className='sidebar'>
       <div className='sidebarWrapper'>
         <div className='sidebarMenu'>
-          <h3 className='sidebarTitle'>Dashboard</h3>
           <ul className='sidebarList'>
             <li className='sidebarListItem' onClick={() => navigate('/')}>
               <LineStyle className='sidebarIcon'/>
               Home
             </li>
-            <li className='sidebarListItem' onClick={() => navigate('/newclass')}>
+            <li className='sidebarListItem' onClick={() => navigate('/newroom')}>
               <Add className='sidebarIcon'/>
-              New Class
+              New Room
             </li>
           </ul>
         </div>

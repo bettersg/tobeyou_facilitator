@@ -38,7 +38,7 @@ const SignUp = () => {
         setIsLoading(false);
       }
     },
-    [navigate, signUp]
+    [navigate, signUp, login]
   );
 
   // TODO: validate form fields
