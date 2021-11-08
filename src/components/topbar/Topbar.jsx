@@ -1,24 +1,33 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import './topbar.css'
+import {
+  Box
+} from '@material-ui/core';
 import { useAuth } from '../../contexts/AuthContext';
+import Sidebar from './Sidebar';
 
 const Topbar = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
 
   return (
-    <div className='topbar'>
-      <div className='topbarWrapper'>
-        <div className='topLeft'>
-          <span className='logo' onClick={() => navigate('/')}>ToBeYou</span>
-        </div>
-        <div className='topRight'>
+    <Box style={{ height: 50, width: '100%', position: 'fixed', top: 0, backgroundColor: 'white' }}>
+      <Box style={{ height: '100%', padding: '0px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box style={{ display: 'flex', alignItems: 'stretch' }}>
+          <Sidebar/>
+          <span
+            style={{ fontSize: 25, color: 'darkblue', cursor: 'pointer' }}
+            onClick={() => navigate('/')}
+          >
+            ToBeYou
+          </span>
+        </Box>
+        <Box style={{ display: 'flex', alignItems: 'center' }}>
           <p>{ currentUser.email }</p>
           <button onClick={logout}>Sign Out</button>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

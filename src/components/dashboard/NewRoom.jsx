@@ -1,13 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { createRoomIfNotExists } from '../../models/roomModel';
 import { useAuth } from '../../contexts/AuthContext';
 
 const NewRoom = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const { currentUser } = useAuth();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    room: '',
+    chapter: null,
+    code: '',
+  });
   const chapterIdMap = {
     1: 'Aman 1',
     2: 'Nadia 1',
@@ -24,19 +29,24 @@ const NewRoom = () => {
     for (let i=0; i<CODE_LENGTH; i++) {
       code += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    document.getElementById('code').value = code;
+    setFormData({ ...formData, code });
   };
 
-  const handleCreate = useCallback(
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value.trim() });
+  };
+
+  const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
       setIsLoading(true);
 
-      const { room, chapter, code } = event.target.elements;
-      const roomId = code.value;
-      const roomName = room.value;
-      const chapterId = parseInt(chapter.value);
+      // TODO: validate data
+      const roomId = formData.code;
+      const roomName = formData.room;
+      const chapterId = parseInt(formData.chapter);
       const teacherId = currentUser.id;
+
       try {
         await createRoomIfNotExists(roomId, roomName, chapterId, teacherId);
         navigate('/');
@@ -46,42 +56,73 @@ const NewRoom = () => {
         setIsLoading(false);
       }
     },
-    [navigate, currentUser]
+    [navigate, currentUser, formData]
   );
 
   return (
-    <div>
+    <Box>
       <h1>Add a new active room</h1>
-      <form onSubmit={handleCreate}>
-        <label>
-          Room:
-          <br/>
-          <input name='room' type='text' placeholder='Enter room name here' disabled={isLoading} />
-        </label>
-        <br/>
-        <label>
-          Chapter:
-          <br/>
-          <select name='chapter' disabled={isLoading}>
-            {
-              Object.keys(chapterIdMap).map(chapterId => {
-                const chapterName = chapterIdMap[chapterId];
-                return <option key={chapterId} value={chapterId}>{chapterName}</option>;
-              })
-            }
-          </select>
-        </label>
-        <br/>
-        <label>
-          Code:
-          <br/>
-          <input id='code' name='code' type='text' placeholder='Enter custom code here' disabled={isLoading} />
-          <button name='generate-code' type='button' onClick={generateCode} disabled={isLoading}>Generate Code</button>
-        </label>
-        <br/>
-        <button name='add' type='submit' disabled={isLoading}>Add</button>
+      <form onSubmit={handleSubmit}>
+        <Box style={{ display: 'flex', flexDirection: 'column' }}>
+          <TextField
+            name='room'
+            label='Room'
+            variant='filled'
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+          <FormControl variant='filled'>
+            <InputLabel id='chapter-label'>Chapter</InputLabel>
+            <Select
+              id='chapter'
+              labelId='chapter-label'
+              name='chapter'
+              label='Chapter'
+              variant='filled'
+              onChange={handleChange}
+              disabled={isLoading}
+            >
+                {
+                  Object.keys(chapterIdMap).map(chapterId => {
+                    const chapterName = chapterIdMap[chapterId];
+                    return <MenuItem value={chapterId}>{chapterName}</MenuItem>;
+                  })
+                }
+            </Select>
+          </FormControl>
+          <Box style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'space-around' }}>
+            <TextField
+              name='code'
+              label='Code'
+              variant='filled'
+              onChange={handleChange}
+              disabled={isLoading}
+              value={formData.code}
+              style={{ flex: 4 }}
+            />
+            <Button
+              name='generate-code'
+              variant='filled'
+              onClick={generateCode}
+              disabled={isLoading}
+              style={{ flex: 1 }}
+            >
+              Generate Code
+            </Button>
+          </Box>
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            onClick={handleSubmit}
+            disabled={isLoading}
+            style={{ marginTop: 10 }}
+          >
+            Add
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 

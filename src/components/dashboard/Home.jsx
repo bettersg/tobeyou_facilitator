@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Box } from '@material-ui/core';
 import { useAuth } from '../../contexts/AuthContext';
 import { deleteRoom, getRooms } from '../../models/roomModel';
 import RoomCard from './RoomCard';
@@ -22,14 +23,13 @@ const Home = () => {
   }, [currentUser]);
 
   return (
-    <div>
-      <h1>Rooms</h1>
+    <Box>
       {
         rooms
           ? rooms.map(room => <RoomCard key={room.id} room={room} handleDelete={() => handleDelete(room.id)}/>)
           : null
       }
-    </div>
+    </Box>
   );
 };
 
