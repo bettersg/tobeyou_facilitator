@@ -8,8 +8,11 @@ export const createRoomIfNotExists = async (roomId, roomName, chapterId, teacher
       teacherIds: [teacherId],
   };
   try {
-    // Ensure that roomId is unique
-    const existingRooms = await firestore.collection('rooms').where('roomId', '==', roomId).get();
+    // Ensure that `roomId` is unique
+    const existingRooms = await firestore
+      .collection('rooms')
+      .where('roomId', '==', roomId)
+      .get();
     if (existingRooms.docs.length > 0) {
       throw new Error('The room with the given code already exists.');
     }
@@ -33,7 +36,7 @@ export const getRooms = async (teacherId) => {
 };
 
 export const deleteRoom = async (id) => {
-  // Note: this is the room's ID, not roomId
+  // Note: this is the room's `id`, not `roomId`
   try {
     await firestore.collection('rooms').doc(id).delete();
   } catch (err) {

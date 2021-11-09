@@ -15,6 +15,8 @@ const Topbar = () => {
       <Box style={{ height: '100%', padding: '0px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box style={{ display: 'flex', alignItems: 'stretch' }}>
           <Sidebar/>
+        </Box>
+        <Box>
           <span
             style={{ fontSize: 25, color: 'darkblue', cursor: 'pointer' }}
             onClick={() => navigate('/')}
@@ -23,8 +25,7 @@ const Topbar = () => {
           </span>
         </Box>
         <Box style={{ display: 'flex', alignItems: 'center' }}>
-          <p>{ currentUser.email }</p>
-          <button onClick={logout}>Sign Out</button>
+          <p style={{ cursor: 'pointer' }} onClick={logout}>{ currentUser.email }</p>
         </Box>
       </Box>
     </Box>

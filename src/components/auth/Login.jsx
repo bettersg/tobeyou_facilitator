@@ -21,7 +21,6 @@ const Login = () => {
       event.preventDefault();
       setIsLoading(true);
 
-      // const { email, password } = event.target.elements;
       const email = formData.email;
       const password = formData.password;
       try {

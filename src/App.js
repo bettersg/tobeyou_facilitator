@@ -10,8 +10,6 @@ import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import RequireAuth from './components/RequireAuth';
 
-import './App.css';
-
 function App() {
   return (
     <AuthProvider>

@@ -21,12 +21,16 @@ export const AuthProvider = ({ children }) => {
     return await auth.signInWithEmailAndPassword(email, password);
   }
 
+  /**
+   * Logs in the user only if they have been properly registered as a teacher.
+   */
   const loginOnlyTeachers = async (email, password) => {
-    // We authenticate only users who have registered as teachers
     // TODO: this approach is hacky and requires signing in twice. Is there a better way?
     setIsLoggingInTeacher(true);
+    // Sign in the first time just to get the user's ID, and use it to check if they're a teacher
     const userCredential = await auth.signInWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
+    // Sign out immediately to avoid 'wrongfully' signing them in if they're not actually a teacher
     await auth.signOut();
     const isTeacher = await checkDbUserIsTeacher(userId);
 
@@ -34,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       throw new Error('The user exists, but is not registered as a teacher yet.');
     }
 
+    // User is actually a teacher, so sign them in proper the second time
     await auth.signInWithEmailAndPassword(email, password);
     setIsLoggingInTeacher(false);
     return userCredential;

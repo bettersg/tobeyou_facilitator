@@ -22,6 +22,10 @@ export const createDbUserIfNotExists = async (id, email, school) => {
   }
 }
 
+/**
+ * Checks if the user is a teacher.
+ * User is considered a teacher if its `school` and `teacherClassrooms` fields are defined.
+ */
 export const checkDbUserIsTeacher = async (id) => {
   try {
     const user = await firestore.collection('users').doc(id).get();
