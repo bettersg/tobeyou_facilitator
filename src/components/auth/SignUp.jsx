@@ -11,7 +11,8 @@ const SignUp = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    school: '',
+    // username: '',
+    organisation: '',
   });
 
   const handleChange = (event) => {
@@ -26,21 +27,22 @@ const SignUp = () => {
       // TODO: validate form fields
       const email = formData.email;
       const password = formData.password;
-      const school = formData.school;
+      // const username = formData.username;
+      const organisation = formData.organisation;
 
       try {
         // Try to sign up, if user does not exist
         const userCredential = await signUp(email, password);
-        await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, school);
+        await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, organisation);
         navigate('/');
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           try {
             // Try to sign in, if user exists
             const userCredential = await login(email, password);
-            await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, school);
+            await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, organisation);
             navigate('/');
-            // TODO: what if the user exists, and is already a teacher? Should throw an error, right?
+            // TODO: what if the user exists, and is already a facilitator? Should throw an error, right?
           } catch (error) {
             alert(error);
           }
@@ -75,9 +77,17 @@ const SignUp = () => {
             onChange={handleChange}
             disabled={isLoading}
           />
+          {/* <TextField
+            name='username'
+            label='Username'
+            type='text'
+            variant='filled'
+            onChange={handleChange}
+            disabled={isLoading}
+          /> */}
           <TextField
-            name='school'
-            label='School'
+            name='organisation'
+            label='Organisation'
             type='text'
             variant='filled'
             onChange={handleChange}

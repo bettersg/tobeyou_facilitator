@@ -1,45 +1,47 @@
 import { firestore } from '../firebase';
 
-export const createRoomIfNotExists = async (roomId, roomName, chapterId, teacherId) => {
-  const room = {
-      roomId,
-      roomName,
-      chapterId,
-      teacherIds: [teacherId],
-  };
+export const createDbRoomIfNotExists = async (obj) => {
+  // TODO: perform validation on room
+  console.log(obj)
   try {
-    // Ensure that `roomId` is unique
+    // Ensure that the room's code is unique
     const existingRooms = await firestore
       .collection('rooms')
-      .where('roomId', '==', roomId)
+      .where('code', '==', obj.code)
       .get();
     if (existingRooms.docs.length > 0) {
       throw new Error('The room with the given code already exists.');
     }
-    await firestore.collection('rooms').doc().set(room);
+    await firestore.collection('rooms').doc().set(obj);
   } catch (err) {
-    throw new Error(`Error at createRoom: ${err}`);
+    throw new Error(`Error at createDbRoomIfNotExists: ${err}`);
   }
 };
 
-export const getRooms = async (teacherId) => {
+/**
+ * Gets all the rooms of a facilitator with user ID `facilitatorId`.
+ */
+export const getDbRooms = async (facilitatorId) => {
   try {
+    console.log(facilitatorId);
     const snapshot = await firestore
       .collection('rooms')
-      .where('teacherIds', 'array-contains', teacherId)
+      .where('facilitatorIds', 'array-contains', facilitatorId)
       .get();
     const rooms = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
     return rooms;
   } catch (err) {
-    throw new Error(`Error at getRooms: ${err}`);
+    throw new Error(`Error at getDbRooms: ${err}`);
   }
 };
 
-export const deleteRoom = async (id) => {
-  // Note: this is the room's `id`, not `roomId`
+/**
+ * Deletes the room with ID `id`.
+ */
+export const deleteDbRoom = async (id) => {
   try {
     await firestore.collection('rooms').doc(id).delete();
   } catch (err) {
-    throw new Error(`Error at deleteRoom: ${err}`);
+    throw new Error(`Error at deleteDbRoom: ${err}`);
   }
 }

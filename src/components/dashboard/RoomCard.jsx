@@ -6,13 +6,13 @@ const RoomCard = ({ room, handleDelete }) => {
     <Card variant='outlined' style={{ borderRadius: 10, marginTop: 10 }}>
       <CardContent style={{ padding: 15 }}>
         <Typography>
-          Class: {room.roomName}
+          Room name: {room.name}
         </Typography>
         <Typography>
           Chapter: {room.chapterId}
         </Typography>
         <Typography>
-          Code: {room.roomId}
+          Code: {room.code}
         </Typography>
         <Typography>
           <span style={{ cursor: 'pointer' }} onClick={handleDelete}>Delete</span>

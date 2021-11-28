@@ -1,20 +1,21 @@
 import { firestore } from '../firebase';
 
-export const createDbUserIfNotExists = async (id, email, school) => {
+export const createDbUserIfNotExists = async (id, email, organisation) => {
   const obj = {
     id,
     email,
-    school,
-    teacherClassrooms: [],
+    organisation,
+    isFacilitator: true
   };
+
   try {
     const userRef = firestore.collection('users').doc(obj.id);
     const user = await userRef.get();
     if (user.exists) {
-      // Give the existing user new teacher fields
+      // Give the existing user new facilitator fields
       await userRef.update(obj, { merge: true });
     } else {
-      // Create the new teacher
+      // Create the new facilitator
       await userRef.set(obj);
     }
   } catch (err) {
@@ -22,19 +23,12 @@ export const createDbUserIfNotExists = async (id, email, school) => {
   }
 }
 
-/**
- * Checks if the user is a teacher.
- * User is considered a teacher if its `school` and `teacherClassrooms` fields are defined.
- */
-export const checkDbUserIsTeacher = async (id) => {
+export const getDbUser = async (id) => {
   try {
     const user = await firestore.collection('users').doc(id).get();
-    const userData = user.data();
-    if (userData.school === undefined || userData.teacherClassrooms === undefined) {
-      return false;
-    }
-    return true;
+    const userData = { id: user.id, ...user.data() };
+    return userData;
   } catch (err) {
-    return false;
+    throw new Error(`Error at getDbUser: ${err}`)
   }
 }

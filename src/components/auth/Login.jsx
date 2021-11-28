@@ -4,7 +4,7 @@ import { Box, Button, TextField } from '@material-ui/core';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
-  const { loginOnlyTeachers } = useAuth();
+  const { loginOnlyFacilitators } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ const Login = () => {
       const email = formData.email;
       const password = formData.password;
       try {
-        await loginOnlyTeachers(email, password);
+        await loginOnlyFacilitators(email, password);
         navigate('/');
       } catch (error) {
         alert(error);
@@ -32,12 +32,12 @@ const Login = () => {
         setIsLoading(false);
       }
     },
-    [navigate, loginOnlyTeachers, formData]
+    [navigate, loginOnlyFacilitators, formData]
   );
 
   return (
     <Box>
-      <h1>Teacher Dashboard</h1>
+      <h1>Facilitator Dashboard</h1>
       <form onSubmit={handleLogin}>
         <Box style={{ display: 'flex', flexDirection: 'column' }}>
           <TextField

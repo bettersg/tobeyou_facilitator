@@ -4,8 +4,8 @@ import { Navigate, Outlet } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AuthLayout = () => {
-  const { currentUser, isLoggingInTeacher } = useAuth();
-  if (currentUser && !isLoggingInTeacher) {
+  const { currentUser, isLoggingInFacilitator } = useAuth();
+  if (currentUser && !isLoggingInFacilitator) {
     return <Navigate to='/' />;
   }
 

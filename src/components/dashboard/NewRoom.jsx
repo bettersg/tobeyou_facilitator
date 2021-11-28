@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
-import { createRoomIfNotExists } from '../../models/roomModel';
+import { createDbRoomIfNotExists } from '../../models/roomModel';
+import { getDbUser } from '../../models/userModel';
 import { useAuth } from '../../contexts/AuthContext';
 
 const NewRoom = () => {
@@ -9,9 +10,8 @@ const NewRoom = () => {
   const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    room: '',
+    name: '',
     chapter: null,
-    code: '',
   });
   const chapterIdMap = {
     1: 'Aman 1',
@@ -29,7 +29,7 @@ const NewRoom = () => {
     for (let i=0; i<CODE_LENGTH; i++) {
       code += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    setFormData({ ...formData, code });
+    return code;
   };
 
   const handleChange = (event) => {
@@ -40,15 +40,18 @@ const NewRoom = () => {
     async (event) => {
       event.preventDefault();
       setIsLoading(true);
+      const user = await getDbUser(currentUser.id);
 
-      // TODO: validate data
-      const roomId = formData.code;
-      const roomName = formData.room;
+      const name = formData.name;  // TODO: validate
+      const code = generateCode();  // TODO: this might fail
       const chapterId = parseInt(formData.chapter);
-      const teacherId = currentUser.id;
+      const facilitatorIds = [currentUser.id];
+      const organisation = user.organisation;
+
+      const room = { name, code, organisation, chapterId, facilitatorIds };
 
       try {
-        await createRoomIfNotExists(roomId, roomName, chapterId, teacherId);
+        await createDbRoomIfNotExists(room);
         navigate('/');
       } catch (error) {
         alert(error);
@@ -65,8 +68,8 @@ const NewRoom = () => {
       <form onSubmit={handleSubmit}>
         <Box style={{ display: 'flex', flexDirection: 'column' }}>
           <TextField
-            name='room'
-            label='Room'
+            name='name'
+            label='Room name'
             variant='filled'
             onChange={handleChange}
             disabled={isLoading}
@@ -90,26 +93,6 @@ const NewRoom = () => {
                 }
             </Select>
           </FormControl>
-          <Box style={{ display: 'flex', alignItems: 'stretch', justifyContent: 'space-around' }}>
-            <TextField
-              name='code'
-              label='Code'
-              variant='filled'
-              onChange={handleChange}
-              disabled={isLoading}
-              value={formData.code}
-              style={{ flex: 4 }}
-            />
-            <Button
-              name='generate-code'
-              variant='filled'
-              onClick={generateCode}
-              disabled={isLoading}
-              style={{ flex: 1 }}
-            >
-              Generate Code
-            </Button>
-          </Box>
           <Button
             type='submit'
             variant='contained'

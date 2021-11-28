@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { auth } from '../firebase';
-import { checkDbUserIsTeacher } from '../models/userModel';
+import { getDbUser } from '../models/userModel';
 
 const AuthContext = React.createContext(null);
 
@@ -10,7 +10,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [isLoggingInTeacher, setIsLoggingInTeacher] = useState(false);
+  const [isLoggingInFacilitator, setIsLoggingInFacilitator] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const signUp = async (email, password) => {
@@ -22,25 +22,25 @@ export const AuthProvider = ({ children }) => {
   }
 
   /**
-   * Logs in the user only if they have been properly registered as a teacher.
+   * Logs in the user only if they have already been registered as a facilitator.
    */
-  const loginOnlyTeachers = async (email, password) => {
+  const loginOnlyFacilitators = async (email, password) => {
     // TODO: this approach is hacky and requires signing in twice. Is there a better way?
-    setIsLoggingInTeacher(true);
-    // Sign in the first time just to get the user's ID, and use it to check if they're a teacher
+    setIsLoggingInFacilitator(true);
+    // Sign in the first time just to get the user's ID, and use it to check if they're a facilitator
     const userCredential = await auth.signInWithEmailAndPassword(email, password);
     const userId = userCredential.user.uid;
-    // Sign out immediately to avoid 'wrongfully' signing them in if they're not actually a teacher
+    // Sign out immediately to avoid 'wrongfully' signing them in if they're not actually a facilitator
     await auth.signOut();
-    const isTeacher = await checkDbUserIsTeacher(userId);
+    const user = await getDbUser(userId);
 
-    if (!isTeacher) {
-      throw new Error('The user exists, but is not registered as a teacher yet.');
+    if (!user.isFacilitator) {
+      throw new Error('The user exists, but is not registered as a facilitator yet.');
     }
 
-    // User is actually a teacher, so sign them in proper the second time
+    // User is actually a facilitator, so sign them in proper the second time
     await auth.signInWithEmailAndPassword(email, password);
-    setIsLoggingInTeacher(false);
+    setIsLoggingInFacilitator(false);
     return userCredential;
   }
 
@@ -72,10 +72,10 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    isLoggingInTeacher,
+    isLoggingInFacilitator,
     signUp,
     login,
-    loginOnlyTeachers,
+    loginOnlyFacilitators,
     logout,
     resetPassword,
     deleteUser,
