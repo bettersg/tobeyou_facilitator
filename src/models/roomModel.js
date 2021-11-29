@@ -11,7 +11,9 @@ export const createDbRoomIfNotExists = async (obj) => {
     if (existingRooms.docs.length > 0) {
       throw new Error('The room with the given code already exists.');
     }
-    await firestore.collection('rooms').doc().set(obj);
+    const { id } = await firestore.collection('rooms').add(obj);
+    const room = await firestore.collection('rooms').doc(id).get();
+    return { id, ...room.data() };
   } catch (err) {
     throw new Error(`Error at createDbRoomIfNotExists: ${err}`);
   }
