@@ -2,7 +2,6 @@ import { firestore } from '../firebase';
 
 export const createDbRoomIfNotExists = async (obj) => {
   // TODO: perform validation on room
-  console.log(obj)
   try {
     // Ensure that the room's code is unique
     const existingRooms = await firestore
@@ -23,7 +22,6 @@ export const createDbRoomIfNotExists = async (obj) => {
  */
 export const getDbRooms = async (facilitatorId) => {
   try {
-    console.log(facilitatorId);
     const snapshot = await firestore
       .collection('rooms')
       .where('facilitatorIds', 'array-contains', facilitatorId)

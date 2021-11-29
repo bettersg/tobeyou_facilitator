@@ -33,10 +33,6 @@ const Sidebar = () => {
               <ListItemIcon><LineStyle/></ListItemIcon>
               <ListItemText>Home</ListItemText>
             </ListItem>
-            <ListItem button onClick={() => navigate('/newroom')}>
-              <ListItemIcon><Add/></ListItemIcon>
-              <ListItemText>New Room</ListItemText>
-            </ListItem>
           </List>
         </Box>
       </SwipeableDrawer>

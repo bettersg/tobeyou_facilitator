@@ -15,6 +15,9 @@ const RoomCard = ({ room, handleDelete }) => {
           Code: {room.code}
         </Typography>
         <Typography>
+          Instructions: {room.instructions}
+        </Typography>
+        <Typography>
           <span style={{ cursor: 'pointer' }} onClick={handleDelete}>Delete</span>
         </Typography>
       </CardContent>
