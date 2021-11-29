@@ -32,3 +32,13 @@ export const getDbUser = async (id) => {
     throw new Error(`Error at getDbUser: ${err}`)
   }
 }
+
+export const getDbUserFromEmail = async (email) => {
+  const snapshot = await firestore.collection('users').where('email', '==', email).get();
+  if (snapshot.docs.length === 0) {
+    throw new Error(`No user exists for the email '${email}'`);
+  }
+  const userDoc = snapshot.docs[0];
+  const userData = { id: userDoc.id, ...userDoc.data() };
+  return userData;
+}

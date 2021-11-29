@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
+import moment from 'moment';
 import { useNavigate } from 'react-router';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { createDbRoomIfNotExists } from '../../models/roomModel';
-import { getDbUser } from '../../models/userModel';
+import { getDbUser, getDbUserFromEmail } from '../../models/userModel';
 import { useAuth } from '../../contexts/AuthContext';
 
 const NewRoom = () => {
@@ -12,6 +13,9 @@ const NewRoom = () => {
   const [formData, setFormData] = useState({
     name: '',
     chapter: null,
+    coFacilitatorEmails: '',
+    date: moment().format('YYYY-MM-DD'),
+    instructions: '',
   });
   const chapterIdMap = {
     1: 'Aman 1',
@@ -44,17 +48,23 @@ const NewRoom = () => {
 
       const name = formData.name;  // TODO: validate
       const code = generateCode();  // TODO: this might fail
+      const date = formData.date;
       const chapterId = parseInt(formData.chapter);
-      const facilitatorIds = [currentUser.id];
       const organisation = user.organisation;
+      const coFacilitatorEmails = formData.coFacilitatorEmails.split(',')
+      // TODO: what if co-facilitator emails are wrong?
+      const coFacilitators = await Promise.all(coFacilitatorEmails.map(email => getDbUserFromEmail(email)));
+      const coFacilitatorIds = coFacilitators.map(user => user.id);
+      const facilitatorIds = [currentUser.id, ...coFacilitatorIds];
+      const isActive = true;
 
-      const room = { name, code, organisation, chapterId, facilitatorIds };
+      const room = { name, code, organisation, chapterId, facilitatorIds, isActive, date };
 
       try {
         await createDbRoomIfNotExists(room);
         navigate('/');
       } catch (error) {
-        alert(error);
+        alert(error);  // TODO: how to deal with errors?
       } finally {
         setIsLoading(false);
       }
@@ -93,6 +103,32 @@ const NewRoom = () => {
                 }
             </Select>
           </FormControl>
+          <TextField
+            name='coFacilitatorEmails'
+            label='Co-facilitator emails'
+            variant='filled'
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+          <TextField
+            name='date'
+            label='Date'
+            variant='filled'
+            type='date'
+            defaultValue={formData.date}
+            onChange={handleChange}
+            disabled={isLoading}
+          />
+          <TextField
+            multiline
+            name='instructions'
+            label='Instructions'
+            variant='filled'
+            rows={3}
+            rowsMax={7}
+            onChange={handleChange}
+            disabled={isLoading}
+          />
           <Button
             type='submit'
             variant='contained'
