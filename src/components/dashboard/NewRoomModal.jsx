@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import QRCode from 'react-qr-code';
 import moment from 'moment';
 import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, Step, Stepper, StepLabel, TextField, Typography } from '@material-ui/core';
 import { createDbRoomIfNotExists } from '../../models/roomModel';
@@ -52,6 +53,10 @@ const NewRoomModal = (props) => {
     return code;
   };
 
+  const getGameUrl = (code) => {
+    return `game.tobeyou.sg/room/${code}`;
+  }
+
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value.trim() });
   };
@@ -79,13 +84,16 @@ const NewRoomModal = (props) => {
       const code = generateCode();  // TODO: this might fail
       const date = formData.date;
       const instructions = formData.instructions;
-      const chapterId = parseInt(formData.chapterId);
+      const chapterId = parseInt(formData.chapterId);  // TODO: do we want to allow null for chapterId?
       const organisation = user.organisation;
-      const coFacilitatorEmails = formData.coFacilitatorEmails.split(',')
-      // TODO: what if co-facilitator emails are wrong?
-      const coFacilitators = await Promise.all(coFacilitatorEmails.map(email => getDbUserFromEmail(email)));
-      const coFacilitatorIds = coFacilitators.map(user => user.id);
-      const facilitatorIds = [currentUser.id, ...coFacilitatorIds];
+      const facilitatorIds = [currentUser.id];
+      if (formData.coFacilitatorEmails !== '') {
+        // TODO: what if co-facilitator emails are wrong? error handling
+        const coFacilitatorEmails = formData.coFacilitatorEmails.split(',')
+        const coFacilitators = await Promise.all(coFacilitatorEmails.map(email => getDbUserFromEmail(email)));
+        const coFacilitatorIds = coFacilitators.map(user => user.id);
+        facilitatorIds.push(...coFacilitatorIds);
+      }
       const isActive = true;
 
       const room = { name, code, organisation, chapterId, facilitatorIds, isActive, date, instructions };
@@ -97,7 +105,7 @@ const NewRoomModal = (props) => {
         setFormData(initialFormData);
         setActiveStep(0);
       } catch (error) {
-        alert(error);  // TODO: how to deal with errors?
+        alert(error);  // TODO: error handling: how to deal with errors?
       } finally {
         setIsSubmitting(false);
       }
@@ -118,12 +126,21 @@ const NewRoomModal = (props) => {
               <Typography variant='h6' component='h2'>
                 Success! New room added!
               </Typography>
+              <QRCode value={getGameUrl(createdRoom.code)}/>
               <Typography>Class: {createdRoom.name}</Typography>
               <Typography>Chapter ID: {createdRoom.chapterId}</Typography>
               <Typography>All facilitator IDs: {createdRoom.facilitatorIds.join(', ')}</Typography>
               <Typography>Date: {createdRoom.date}</Typography>
               <Typography>Code: {createdRoom.code}</Typography>
-              <Typography>Link: <Link href={'https://game.tobeyou.sg/room/' + createdRoom.code}>game.tobeyou.sg/room/{createdRoom.code}</Link></Typography>
+              <Typography>Link: <Link href={'https://' + getGameUrl(createdRoom.code)}>{ getGameUrl(createdRoom.code) }</Link></Typography>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleCloseModal}
+                style={{ marginTop: 10 }}
+              >
+                Return to dashboard
+              </Button>
             </React.Fragment>
           ) : (
             <React.Fragment>
