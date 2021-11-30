@@ -25,7 +25,7 @@ const Home = () => {
     [currentUser]
   );
 
-  useEffect(loadRooms, [loadRooms]);
+  useEffect(loadRooms, []);
 
   return (
     <Box>

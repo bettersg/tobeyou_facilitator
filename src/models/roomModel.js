@@ -19,6 +19,17 @@ export const createDbRoomIfNotExists = async (obj) => {
   }
 };
 
+export const getDbRoom = async (id) => {
+  try {
+    const room = await firestore.collection('rooms').doc(id).get();
+    if (!room.exists) return null;
+    const roomData = { id: room.id, ...room.data() };
+    return roomData;
+  } catch (err) {
+    throw new Error(`Error at getDbRoom: ${err}`);
+  }
+}
+
 /**
  * Gets all the rooms of a facilitator with user ID `facilitatorId`.
  */

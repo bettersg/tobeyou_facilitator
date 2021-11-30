@@ -82,9 +82,10 @@ const NewRoomModal = (props) => {
 
       const name = formData.name;  // TODO: validate
       const code = generateCode();  // TODO: this might fail
-      const date = formData.date;
+      const date = moment(formData.date, 'YYYY-MM-DD').toDate();
       const instructions = formData.instructions;
       const chapterId = parseInt(formData.chapterId);  // TODO: do we want to allow null for chapterId?
+      const reflectionIds = [];  // TODO!
       const organisation = user.organisation;
       const facilitatorIds = [currentUser.id];
       if (formData.coFacilitatorEmails !== '') {
@@ -94,9 +95,10 @@ const NewRoomModal = (props) => {
         const coFacilitatorIds = coFacilitators.map(user => user.id);
         facilitatorIds.push(...coFacilitatorIds);
       }
+      const participantIds = [];
       const isActive = true;
 
-      const room = { name, code, organisation, chapterId, facilitatorIds, isActive, date, instructions };
+      const room = { name, code, organisation, chapterId, reflectionIds, facilitatorIds, participantIds, isActive, date, instructions };
 
       try {
         const newCreatedRoom = await createDbRoomIfNotExists(room);
@@ -130,7 +132,7 @@ const NewRoomModal = (props) => {
               <Typography>Class: {createdRoom.name}</Typography>
               <Typography>Chapter ID: {createdRoom.chapterId}</Typography>
               <Typography>All facilitator IDs: {createdRoom.facilitatorIds.join(', ')}</Typography>
-              <Typography>Date: {createdRoom.date}</Typography>
+              <Typography>Date: {JSON.stringify(createdRoom.date)}</Typography>
               <Typography>Code: {createdRoom.code}</Typography>
               <Typography>Link: <Link href={'https://' + getGameUrl(createdRoom.code)}>{ getGameUrl(createdRoom.code) }</Link></Typography>
               <Button
