@@ -1,19 +1,34 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button } from '@material-ui/core';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { Add } from '@material-ui/icons';
 import { useAuth } from '../../contexts/AuthContext';
-import { deleteDbRoom, getDbRooms } from '../../models/roomModel';
+import { deleteDbRoom, getDbRooms, updateDbRoom } from '../../models/roomModel';
 import RoomCard from './RoomCard';
 import NewRoomModal from './NewRoomModal';
 
 const Home = () => {
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState(null);
+  const [filters, setFilters] = useState(() => ['all']);
   const [isNewRoomModalOpen, setIsNewRoomModalOpen] = useState(false);
 
   async function handleDeleteRoom(id) {
     await deleteDbRoom(id);
     setRooms(rooms.filter(room => room.id !== id));
+  }
+
+  async function toggleIsActiveRoom(id) {
+    const room = rooms.find(x => x.id === id);
+    const restRooms = rooms.filter(x => x.id !== id);
+    room.isActive = !room.isActive;
+    const newRooms = [...restRooms, room];
+    await updateDbRoom(room);
+    setRooms(newRooms);
+  }
+
+  function handleFilters(event, newFilters) {
+    setFilters(newFilters);
   }
 
   const loadRooms = useCallback(
@@ -27,9 +42,50 @@ const Home = () => {
 
   useEffect(loadRooms, []);
 
+  const Rooms = () => {
+    if (rooms === null) {
+      return '';
+    } else if (rooms.length === 0) {
+      return 'You have no rooms';  // TODO: placeholder
+    } else {
+      return rooms
+        .filter(room => {
+          if (filters === 'active') {
+            return room.isActive;
+          } else if (filters === 'archived') {
+            return !room.isActive;
+          }
+          return true;
+        })
+        .map(room =>
+          <RoomCard
+            key={room.id}
+            room={room}
+            toggleIsActive={() => toggleIsActiveRoom(room.id)}
+            handleDelete={() => handleDeleteRoom(room.id)}
+          />);
+    }
+  }
+
   return (
     <Box>
-      <Box>
+      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ToggleButtonGroup
+          value={filters}
+          exclusive
+          onChange={handleFilters}
+          aria-label='room filters'
+        >
+          <ToggleButton value='all' aria-label='all'>
+            All
+          </ToggleButton>
+          <ToggleButton value='active' aria-label='active'>
+            Active
+          </ToggleButton>
+          <ToggleButton value='archived' aria-label='archived'>
+            Archived
+          </ToggleButton>
+        </ToggleButtonGroup>
         <Button
           variant='contained'
           color='primary'
@@ -41,13 +97,7 @@ const Home = () => {
         </Button>
       </Box>
       <Box>
-        {
-          rooms === null
-            ? ''  // TODO: placeholder
-            : rooms.length === 0
-              ? 'You have no rooms'  // TODO: placeholder
-              : rooms.map(room => <RoomCard key={room.id} room={room} handleDelete={() => handleDeleteRoom(room.id)} />)
-        }
+        <Rooms/>
       </Box>
       <NewRoomModal
         isNewRoomModalOpen={isNewRoomModalOpen}

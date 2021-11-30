@@ -71,6 +71,7 @@ const Room = () => {
             <p>Name: {room.name}</p>
             <p>Code: {room.code}</p>
             <p>Instructions: {room.instructions}</p>
+            <p>Status: {room.isActive ? 'active' : 'archived'}</p>
             <p>Number of participants: {room.participantIds.length}</p>
             <p>Date: {JSON.stringify(room.date)}</p>
             <p>All facilitator IDs: {JSON.stringify(room.facilitatorIds)}</p>

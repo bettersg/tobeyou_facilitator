@@ -56,3 +56,16 @@ export const deleteDbRoom = async (id) => {
     throw new Error(`Error at deleteDbRoom: ${err}`);
   }
 }
+
+/**
+ * Updates an existing room with a new room.
+ */
+export const updateDbRoom = async (obj) => {
+  try {
+    const newRoom = Object.assign({}, obj);
+    delete newRoom.id;  // ID is already in doc ref, no need to store
+    await firestore.collection('rooms').doc(obj.id).update(newRoom);
+  } catch (err) {
+    throw new Error(`Error at updateDbRoom: ${err}`);
+  }
+}

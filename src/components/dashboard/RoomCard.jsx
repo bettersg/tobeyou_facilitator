@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { Card, CardContent, Typography } from '@material-ui/core';
 
-const RoomCard = ({ room, handleDelete }) => {
+const RoomCard = (props) => {
+  const { room, handleDelete, toggleIsActive } = props;
   const navigate = useNavigate();
   return (
     <Card
@@ -21,7 +22,10 @@ const RoomCard = ({ room, handleDelete }) => {
           Code: {room.code}
         </Typography>
         <Typography>
-          Instructions: {room.instructions}
+          Status: {room.isActive ? 'active' : 'archived' }
+        </Typography>
+        <Typography>
+          <span style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); toggleIsActive() }}>Toggle</span>
         </Typography>
         <Typography>
           <span style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); handleDelete() }}>Delete</span>
