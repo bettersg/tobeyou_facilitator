@@ -5,6 +5,9 @@ import { AuthProvider } from './contexts/AuthContext';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import Home from './components/dashboard/Home';
 import Room from './components/dashboard/Room';
+import CompletionRate from './components/dashboard/CompletionRate';
+import Reflections from './components/dashboard/Reflections';
+import Quizzes from './components/dashboard/Quizzes';
 import AuthLayout from './components/auth/AuthLayout';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
@@ -60,7 +63,12 @@ function App() {
             <Routes>
               <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
                 <Route exact path='/' element={<Home/>} />
-                <Route path='/room/:roomId' element={<Room/>} />
+                <Route path='/room/:roomId/reflectionId/:reflectionId'>
+                  <Route path='' element={<Room/>} />
+                  <Route path='completionRate' element={<CompletionRate/>} />
+                  <Route path='reflections' element={<Reflections/>} />
+                  <Route path='quizzes' element={<Quizzes/>} />
+                </Route>
               </Route>
               <Route element={<AuthLayout/>}>
                 <Route path='/login' element={<Login/>} />
