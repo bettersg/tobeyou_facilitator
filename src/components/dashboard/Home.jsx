@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Button } from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import { Add } from '@material-ui/icons';
+import { Box, Button } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { deleteDbRoom, getDbRooms, updateDbRoom } from '../../models/roomModel';
 import RoomCard from './RoomCard';

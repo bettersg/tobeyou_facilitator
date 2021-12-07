@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Typography } from '@mui/material';
 
 const RoomCard = (props) => {
   const { room, handleDelete, toggleIsActive } = props;

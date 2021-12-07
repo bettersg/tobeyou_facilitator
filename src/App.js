@@ -10,10 +10,25 @@ import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import RequireAuth from './components/RequireAuth';
 
-import { createTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { deepPurple, blue } from '@material-ui/core/colors';
+import { createTheme, StyledEngineProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { deepPurple, blue } from '@mui/material/colors';
 
+import { green, red } from '@mui/material/colors';
+
+// const theme = createTheme({
+//   typography: {
+//     subtitle1: {
+//       fontSize: 12,
+//     },
+//     body1: {
+//       fontWeight: 500,
+//     },
+//     button: {
+//       fontStyle: 'italic',
+//     },
+//   },
+// });
 const theme = createTheme({
   palette: {
     primary: {
@@ -24,37 +39,49 @@ const theme = createTheme({
   typography: {
     h4: {
       fontWeight: 700, 
-      fontSize: "18px", 
+      fontSize: 20, 
     }, 
     h5: {
       fontWeight: 800,
-      fontSize: "16px", 
+      fontSize: 14, 
     }, 
     h6: {
       fontWeight: 700, 
-      fontSize: "12px", 
+      fontSize: 12, 
       color: "#464E75", 
-    }
+    },
   }
 });
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: red[500],
+//     },
+//     secondary: {
+//       main: green[500],
+//     },
+//   },
+// });
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
-              <Route exact path='/' element={<Home/>} />
-              <Route path='/room/:roomId' element={<Room/>} />
-            </Route>
-            <Route element={<AuthLayout/>}>
-              <Route path='/login' element={<Login/>} />
-              <Route path='/signup' element={<SignUp/>} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+      <StyledEngineProvider injectFirst>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
+                <Route exact path='/' element={<Home/>} />
+                <Route path='/r oom/:roomId' element={<Room/>} />
+              </Route>
+              <Route element={<AuthLayout/>}>
+                <Route path='/login' element={<Login/>} />
+                <Route path='/signup' element={<SignUp/>} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </StyledEngineProvider>
     </ThemeProvider>
   );
 }

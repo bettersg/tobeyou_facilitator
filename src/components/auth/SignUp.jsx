@@ -1,14 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Box, Button, TextField, Typography } from '@material-ui/core';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { createDbUserIfNotExists } from '../../models/userModel';
 
 import { LoginTextfield, LoginButton, LoginFormSection, LoginBackground } from '../styled/auth';
 
 const SignUp = () => {
-  // const classes = styles();
-
   const { signUp, login } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -112,7 +110,6 @@ const SignUp = () => {
               Create an account
             </LoginButton>
 
-            Already have an account? Log in here.
           </Box>
         </form>
       </LoginFormSection>

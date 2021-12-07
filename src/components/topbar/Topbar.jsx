@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import {
   Box
-} from '@material-ui/core';
+} from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from './Sidebar';
 

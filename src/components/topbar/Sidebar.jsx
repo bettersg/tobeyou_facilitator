@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Add, Menu, LineStyle } from '@material-ui/icons';
+import { Add, Menu, LineStyle } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const Sidebar = () => {
