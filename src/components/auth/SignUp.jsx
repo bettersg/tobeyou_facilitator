@@ -74,7 +74,6 @@ const SignUp = () => {
               type='email'
               onChange={handleChange}
               disabled={isLoading}
-              // className={classes.textField}
             />
             <Typography variant="h6">Password:</Typography>
             <LoginTextfield
@@ -112,6 +111,8 @@ const SignUp = () => {
             >
               Create an account
             </LoginButton>
+
+            Already have an account? Log in here.
           </Box>
         </form>
       </LoginFormSection>
