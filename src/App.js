@@ -14,21 +14,6 @@ import { createTheme, StyledEngineProvider } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { deepPurple, blue } from '@mui/material/colors';
 
-import { green, red } from '@mui/material/colors';
-
-// const theme = createTheme({
-//   typography: {
-//     subtitle1: {
-//       fontSize: 12,
-//     },
-//     body1: {
-//       fontWeight: 500,
-//     },
-//     button: {
-//       fontStyle: 'italic',
-//     },
-//   },
-// });
 const theme = createTheme({
   palette: {
     primary: {
@@ -52,16 +37,7 @@ const theme = createTheme({
     },
   }
 });
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: red[500],
-//     },
-//     secondary: {
-//       main: green[500],
-//     },
-//   },
-// });
+
 
 function App() {
   return (
