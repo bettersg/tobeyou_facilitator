@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 import moment from 'moment';
 import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, Step, Stepper, StepLabel, TextField, Typography } from '@mui/material';
@@ -30,6 +30,7 @@ const NewRoomModal = (props) => {
   const { isNewRoomModalOpen, setIsNewRoomModalOpen, loadRooms } = props;
 
   const { currentUser } = useAuth();
+  const [user, setUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdRoom, setCreatedRoom] = useState(null);
   const [activeStep, setActiveStep] = useState(0);  // note that we start from activeStep 0, not 1
@@ -78,7 +79,6 @@ const NewRoomModal = (props) => {
     async (event) => {
       event.preventDefault();
       setIsSubmitting(true);
-      const user = await getDbUser(currentUser.id);
 
       const name = formData.name;  // TODO: validate
       const code = generateCode();  // TODO: this might fail
@@ -86,7 +86,7 @@ const NewRoomModal = (props) => {
       const instructions = formData.instructions;
       const chapterId = parseInt(formData.chapterId);  // TODO: do we want to allow null for chapterId?
       const reflectionIds = [];  // TODO!
-      const organisation = user.organisation;
+      const organisation = formData.organisation;
       const facilitatorIds = [currentUser.id];
       if (formData.coFacilitatorEmails !== '') {
         // TODO: what if co-facilitator emails are wrong? error handling
@@ -114,6 +114,14 @@ const NewRoomModal = (props) => {
     },
     [currentUser, formData, loadRooms]
   );
+
+  const getUser = async () => {
+    const dbUser = await getDbUser(currentUser.id);
+    setFormData({ ...formData, organisation: dbUser.organisation });  // set the room's organisation to be user's organisation by default
+    setUser(dbUser);
+  }
+
+  useEffect(() => getUser(), []);
 
   return (
     <Modal
@@ -191,6 +199,14 @@ const NewRoomModal = (props) => {
                             }
                           </Select>
                         </FormControl>
+                        <TextField
+                          name='organisation'
+                          label='Organisation'
+                          variant='filled'
+                          defaultValue={formData.organisation}
+                          onChange={handleChange}
+                          disabled={isSubmitting}
+                        />
                         <TextField
                           name='coFacilitatorEmails'
                           label='Co-facilitator emails'
