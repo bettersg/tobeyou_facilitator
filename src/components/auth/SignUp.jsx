@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { createDbUserIfNotExists } from '../../models/userModel';
-
+import { Link } from 'react-router-dom';
 import { LoginTextfield, LoginButton, LoginFormSection, LoginBackground } from '../styled/auth';
 
 const SignUp = () => {
@@ -109,7 +109,9 @@ const SignUp = () => {
             >
               Create an account
             </LoginButton>
-
+            <Link to="/login" style={{color: "black"}}>
+              <Typography variant="subtitle2">Already have an account? Log in here.</Typography>
+            </Link>
           </Box>
         </form>
       </LoginFormSection>

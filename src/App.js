@@ -35,6 +35,15 @@ const theme = createTheme({
       fontSize: 12, 
       color: "#464E75", 
     },
+    subtitle2: {
+      marginTop: "10px", 
+      fontSize: 12, 
+      textAlign: "center"
+    }, 
+    subtitle1: {
+      fontSize: 12, 
+      color: "#464E75", 
+    }
   }
 });
 
