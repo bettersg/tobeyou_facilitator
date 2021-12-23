@@ -57,7 +57,7 @@ function App() {
             <Routes>
               <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
                 <Route exact path='/' element={<Home/>} />
-                <Route path='/r oom/:roomId' element={<Room/>} />
+                <Route path='/room/:roomId' element={<Room/>} />
               </Route>
               <Route element={<AuthLayout/>}>
                 <Route path='/login' element={<Login/>} />

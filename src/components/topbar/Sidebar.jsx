@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <React.Fragment key={'left'}>
-      <Button onClick={() => setIsDrawerOpen(true)}><Menu/></Button>
+      <Button onClick={() => setIsDrawerOpen(true)} sx={{color:"white"}}><Menu/></Button>
       <SwipeableDrawer
         anchor={'left'}
         open={isDrawerOpen}
