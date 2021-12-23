@@ -43,6 +43,9 @@ const theme = createTheme({
     subtitle1: {
       fontSize: 12, 
       color: "#464E75", 
+    }, 
+    button: {
+      textTransform: "unset", 
     }
   }
 });
