@@ -53,6 +53,7 @@ const NewRoomModal = (props) => {
     return code;
   };
 
+  // TODO: refactor?
   const getGameUrl = (code) => {
     return `game.tobeyou.sg/room/${code}`;
   }

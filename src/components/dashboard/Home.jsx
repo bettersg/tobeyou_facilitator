@@ -59,13 +59,17 @@ const Home = () => {
           }
           return true;
         })
-        .map(room =>
-          <RoomCard
-            key={room.id}
-            room={room}
-            toggleIsActive={() => toggleIsActiveRoom(room.id)}
-            handleDelete={() => handleDeleteRoom(room.id)}
-          />);
+        .flatMap(room =>
+          room.reflectionIds.map(reflectionId =>
+            <RoomCard
+              key={room.id}
+              room={room}
+              reflectionId={reflectionId}
+              toggleIsActive={() => toggleIsActiveRoom(room.id)}
+              handleDelete={() => handleDeleteRoom(room.id)}
+            />
+          )
+        );
     }
   }
 
