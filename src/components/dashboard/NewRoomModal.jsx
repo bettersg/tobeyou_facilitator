@@ -3,7 +3,7 @@ import QRCode from 'react-qr-code';
 import moment from 'moment';
 import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, Step, Stepper, StepLabel, TextField, Typography } from '@mui/material';
 import { createDbRoomIfNotExists } from '../../models/roomModel';
-import { getDbUser, getDbUserFromEmail } from '../../models/userModel';
+import { getDbUser } from '../../models/userModel';
 import { useAuth } from '../../contexts/AuthContext';
 
 const newRoomModalStyle = {
@@ -20,7 +20,6 @@ const newRoomModalStyle = {
 const initialFormData = {
   name: '',
   chapterId: null,
-  coFacilitatorEmails: '',
   date: moment().format('YYYY-MM-DD'),
   instructions: '',
 }
@@ -88,13 +87,6 @@ const NewRoomModal = (props) => {
       const reflectionIds = [];  // TODO!
       const organisation = formData.organisation;
       const facilitatorIds = [currentUser.id];
-      if (formData.coFacilitatorEmails !== '') {
-        // TODO: what if co-facilitator emails are wrong? error handling
-        const coFacilitatorEmails = formData.coFacilitatorEmails.split(',')
-        const coFacilitators = await Promise.all(coFacilitatorEmails.map(email => getDbUserFromEmail(email)));
-        const coFacilitatorIds = coFacilitators.map(user => user.id);
-        facilitatorIds.push(...coFacilitatorIds);
-      }
       const participantIds = [];
       const isActive = true;
 
@@ -204,14 +196,6 @@ const NewRoomModal = (props) => {
                           label='Organisation'
                           variant='filled'
                           defaultValue={formData.organisation}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        <TextField
-                          name='coFacilitatorEmails'
-                          label='Co-facilitator emails'
-                          variant='filled'
-                          defaultValue={formData.coFacilitatorEmails}
                           onChange={handleChange}
                           disabled={isSubmitting}
                         />
