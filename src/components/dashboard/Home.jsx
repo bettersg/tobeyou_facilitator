@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Button } from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import { Add } from '@material-ui/icons';
+import { Box, Button } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { deleteDbRoom, getDbRooms, updateDbRoom } from '../../models/roomModel';
 import RoomCard from './RoomCard';
 import NewRoomModal from './NewRoomModal';
+import { FlexBoxSpaceBetween, FlexBoxCenter } from "../styled/general";
+import { HomeToggleButtonGroup } from  "../styled/Dashboard/home"; 
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -68,34 +70,39 @@ const Home = () => {
   }
 
   return (
-    <Box>
-      <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ToggleButtonGroup
-          value={filters}
-          exclusive
-          onChange={handleFilters}
-          aria-label='room filters'
-        >
-          <ToggleButton value='all' aria-label='all'>
-            All
-          </ToggleButton>
-          <ToggleButton value='active' aria-label='active'>
-            Active
-          </ToggleButton>
-          <ToggleButton value='archived' aria-label='archived'>
-            Archived
-          </ToggleButton>
-        </ToggleButtonGroup>
+    <Box sx={{padding: "12px"}}>
+      <FlexBoxSpaceBetween>
+        <Box>
+          <Typography variant="h5" sx={{marginBottom: "12px"}}>Class / Chapter Access</Typography>
+          <HomeToggleButtonGroup
+            color="primary"
+            value={filters}
+            exclusive
+            onChange={handleFilters}
+            aria-label='room filters'
+          >
+            <ToggleButton value='all' aria-label='all'>
+              ALL
+            </ToggleButton>
+            <ToggleButton value='active' aria-label='active'>
+              ACTIVE
+            </ToggleButton>
+            <ToggleButton value='archived' aria-label='archived'>
+              ARCHIVED
+            </ToggleButton>
+          </HomeToggleButtonGroup>
+        </Box>
+
         <Button
           variant='contained'
           color='primary'
           onClick={() => setIsNewRoomModalOpen(true)}
-          style={{ marginTop: 10 }}
+          style={{ borderRadius: "50px" }}
         >
           <Add/>
-          Add New Class
+          Add new class / chapter access
         </Button>
-      </Box>
+      </FlexBoxSpaceBetween>
       <Box>
         <Rooms/>
       </Box>

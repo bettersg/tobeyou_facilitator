@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Box, Button, TextField } from '@material-ui/core';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { createDbUserIfNotExists } from '../../models/userModel';
+import { Link } from 'react-router-dom';
+import { LoginTextfield, LoginButton, LoginFormSection, LoginBackground } from '../styled/auth';
 
 const SignUp = () => {
   const { signUp, login } = useAuth();
@@ -57,55 +59,65 @@ const SignUp = () => {
   );
 
   return (
-    <Box>
-      <h1>Create an account</h1>
-      <form onSubmit={handleSignUp}>
-        <Box style={{ display: 'flex', flexDirection: 'column' }}>
-          <TextField
-            name='email'
-            label='Email'
-            type='email'
-            variant='filled'
-            onChange={handleChange}
-            disabled={isLoading}
-          />
-          <TextField
-            name='password'
-            label='Password'
-            type='password'
-            variant='filled'
-            onChange={handleChange}
-            disabled={isLoading}
-          />
-          {/* <TextField
-            name='username'
-            label='Username'
-            type='text'
-            variant='filled'
-            onChange={handleChange}
-            disabled={isLoading}
-          /> */}
-          <TextField
-            name='organisation'
-            label='Organisation'
-            type='text'
-            variant='filled'
-            onChange={handleChange}
-            disabled={isLoading}
-          />
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            onClick={handleSignUp}
-            disabled={isLoading}
-            style={{ marginTop: 10 }}
-          >
-            Create
-          </Button>
-        </Box>
-      </form>
-    </Box>
+    <LoginBackground>
+      <LoginFormSection>
+        <Typography variant="h4" color="primary" align="center">Facilitator Dashboard</Typography>
+        <Typography variant="h5" align="center" style={{marginBottom: "20px",}}>Let’s get started</Typography>
+        <form onSubmit={handleSignUp}>
+          <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: "center" }}>
+            <Typography variant="h6">Email:</Typography>
+            <LoginTextfield
+              name='email'
+              placeholder="Your email here"
+              type='email'
+              onChange={handleChange}
+              disabled={isLoading}
+            />
+            <Typography variant="h6">Password:</Typography>
+            <LoginTextfield
+              name='password'
+              label='Password'
+              type='password'
+              variant='filled'
+              onChange={handleChange}
+              disabled={isLoading}
+            />
+            {/* <TextField
+              name='username'
+              label='Username'
+              type='text'
+              variant='filled'
+              onChange={handleChange}
+              disabled={isLoading}
+            /> */}
+            <Typography variant="h6">Organisation:</Typography>
+            <LoginTextfield
+              name='organisation'
+              label='Organisation'
+              type='text'
+              variant='filled'
+              onChange={handleChange}
+              disabled={isLoading}
+            />
+            <LoginButton
+              type='submit'
+              variant='contained'
+              color='primary'
+              onClick={handleSignUp}
+              disabled={isLoading}
+              style={{ marginTop: 10 }}
+            >
+              Create an account
+            </LoginButton>
+            <Link to="/login" style={{color: "black"}}>
+              <Typography variant="subtitle2">Already have an account? Log in here.</Typography>
+            </Link>
+          </Box>
+        </form>
+      </LoginFormSection>
+      <img src="/login_signup/logo.png" width="200" style={{position:'absolute', top: 10, left: 20}} />
+      <img src="/login_signup/characters.png" width="400" style={{position:'absolute', bottom: 0, right: 0}}/>
+    </LoginBackground>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import QRCode from 'react-qr-code';
 import moment from 'moment';
-import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, Step, Stepper, StepLabel, TextField, Typography } from '@material-ui/core';
+import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, Step, Stepper, StepLabel, TextField, Typography } from '@mui/material';
 import { createDbRoomIfNotExists } from '../../models/roomModel';
 import { getDbUser, getDbUserFromEmail } from '../../models/userModel';
 import { useAuth } from '../../contexts/AuthContext';

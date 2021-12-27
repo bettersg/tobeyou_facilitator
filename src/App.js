@@ -10,22 +10,67 @@ import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import RequireAuth from './components/RequireAuth';
 
+import { createTheme, StyledEngineProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { deepPurple, blue } from '@mui/material/colors';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#664EFC", 
+    }, 
+    secondary: blue, 
+  },
+  typography: {
+    h4: {
+      fontWeight: 700, 
+      fontSize: 20, 
+    }, 
+    h5: {
+      fontWeight: 800,
+      fontSize: 14, 
+    }, 
+    h6: {
+      fontWeight: 700, 
+      fontSize: 12, 
+      color: "#464E75", 
+    },
+    subtitle2: {
+      marginTop: "10px", 
+      fontSize: 12, 
+      textAlign: "center"
+    }, 
+    subtitle1: {
+      fontSize: 12, 
+      color: "#464E75", 
+    }, 
+    button: {
+      textTransform: "unset", 
+    }
+  }
+});
+
+
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
-            <Route exact path='/' element={<Home/>} />
-            <Route path='/room/:roomId' element={<Room/>} />
-          </Route>
-          <Route element={<AuthLayout/>}>
-            <Route path='/login' element={<Login/>} />
-            <Route path='/signup' element={<SignUp/>} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <StyledEngineProvider injectFirst>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<RequireAuth><DashboardLayout/></RequireAuth>}>
+                <Route exact path='/' element={<Home/>} />
+                <Route path='/room/:roomId' element={<Room/>} />
+              </Route>
+              <Route element={<AuthLayout/>}>
+                <Route path='/login' element={<Login/>} />
+                <Route path='/signup' element={<SignUp/>} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </StyledEngineProvider>
+    </ThemeProvider>
   );
 }
 

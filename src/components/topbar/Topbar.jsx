@@ -1,34 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import {
-  Box
-} from '@material-ui/core';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from './Sidebar';
+import { Navbar, ProfileText } from '../styled/topbar';
+import { FlexBoxCenter } from '../styled/general';
 
 const Topbar = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
-
+  console.log(currentUser)
   return (
-    <Box style={{ height: 50, width: '100%', position: 'fixed', top: 0, backgroundColor: 'white' }}>
-      <Box style={{ height: '100%', padding: '0px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Box style={{ display: 'flex', alignItems: 'stretch' }}>
-          <Sidebar/>
-        </Box>
-        <Box>
-          <span
-            style={{ fontSize: 25, color: 'darkblue', cursor: 'pointer' }}
-            onClick={() => navigate('/')}
-          >
-            ToBeYou
-          </span>
-        </Box>
-        <Box style={{ display: 'flex', alignItems: 'center' }}>
-          <p style={{ cursor: 'pointer' }} onClick={logout}>{ currentUser.email }</p>
-        </Box>
-      </Box>
-    </Box>
+    <Navbar>
+      <Sidebar/>
+      <img src="/general/logo.png" width="100" onClick={() => navigate('/')} style={{cursor: 'pointer'}}/>
+      <FlexBoxCenter>
+        <ProfileText onClick={logout}>{ currentUser.displayName }</ProfileText>
+        <img src="/navbar/profile_icon.png" style={{width: "36px", height: "36px", marginRight: "12px"}}/>
+      </FlexBoxCenter>
+    </Navbar>
+
   );
 };
 
