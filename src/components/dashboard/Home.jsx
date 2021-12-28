@@ -50,7 +50,7 @@ const Home = () => {
     } else if (rooms.length === 0) {
       return 'You have no rooms';  // TODO: placeholder
     } else {
-      return rooms
+      const filteredRooms = rooms
         .filter(room => {
           if (filters === 'active') {
             return room.isActive;
@@ -58,18 +58,15 @@ const Home = () => {
             return !room.isActive;
           }
           return true;
-        })
-        .flatMap(room =>
-          room.reflectionIds.map(reflectionId =>
-            <RoomCard
-              key={room.id}
-              room={room}
-              reflectionId={reflectionId}
-              toggleIsActive={() => toggleIsActiveRoom(room.id)}
-              handleDelete={() => handleDeleteRoom(room.id)}
-            />
-          )
-        );
+        });
+      return filteredRooms.map(room =>
+        <RoomCard
+          key={room.id}
+          room={room}
+          toggleIsActive={() => toggleIsActiveRoom(room.id)}
+          handleDelete={() => handleDeleteRoom(room.id)}
+        />
+      );
     }
   }
 
