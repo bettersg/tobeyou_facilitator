@@ -5,17 +5,19 @@ import { Box, Button, FormControl, InputLabel, Link, MenuItem, Modal, Select, St
 import { createDbRoomIfNotExists } from '../../models/roomModel';
 import { getDbUser } from '../../models/userModel';
 import { useAuth } from '../../contexts/AuthContext';
+import { ModalBox } from "../styled/Dashboard/newRoomModal"
+import { FlexBoxCenter } from '../styled/general';
 
-const newRoomModalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 800,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
+// const newRoomModalStyle = {
+//   position: 'absolute',
+//   top: '50%',
+//   left: '50%',
+//   transform: 'translate(-50%, -50%)',
+//   width: 800,
+//   bgcolor: 'background.paper',
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 const initialFormData = {
   name: '',
@@ -122,7 +124,7 @@ const NewRoomModal = (props) => {
       onClose={handleCloseModal}
       aria-labelledby='modal-modal-title'
     >
-      <Box sx={newRoomModalStyle}>
+      <ModalBox>
         {
           createdRoom ? (
             <React.Fragment>
@@ -147,9 +149,8 @@ const NewRoomModal = (props) => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Typography id='modal-modal-title' variant='h6' component='h2'>
-                Add a new room
-              </Typography>
+              
+              
               <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
                   return (
@@ -162,64 +163,79 @@ const NewRoomModal = (props) => {
               {
                 activeStep === 0 ? (
                   <React.Fragment>
-                    <form onSubmit={handleSubmit}>
-                      <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField
-                          name='name'
-                          label='Room name'
-                          variant='filled'
-                          defaultValue={formData.name}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        <FormControl variant='filled'>
-                          <InputLabel id='chapter-label'>Chapter</InputLabel>
-                          <Select
-                            id='chapterId'
-                            labelId='chapter-label'
-                            name='chapterId'
-                            label='Chapter'
-                            variant='filled'
-                            defaultValue={formData.chapterId}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                          >
-                            {
-                              Object.keys(chapterIdMap).map(chapterId => {
-                                const chapterName = chapterIdMap[chapterId];
-                                return <MenuItem key={chapterId} value={chapterId}>{chapterName}</MenuItem>;
-                              })
-                            }
-                          </Select>
-                        </FormControl>
-                        <TextField
-                          name='organisation'
-                          label='Organisation'
-                          variant='filled'
-                          defaultValue={formData.organisation}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        <TextField
-                          name='date'
-                          label='Date'
-                          variant='filled'
-                          type='date'
-                          defaultValue={formData.date}
-                          onChange={handleChange}
-                          disabled={isSubmitting}
-                        />
-                        <Button
-                          variant='contained'
-                          color='primary'
-                          onClick={handleNextStep}
-                          disabled={isSubmitting}
-                          style={{ marginTop: 10 }}
-                        >
-                          Next
-                        </Button>
-                      </Box>
-                    </form>
+                    <div>
+
+                        <form onSubmit={handleSubmit}>
+                          <FlexBoxCenter> 
+                            <Box>
+                              <Typography id='modal-modal-title' variant='h6' component='h2'>
+                                Add a new room
+                              </Typography>
+                              <Box style={{ display: 'flex', flexDirection: 'column' }}>
+                                <TextField
+                                  name='name'
+                                  label='Room name'
+                                  variant='filled'
+                                  defaultValue={formData.name}
+                                  onChange={handleChange}
+                                  disabled={isSubmitting}
+                                />
+                                
+                                <TextField
+                                  name='organisation'
+                                  label='Organisation'
+                                  variant='filled'
+                                  defaultValue={formData.organisation}
+                                  onChange={handleChange}
+                                  disabled={isSubmitting}
+                                />
+                                <TextField
+                                  name='date'
+                                  label='Date'
+                                  variant='filled'
+                                  type='date'
+                                  defaultValue={formData.date}
+                                  onChange={handleChange}
+                                  disabled={isSubmitting}
+                                />
+                                <Button
+                                  variant='contained'
+                                  color='primary'
+                                  onClick={handleNextStep}
+                                  disabled={isSubmitting}
+                                  style={{ marginTop: 10 }}
+                                >
+                                  Next
+                                </Button>
+                              </Box>
+
+                            </Box>
+                            <Box sx={{width: "100%"}}>
+                              <FormControl variant='filled'>
+                                  <InputLabel id='chapter-label'>Chapter</InputLabel>
+                                  <Select
+                                    id='chapterId'
+                                    labelId='chapter-label'
+                                    name='chapterId'
+                                    label='Chapter'
+                                    variant='filled'
+                                    defaultValue={formData.chapterId}
+                                    onChange={handleChange}
+                                    disabled={isSubmitting}
+                                  >
+                                    {
+                                      Object.keys(chapterIdMap).map(chapterId => {
+                                        const chapterName = chapterIdMap[chapterId];
+                                        return <MenuItem key={chapterId} value={chapterId}>{chapterName}</MenuItem>;
+                                      })
+                                    }
+                                  </Select>
+                                </FormControl>
+                            </Box>
+                        </FlexBoxCenter>
+                        </form>
+                  </div>
+
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
@@ -263,7 +279,7 @@ const NewRoomModal = (props) => {
             </React.Fragment>
           )
         }
-      </Box>
+      </ModalBox>
     </Modal>
   );
 }
