@@ -17,7 +17,7 @@ const RoomCard = (props) => {
           Room name: {room.name}
         </Typography>
         <Typography>
-          Chapter: {room.chapterId}, reflection IDs: {JSON.stringify(room.reflectionIds)}
+          Reflection IDs: {JSON.stringify(room.reflectionIds)}
         </Typography>
         <Typography>
           Code: {room.code}

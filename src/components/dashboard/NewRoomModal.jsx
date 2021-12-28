@@ -4,12 +4,11 @@ import moment from "moment";
 import {
   Box,
   Button,
-  FormControl,
-  InputLabel,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
   Link,
-  MenuItem,
   Modal,
-  Select,
   Step,
   Stepper,
   StepLabel,
@@ -35,7 +34,7 @@ import {
 
 const initialFormData = {
   name: "",
-  chapterId: null,
+  reflectionIds: [],
   date: moment().format("YYYY-MM-DD"),
   instructions: "",
 };
@@ -50,11 +49,14 @@ const NewRoomModal = (props) => {
   const [createdRoom, setCreatedRoom] = useState(null);
   const [activeStep, setActiveStep] = useState(0); // note that we start from activeStep 0, not 1
   const [formData, setFormData] = useState(initialFormData);
-  const chapterIdMap = {
+
+  const reflectionIdMap = {
     1: "Aman 1",
     2: "Nadia 1",
     3: "Nadia 2",
     4: "Nadia 3",
+    5: "Aman 2",
+    6: "Aman 3",
   };
 
   const generateCode = () => {
@@ -82,6 +84,17 @@ const NewRoomModal = (props) => {
     });
   };
 
+  const toggleChapterCheckbox = (event) => {
+    setFormData(() => {
+      const changedReflectionId = parseInt(event.target.name);
+      const oldReflectionIds = formData.reflectionIds;
+      const newReflectionIds = oldReflectionIds.some(id => id === changedReflectionId)
+        ? oldReflectionIds.filter(id => id !== changedReflectionId)
+        : oldReflectionIds.concat([changedReflectionId])
+      return { ...formData, reflectionIds: newReflectionIds }
+    });
+  }
+
   const handleNextStep = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -104,8 +117,7 @@ const NewRoomModal = (props) => {
       const code = generateCode(); // TODO: this might fail
       const date = moment(formData.date, "YYYY-MM-DD").toDate();
       const instructions = formData.instructions;
-      const chapterId = parseInt(formData.chapterId); // TODO: do we want to allow null for chapterId?
-      const reflectionIds = []; // TODO!
+      const reflectionIds = formData.reflectionIds;  // TODO: validate --- needs at least 1!
       const organisation = formData.organisation;
       const facilitatorIds = [currentUser.id];
       const participantIds = [];
@@ -115,7 +127,6 @@ const NewRoomModal = (props) => {
         name,
         code,
         organisation,
-        chapterId,
         reflectionIds,
         facilitatorIds,
         participantIds,
@@ -161,7 +172,7 @@ const NewRoomModal = (props) => {
             </Typography>
             <QRCode value={getGameUrl(createdRoom.code)} />
             <Typography>Class: {createdRoom.name}</Typography>
-            <Typography>Chapter ID: {createdRoom.chapterId}</Typography>
+            <Typography>Reflection IDs: {JSON.stringify(createdRoom.reflectionIds)}</Typography>
             <Typography>
               All facilitator IDs: {createdRoom.facilitatorIds.join(", ")}
             </Typography>
@@ -246,28 +257,23 @@ const NewRoomModal = (props) => {
                         </GeneralButton>
                       </FlexBoxCenterColumn>
                       <ModalRightSide>
-                        <FormControl variant="filled" fullWidth>
-                          <InputLabel id="chapter-label">Chapter</InputLabel>
-                          <Select
-                            id="chapterId"
-                            labelId="chapter-label"
-                            name="chapterId"
-                            label="Chapter"
-                            variant="filled"
-                            defaultValue={formData.chapterId}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                          >
-                            {Object.keys(chapterIdMap).map((chapterId) => {
-                              const chapterName = chapterIdMap[chapterId];
-                              return (
-                                <MenuItem key={chapterId} value={chapterId}>
-                                  {chapterName}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
+                        <FormGroup>
+                          {
+                            Object.keys(reflectionIdMap).map(reflectionId => {
+                              const chapterName = reflectionIdMap[reflectionId];
+                              return <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={formData.reflectionIds.some(id => id === parseInt(reflectionId))}
+                                    onChange={toggleChapterCheckbox}
+                                    name={reflectionId}
+                                  />
+                                }
+                                label={chapterName}
+                              />;
+                            })
+                          }
+                        </FormGroup>
                       </ModalRightSide>
                     </Box>
                   </form>
