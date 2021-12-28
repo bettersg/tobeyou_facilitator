@@ -8,7 +8,6 @@ import { FlexBoxCenter } from '../styled/general';
 const Topbar = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
-  console.log(currentUser)
   return (
     <Navbar>
       <Sidebar/>
