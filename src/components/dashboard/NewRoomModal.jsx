@@ -34,6 +34,7 @@ import {
 
 const initialFormData = {
   name: "",
+  organisation: "",
   reflectionIds: [],
   date: moment().format("YYYY-MM-DD"),
   instructions: "",
@@ -44,19 +45,22 @@ const NewRoomModal = (props) => {
   const { isNewRoomModalOpen, setIsNewRoomModalOpen, loadRooms } = props;
 
   const { currentUser } = useAuth();
-  const [user, setUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdRoom, setCreatedRoom] = useState(null);
   const [activeStep, setActiveStep] = useState(0); // note that we start from activeStep 0, not 1
   const [formData, setFormData] = useState(initialFormData);
 
-  const reflectionIdMap = {
-    1: "Aman 1",
-    2: "Nadia 1",
-    3: "Nadia 2",
-    4: "Nadia 3",
-    5: "Aman 2",
-    6: "Aman 3",
+  const characterChapterMap = {
+    "Nadia": {
+      2: "Chapter 1: An Unexpected Invitation (5 min)",
+      3: "Chapter 2: The Date Crasher (6 min)",
+      4: "Chapter 3: Fork in the Road (7 min)",
+    },
+    "Aman": {
+      1: "Chapter 1: Call of Duty (6 min)",
+      5: "Chapter 2: Price of Admission (4 min)",
+      6: "Chapter 3: The Show Must Go On (5 min)",
+    }
   };
 
   const generateCode = () => {
@@ -150,13 +154,13 @@ const NewRoomModal = (props) => {
     [currentUser, formData, loadRooms]
   );
 
-  const getUser = async () => {
+  const getUserOrganisation = async () => {
     const dbUser = await getDbUser(currentUser.id);
+    initialFormData.organisation = dbUser.organisation;
     setFormData({ ...formData, organisation: dbUser.organisation }); // set the room's organisation to be user's organisation by default
-    setUser(dbUser);
   };
 
-  useEffect(() => getUser(), []);
+  useEffect(() => getUserOrganisation(), []);
 
   return (
     <Modal
@@ -257,23 +261,30 @@ const NewRoomModal = (props) => {
                         </GeneralButton>
                       </FlexBoxCenterColumn>
                       <ModalRightSide>
-                        <FormGroup>
-                          {
-                            Object.keys(reflectionIdMap).map(reflectionId => {
-                              const chapterName = reflectionIdMap[reflectionId];
-                              return <FormControlLabel
-                                control={
-                                  <Checkbox
-                                    checked={formData.reflectionIds.some(id => id === parseInt(reflectionId))}
-                                    onChange={toggleChapterCheckbox}
-                                    name={reflectionId}
+                        <Typography variant="h6">Character / Chapter:</Typography>
+                        {
+                          Object.keys(characterChapterMap).map(characterName => {
+                            const chapterMap = characterChapterMap[characterName];
+                            return <FormGroup>
+                              <Typography>{characterName}</Typography>
+                              {
+                                Object.keys(chapterMap).map(reflectionId => {
+                                  const chapterName = chapterMap[reflectionId];
+                                  return <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        checked={formData.reflectionIds.some(id => id === parseInt(reflectionId))}
+                                        onChange={toggleChapterCheckbox}
+                                        name={reflectionId}
+                                      />
+                                    }
+                                    label={chapterName}
                                   />
-                                }
-                                label={chapterName}
-                              />;
-                            })
-                          }
-                        </FormGroup>
+                                })
+                              }
+                            </FormGroup>
+                          })
+                        }
                       </ModalRightSide>
                     </Box>
                   </form>
