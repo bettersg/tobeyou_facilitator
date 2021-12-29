@@ -46,7 +46,6 @@ const Home = () => {
   useEffect(loadRooms, []);
 
   const Rooms = () => {
-    console.log(rooms);
     if (rooms === null) {
       return "";
     } else if (rooms.length === 0) {

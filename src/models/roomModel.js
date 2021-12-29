@@ -19,11 +19,17 @@ export const createDbRoomIfNotExists = async (obj) => {
   }
 };
 
+// TODO: refactor
+function parseDate(firestoreTimestamp) {
+  return firestoreTimestamp.toDate();
+}
+
 export const getDbRoom = async (id) => {
   try {
     const room = await firestore.collection('rooms').doc(id).get();
     if (!room.exists) return null;
     const roomData = { id: room.id, ...room.data() };
+    roomData.date = parseDate(roomData.date);
     return roomData;
   } catch (err) {
     throw new Error(`Error at getDbRoom: ${err}`);
@@ -40,6 +46,9 @@ export const getDbRooms = async (facilitatorId) => {
       .where('facilitatorIds', 'array-contains', facilitatorId)
       .get();
     const rooms = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    for (const room of rooms) {
+      room.date = parseDate(room.date);
+    }
     return rooms;
   } catch (err) {
     throw new Error(`Error at getDbRooms: ${err}`);
