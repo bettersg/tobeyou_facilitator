@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import moment from "moment";
 import { Box, Button } from "@mui/material";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
@@ -52,7 +53,9 @@ const Home = () => {
       return "You have no rooms"; // TODO: placeholder
     } else {
       const filteredRooms = rooms.filter((room) => {
-        if (filters === "active") {
+        if (filters === "upcoming") {
+          return moment(room.date) - moment() > 0;
+        } else if (filters === "active") {
           return room.isActive;
         } else if (filters === "archived") {
           return !room.isActive;
@@ -86,6 +89,9 @@ const Home = () => {
           >
             <ToggleButton value="all" aria-label="all">
               ALL
+            </ToggleButton>
+            <ToggleButton value="upcoming" aria-label="upcoming">
+              UPCOMING
             </ToggleButton>
             <ToggleButton value="active" aria-label="active">
               ACTIVE
