@@ -31,6 +31,7 @@ import {
   GeneralButton,
   FlexBoxSpaceEvenly,
 } from "../styled/general";
+import { CHARACTER_MAP } from "../../models/storyMap";
 
 const initialFormData = {
   name: "",
@@ -49,19 +50,6 @@ const NewRoomModal = (props) => {
   const [createdRoom, setCreatedRoom] = useState(null);
   const [activeStep, setActiveStep] = useState(0); // note that we start from activeStep 0, not 1
   const [formData, setFormData] = useState(initialFormData);
-
-  const characterChapterMap = {
-    "Nadia": {
-      2: "Chapter 1: An Unexpected Invitation (5 min)",
-      3: "Chapter 2: The Date Crasher (6 min)",
-      4: "Chapter 3: Fork in the Road (7 min)",
-    },
-    "Aman": {
-      1: "Chapter 1: Call of Duty (6 min)",
-      5: "Chapter 2: Price of Admission (4 min)",
-      6: "Chapter 3: The Show Must Go On (5 min)",
-    }
-  };
 
   const generateCode = () => {
     // credits: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
@@ -263,10 +251,10 @@ const NewRoomModal = (props) => {
                       <ModalRightSide>
                         <Typography variant="h6">Character / Chapter:</Typography>
                         {
-                          Object.keys(characterChapterMap).map(characterName => {
-                            const chapterMap = characterChapterMap[characterName];
+                          Object.keys(CHARACTER_MAP).map(character => {
+                            const chapterMap = CHARACTER_MAP[character];
                             return <FormGroup>
-                              <Typography>{characterName}</Typography>
+                              <Typography>{character}</Typography>
                               {
                                 Object.keys(chapterMap).map(reflectionId => {
                                   const chapterName = chapterMap[reflectionId];
