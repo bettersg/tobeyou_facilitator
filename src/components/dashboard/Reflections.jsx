@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { Box, Card, Modal, Typography } from '@mui/material';
+import { Modal, Typography } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { getDbRoom } from '../../models/roomModel';
 import { getDbReflectionResponses } from '../../models/reflectionResponseModel';
+import { ModalArrowBox, ModalContentBox, ModalBox, ReflectionCard } from '../styled/Dashboard/reflections';
+import { Masonry } from '@mui/lab';
 
 const ReflectionModal = (props) => {
   const { reflectionResponses, modalReflectionIndex, setModalReflectionIndex } = props;
@@ -16,38 +18,56 @@ const ReflectionModal = (props) => {
   const handleLeft = () => {
     if (isLeftmostReflection) return;
     setModalReflectionIndex(modalReflectionIndex - 1);
-  }
+  };
 
   const handleRight = () => {
     if (isRightmostReflection) return;
     setModalReflectionIndex(modalReflectionIndex + 1);
-  }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 37) { // left keypress
+      handleLeft();
+    } else if (event.keyCode === 39) { // right keypress
+      handleRight();
+    }
+  };
+
+  const LeftArrowBox = () => {
+    return isLeftmostReflection
+      ? null
+      : (
+        <ModalArrowBox>
+          <KeyboardArrowLeft onClick={handleLeft} />
+        </ModalArrowBox>
+      );
+  };
+
+  const RightArrowBox = () => {
+    return isRightmostReflection
+      ? null
+      : (
+        <ModalArrowBox>
+          <KeyboardArrowRight onClick={handleRight} />
+        </ModalArrowBox>
+      );
+  };
 
   return (
     <Modal
       open={modalReflectionIndex !== null}
       onClose={() => setModalReflectionIndex(null)}
       aria-labelledby="reflection-modal"
+      onKeyDown={handleKeyDown}
     >
-      <Box style={{ padding: 10 }}>
-        { isLeftmostReflection ? null : <KeyboardArrowLeft onClick={handleLeft}/> }
-        { isRightmostReflection ? null : <KeyboardArrowRight onClick={handleRight}/> }
-        <Typography>{ reflection ? reflection.answer : null }</Typography>
-      </Box>
+      <ModalBox>
+        <LeftArrowBox/>
+        <ModalContentBox>
+          <Typography>{ reflection ? reflection.answer : null }</Typography>
+        </ModalContentBox>
+        <RightArrowBox/>
+      </ModalBox>
     </Modal>
-  );
-};
-
-const ReflectionCard = ({ reflectionResponse, onClick }) => {
-  const { answer } = reflectionResponse;
-  return (
-    <Card
-      variant='outlined'
-      style={{ borderRadius: 10, marginTop: 10, padding: 10, cursor: 'pointer' }}
-      onClick={onClick}
-    >
-      {answer}
-    </Card>
   );
 };
 
@@ -76,16 +96,21 @@ const Reflections = () => {
       <KeyboardArrowLeft onClick={() => navigate(-1)}/>
       <h2>REFLECTIONS</h2>
       <h4>Do you have any reflections or similar stories to share after playing this chapter?</h4>
-      {
-        reflectionResponses
-          ? reflectionResponses.map((reflection, index) =>
-            <ReflectionCard
-              reflectionResponse={reflection}
-              onClick={() => { console.log(`clicking ${index}`); setModalReflectionIndex(index) } }
-            />
-          )
-          : null
-      }
+      <Masonry columns={3} spacing={2}>
+        {
+          reflectionResponses
+            ? reflectionResponses.map((reflectionResponse, index) =>
+              <ReflectionCard
+                variant='outlined'
+                onClick={() => setModalReflectionIndex(index)}
+                key={index}
+              >
+                {reflectionResponse.answer}
+              </ReflectionCard>
+            )
+            : null
+        }
+      </Masonry>
       <ReflectionModal
         reflectionResponses={reflectionResponses}
         modalReflectionIndex={modalReflectionIndex}
