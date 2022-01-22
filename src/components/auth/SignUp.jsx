@@ -36,14 +36,14 @@ const SignUp = () => {
         // Try to sign up, if user does not exist
         const userCredential = await signUp(email, password);
         await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, organisation);
-        navigate('/');
+        navigate('/profilebuilder');
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           try {
             // Try to sign in, if user exists
             const userCredential = await login(email, password);
             await createDbUserIfNotExists(userCredential.user.uid, userCredential.user.email, organisation);
-            navigate('/');
+            navigate('/profilebuilder');
             // TODO: what if the user exists, and is already a facilitator? Should throw an error, right?
           } catch (error) {
             alert(error);

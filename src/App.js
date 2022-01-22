@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Outlet, BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/AuthContext';
 import DashboardLayout from './components/dashboard/DashboardLayout';
@@ -8,6 +8,7 @@ import Room from './components/dashboard/Room';
 import CompletionRate from './components/dashboard/CompletionRate';
 import Reflections from './components/dashboard/Reflections';
 import Quizzes from './components/dashboard/Quizzes';
+import ProfileBuilder from './components/auth/ProfileBuilder';
 import AuthLayout from './components/auth/AuthLayout';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
@@ -69,6 +70,9 @@ function App() {
                   <Route path='reflections' element={<Reflections/>} />
                   <Route path='quizzes' element={<Quizzes/>} />
                 </Route>
+              </Route>
+              <Route element={<RequireAuth><Outlet/></RequireAuth>}>
+                <Route path='/profilebuilder' element={<ProfileBuilder/>} />
               </Route>
               <Route element={<AuthLayout/>}>
                 <Route path='/login' element={<Login/>} />

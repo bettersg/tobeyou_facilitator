@@ -1,5 +1,8 @@
 import { firestore } from '../firebase';
 
+/**
+ * Creates a user and sets it to be a facilitator, if the user does not exist.
+ */
 export const createDbUserIfNotExists = async (id, email, organisation) => {
   const obj = {
     id,
@@ -20,6 +23,14 @@ export const createDbUserIfNotExists = async (id, email, organisation) => {
     }
   } catch (err) {
     throw new Error(`Error at createDbUserIfNotExists: ${err}`);
+  }
+}
+
+export const updateDbUser = async (id, obj, merge=true) => {
+  try {
+    await firestore.collection('users').doc(id).update(obj, { merge: merge });
+  } catch (err) {
+    throw new Error(`Error at updateDbUser: ${err}`);
   }
 }
 
