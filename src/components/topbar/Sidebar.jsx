@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Add, Menu, LineStyle } from '@mui/icons-material';
+import { LineStyle, Logout, Menu, Person } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -10,9 +10,11 @@ import {
   SwipeableDrawer,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
@@ -32,6 +34,14 @@ const Sidebar = () => {
             <ListItem button onClick={() => navigate('/')}>
               <ListItemIcon><LineStyle/></ListItemIcon>
               <ListItemText>Home</ListItemText>
+            </ListItem>
+            <ListItem button onClick={() => navigate('/profilebuilder')}>
+              <ListItemIcon><Person/></ListItemIcon>
+              <ListItemText>Profile Builder</ListItemText>
+            </ListItem>
+            <ListItem button onClick={logout}>
+              <ListItemIcon><Logout/></ListItemIcon>
+              <ListItemText>Sign Out</ListItemText>
             </ListItem>
           </List>
         </Box>

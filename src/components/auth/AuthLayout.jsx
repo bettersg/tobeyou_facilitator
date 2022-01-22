@@ -1,19 +1,15 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import { Navigate, Outlet } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AuthLayout = () => {
+  // TODO: change this to redirect if logged in (similar to RequireAuth)
   const { currentUser, isLoggingInFacilitator } = useAuth();
   if (currentUser && !isLoggingInFacilitator) {
     return <Navigate to='/' />;
   }
 
-  return (
-    <Box style={{ marginLeft: 200, marginRight: 200 }}>
-      <Outlet/>
-    </Box>
-  );
+  return <Outlet/>;
 };
 
 export default AuthLayout;
