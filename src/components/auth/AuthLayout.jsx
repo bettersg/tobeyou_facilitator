@@ -5,9 +5,9 @@ import { useAuth } from '../../contexts/AuthContext';
 const AuthLayout = () => {
   // TODO: change this to redirect if logged in (similar to RequireAuth)
   const { currentUser, isLoggingInFacilitator } = useAuth();
-  if (currentUser && !isLoggingInFacilitator) {
-    return <Navigate to='/' />;
-  }
+  // if (currentUser && !isLoggingInFacilitator) {
+  //   return <Navigate to='/' />;
+  // }
 
   return <Outlet/>;
 };
