@@ -29,6 +29,12 @@ export const FlexBoxSpaceEvenly = styled(Box)(({theme}) => ({
     alignItems: "center", 
 })) 
 
+// flex box
+export const FlexBox = styled(Box)(({theme}) => ({
+  display: "flex", 
+  alignItems: "flex-start", 
+  
+})) 
 
 export const GeneralTextfield = styled(InputBase)(({theme}) => ({
     'label + &': {

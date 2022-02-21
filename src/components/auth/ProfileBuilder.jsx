@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Box, MenuItem, TextField, Typography } from "@mui/material";
+import { Box, MenuItem, TextField, Typography, SvgIcon } from "@mui/material";
 import { LoginBackground, LoginFormSection, NadiaPic, NameLabel } from "../styled/auth";
-import { GeneralButton } from "../styled/general";
+import { GeneralButton, FlexBox } from "../styled/general";
 import { useAuth } from "../../contexts/AuthContext";
 import { getDbUser, updateDbUser } from "../../models/userModel";
+import checkmark from "./assets/checkmark.svg";
 
 const ProfileBuilder = () => {
   // TODO: allow 'other' values
@@ -107,11 +108,13 @@ const ProfileBuilder = () => {
       isShowNadia: true,
       isForm: false,
       text: [
-        "Through this facilitator dashboard, you'll be able to:",
+        "Through this facilitator dashboard, you'll be able to:"
+      ],
+      check: [
         "Choose characters and chapters that you want your participants to focus on",
         "Track participants' game progress",
         "Analyze participants' gameplay statistics to help bolster your discussions",
-      ],
+      ]
     },
     {
       isShowNadia: true,
@@ -148,6 +151,7 @@ const ProfileBuilder = () => {
       <LoginFormSection isNadia = {step.isShowNadia}>
         {/* <Typography>(Nadia picture)</Typography> */}
         { step.text.map(paragraph => <Typography>{paragraph}</Typography>) }
+        { step.check ? step.check.map(paragraph => <FlexBox sx={{width: "100%", marginBottom: "8px" }}><img src={checkmark} style={{marginRight: "8px"}}/><Typography>{paragraph}</Typography></FlexBox>) : null }
         {
           step.isForm
             ?
@@ -239,7 +243,7 @@ const ProfileBuilder = () => {
             <GeneralButton
               variant="contained"
               onClick={handleNext}
-              style={{ marginTop: 16, width: "250px" }}
+              style={{ marginTop: 16, width: "190px" }}
             >
               Next
             </GeneralButton>
@@ -248,14 +252,14 @@ const ProfileBuilder = () => {
               <GeneralButton
                 variant="contained"
                 onClick={handleBack}
-                style={{ marginTop: 16, width: "250px" }}
+                style={{ marginTop: 16, width: "190px" }}
               >
                 Rebuild my profile
               </GeneralButton>
               <GeneralButton
                 variant="contained"
                 onClick={handleSave}
-                style={{ marginTop: 16, width: "250px" }}
+                style={{ marginTop: 16, width: "190px" }}
               >
                 Save and go to Facilitator Dashboard
               </GeneralButton>
