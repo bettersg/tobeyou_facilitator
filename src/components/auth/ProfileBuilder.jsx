@@ -150,7 +150,7 @@ const ProfileBuilder = () => {
 
       <LoginFormSection isNadia = {step.isShowNadia}>
         {/* <Typography>(Nadia picture)</Typography> */}
-        { step.text.map(paragraph => <Typography>{paragraph}</Typography>) }
+        { step.text.map(paragraph => <Typography sx={{marginBottom: "8px"}}>{paragraph}</Typography>) }
         { step.check ? step.check.map(paragraph => <FlexBox sx={{width: "100%", marginBottom: "8px" }}><img src={checkmark} style={{marginRight: "8px"}}/><Typography>{paragraph}</Typography></FlexBox>) : null }
         {
           step.isForm
