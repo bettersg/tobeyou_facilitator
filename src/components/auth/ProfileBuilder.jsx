@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Box, MenuItem, TextField, Typography } from "@mui/material";
-import { LoginBackground, LoginFormSection } from "../styled/auth";
+import { LoginBackground, LoginFormSection, NadiaPic, NameLabel } from "../styled/auth";
 import { GeneralButton } from "../styled/general";
 import { useAuth } from "../../contexts/AuthContext";
 import { getDbUser, updateDbUser } from "../../models/userModel";
@@ -142,8 +142,11 @@ const ProfileBuilder = () => {
 
   return (
     <LoginBackground>
-      <LoginFormSection>
-        { step.isShowNadia ? <Typography>(Nadia picture)</Typography> : null }
+      { step.isShowNadia ? <NadiaPic /> : null }
+      { step.isShowNadia ? <NameLabel>Nadia</NameLabel> : null }
+
+      <LoginFormSection isNadia = {step.isShowNadia}>
+        {/* <Typography>(Nadia picture)</Typography> */}
         { step.text.map(paragraph => <Typography>{paragraph}</Typography>) }
         {
           step.isForm
@@ -236,7 +239,7 @@ const ProfileBuilder = () => {
             <GeneralButton
               variant="contained"
               onClick={handleNext}
-              style={{ marginTop: 10, width: "250px" }}
+              style={{ marginTop: 16, width: "250px" }}
             >
               Next
             </GeneralButton>
@@ -245,14 +248,14 @@ const ProfileBuilder = () => {
               <GeneralButton
                 variant="contained"
                 onClick={handleBack}
-                style={{ marginTop: 10, width: "250px" }}
+                style={{ marginTop: 16, width: "250px" }}
               >
                 Rebuild my profile
               </GeneralButton>
               <GeneralButton
                 variant="contained"
                 onClick={handleSave}
-                style={{ marginTop: 10, width: "250px" }}
+                style={{ marginTop: 16, width: "250px" }}
               >
                 Save and go to Facilitator Dashboard
               </GeneralButton>

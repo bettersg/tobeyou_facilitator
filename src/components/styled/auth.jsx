@@ -29,14 +29,20 @@ export const LoginButton = styled(Button)(({theme}) => ({
     width: 250, 
 }))
 
-export const LoginFormSection = styled(Box)(({theme}) => ({
+export const LoginFormSection = styled(Box)(({isNadia, theme}) => ({
     background: "#FFFFFF", 
     padding: "40px 50px", 
-    width: 250, 
+    width: 300, 
     borderRadius: "15px",
-    position: "absolute", 
-    left: "38%", 
-    top: "20%",  
+    display: "flex", 
+    flexDirection: "column", 
+    alignItems: "center",
+    // position: "absolute", 
+    // left: "38%", 
+    // top: "20%",  
+    ...(isNadia && {
+      marginTop: "-30px", 
+    })
 }))
 
 export const LoginBackground = styled(Box)(({theme}) => ({
@@ -46,5 +52,32 @@ export const LoginBackground = styled(Box)(({theme}) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: "absolute", 
+    display: "flex", 
+    justifyContent: "center", 
+    flexDirection: "column", 
+    alignItems: "center",
     left: 0, 
+}))
+
+export const NadiaPic = styled(Box)(({theme}) => ({
+    backgroundImage:`url('/login_signup/nadia_pic_intro.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: "center", 
+    borderRadius: "15px 15px 0 0", 
+    position: "relative",
+    width: "400px",
+    height: "350px", 
+}))
+
+export const NameLabel = styled(Typography)(({theme}) => ({
+  background: "#FB5A3F", 
+  borderRadius: "24px", 
+  textTransform: "uppercase", 
+  left: 0, 
+  position: "relative", 
+  marginTop: "-15px", 
+  marginLeft: "-270px",
+  padding: "4px 16px", 
+  fontWeight: 800, 
+  color: "white", 
 }))
