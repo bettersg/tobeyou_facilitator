@@ -7,6 +7,9 @@
       "hosting": {
         "production": [
           "tobeyou-facilitator"
+        ],
+        "staging": [
+          "tobeyou-facilitator-staging"
         ]
       }
     }
