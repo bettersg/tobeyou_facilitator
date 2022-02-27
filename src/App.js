@@ -14,8 +14,7 @@ import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import RequireAuth from './components/RequireAuth';
 
-import { createTheme, StyledEngineProvider } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material/styles';
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { deepPurple, blue } from '@mui/material/colors';
 
 const theme = createTheme({

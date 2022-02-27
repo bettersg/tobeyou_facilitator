@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { createDbUserIfNotExists } from '../../models/userModel';
 import { Link } from 'react-router-dom';
