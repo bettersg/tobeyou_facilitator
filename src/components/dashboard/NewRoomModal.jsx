@@ -28,9 +28,9 @@ import {
   FlexBoxCenter,
   GeneralTextfield,
   FlexBoxCenterColumn,
-  GeneralButton,
   FlexBoxSpaceEvenly,
 } from "../styled/general";
+import { GeneralButton } from "../components/GeneralButton";
 import { CHARACTER_MAP } from "../../models/storyMap";
 
 const initialFormData = {

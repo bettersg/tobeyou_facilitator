@@ -58,6 +58,7 @@ export const GeneralTextfield = styled(InputBase)(({theme}) => ({
   
 })) 
 
-export const GeneralButton = styled(Button)(({theme}) => ({
-    borderRadius: "50px"
+export const StyledButton = styled(Button)(({theme}) => ({
+    borderRadius: "50px", 
+
 })) 

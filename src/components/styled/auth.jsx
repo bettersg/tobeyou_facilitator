@@ -32,7 +32,7 @@ export const LoginButton = styled(Button)(({theme}) => ({
 export const LoginFormSection = styled(Box)(({isNadia, theme}) => ({
     background: "#FFFFFF", 
     padding: "40px 50px", 
-    width: 300, 
+    width: "20%", 
     borderRadius: "15px",
     display: "flex", 
     flexDirection: "column", 

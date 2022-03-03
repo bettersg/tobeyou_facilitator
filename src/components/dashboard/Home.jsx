@@ -10,8 +10,8 @@ import NewRoomModal from "./NewRoomModal";
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
-  GeneralButton,
 } from "../styled/general";
+import { GeneralButton } from "../components/GeneralButton";
 import { HomeToggleButtonGroup } from "../styled/Dashboard/home";
 
 const Home = () => {
