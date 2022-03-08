@@ -1,23 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
-import moment from "moment";
-import { Box, Button } from "@mui/material";
-import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import { useAuth } from "../../contexts/AuthContext";
-import { deleteDbRoom, getDbRooms, updateDbRoom } from "../../models/roomModel";
-import RoomCard from "./RoomCard";
-import NewRoomModal from "./NewRoomModal";
-import {
-  FlexBoxSpaceBetween,
-  FlexBoxCenter,
-  GeneralButton,
-} from "../styled/general";
-import { HomeToggleButtonGroup } from "../styled/Dashboard/home";
+import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
+import { Box, ToggleButton, Typography } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { useAuth } from '../../contexts/AuthContext';
+import { deleteDbRoom, getDbRooms, updateDbRoom } from '../../models/roomModel';
+import RoomCard from './RoomCard';
+import NewRoomModal from './NewRoomModal';
+import { FlexBoxSpaceBetween, GeneralButton } from '../styled/general';
+import { HomeToggleButtonGroup } from '../styled/Dashboard/home';
 
 const Home = () => {
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState(null);
-  const [filters, setFilters] = useState(() => ["all"]);
+  const [filters, setFilters] = useState(() => ['all']);
   const [isNewRoomModalOpen, setIsNewRoomModalOpen] = useState(false);
 
   async function handleDeleteRoom(id) {
@@ -48,16 +43,16 @@ const Home = () => {
 
   const Rooms = () => {
     if (rooms === null) {
-      return "";
+      return '';
     } else if (rooms.length === 0) {
-      return "You have no rooms"; // TODO: placeholder
+      return 'You have no rooms'; // TODO: placeholder
     } else {
       const filteredRooms = rooms.filter((room) => {
-        if (filters === "upcoming") {
+        if (filters === 'upcoming') {
           return moment(room.date) - moment() > 0;
-        } else if (filters === "active") {
+        } else if (filters === 'active') {
           return room.isActive;
-        } else if (filters === "archived") {
+        } else if (filters === 'archived') {
           return !room.isActive;
         }
         return true;
@@ -74,36 +69,36 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ padding: "12px" }}>
+    <Box sx={{ padding: '12px' }}>
       <FlexBoxSpaceBetween>
         <Box>
-          <Typography variant="h5" sx={{ marginBottom: "12px" }}>
+          <Typography variant='h5' sx={{ marginBottom: '12px' }}>
             Class / Chapter Access
           </Typography>
           <HomeToggleButtonGroup
-            color="primary"
+            color='primary'
             value={filters}
             exclusive
             onChange={handleFilters}
-            aria-label="room filters"
+            aria-label='room filters'
           >
-            <ToggleButton value="all" aria-label="all">
+            <ToggleButton value='all' aria-label='all'>
               ALL
             </ToggleButton>
-            <ToggleButton value="upcoming" aria-label="upcoming">
+            <ToggleButton value='upcoming' aria-label='upcoming'>
               UPCOMING
             </ToggleButton>
-            <ToggleButton value="active" aria-label="active">
+            <ToggleButton value='active' aria-label='active'>
               ACTIVE
             </ToggleButton>
-            <ToggleButton value="archived" aria-label="archived">
+            <ToggleButton value='archived' aria-label='archived'>
               ARCHIVED
             </ToggleButton>
           </HomeToggleButtonGroup>
         </Box>
 
         <GeneralButton
-          variant="contained"
+          variant='contained'
           onClick={() => setIsNewRoomModalOpen(true)}
         >
           <Add />
