@@ -7,7 +7,7 @@ import {
   NadiaPic,
   NameLabel,
 } from '../styled/auth';
-import { FlexBox } from '../styled/general';
+import { FlexBox, FlexBoxCenterColumn } from '../styled/general';
 import {GeneralButton} from "../components/GeneralButton"
 import {GeneralSelect} from "../components/GeneralSelect"
 import { useAuth } from '../../contexts/AuthContext';
@@ -140,6 +140,7 @@ const ProfileBuilder = () => {
     {
       isShowNadia: false,
       isFormReview: true,
+      title: "Review your profile", 
       text: [
         "Ok, so here's what I've got for your details. If you want to change something, you can rebuild your profile. If you're ready, let's get started!",
       ],
@@ -148,12 +149,22 @@ const ProfileBuilder = () => {
 
   const step = steps[activeStep];
 
+  const displayAge = () => {
+    for (var i = 0; i < ageOptions.length; i++){
+      console.log(ageOptions[i].value, ageOptions[i].label, "age", formData.age)
+      if (ageOptions[i].value === formData.age) {
+        return ageOptions[i].label
+      } 
+    }
+  }
+
   return (
     <LoginBackground>
       {step.isShowNadia ? <NadiaPic /> : null}
       {step.isShowNadia ? <NameLabel>Nadia</NameLabel> : null}
-
+      
       <LoginFormSection isNadia={step.isShowNadia}>
+        <Typography variant="h4" sx={{mb:2}}>{step.title}</Typography>
         {/* <Typography>(Nadia picture)</Typography> */}
         {step.text.map((paragraph, i) => (
           <Typography key={i} sx={{ marginBottom: '8px' }}>
@@ -242,13 +253,17 @@ const ProfileBuilder = () => {
             </GeneralSelect>
           </Box>
         ) : null}
+
+
         {step.isFormReview ? (
-          <Box>
+          <Box sx={{width: "100%"}}>
             {Object.keys(formData).map((key) => {
+              const age = displayAge()
+              console.log(age)
               const value = formData[key];
               return (
-                <Typography key={key}>
-                  {key}: {value}
+                <Typography key={key} sx={{textTransform:"capitalize"}}>
+                  {key}: {key==="age" ? age : value}
                 </Typography>
               );
             })}
@@ -263,22 +278,22 @@ const ProfileBuilder = () => {
             Next
           </GeneralButton>
         ) : (
-          <Box>
+          <FlexBoxCenterColumn>
             <GeneralButton
-              variant='contained'
+              variant='outlined'
               onClick={handleBack}
-              style={{ marginTop: 16, width: '190px' }}
+              style={{ marginTop: 16 }}
             >
               Rebuild my profile
             </GeneralButton>
             <GeneralButton
               variant='contained'
               onClick={handleSave}
-              style={{ marginTop: 16, width: '190px' }}
+              style={{ marginTop: 16 }}
             >
               Save and go to Facilitator Dashboard
             </GeneralButton>
-          </Box>
+          </FlexBoxCenterColumn>
         )}
       </LoginFormSection>
       <img
