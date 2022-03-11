@@ -7,6 +7,10 @@ import { GeneralButton } from "../components/GeneralButton";
 import { useAuth } from "../../contexts/AuthContext";
 import { getDbUser, updateDbUser } from "../../models/userModel";
 import checkmark from "./assets/checkmark.svg";
+import {GeneralSelect} from "../components/GeneralSelect";
+import { StyledSelect } from "../styled/general";
+// import SelectUnstyled from '@mui/base/SelectUnstyled';
+// import {GeneralSelect, StyledOption, SelectStyled} from "../styled/StyledSelect"
 
 const ProfileBuilder = () => {
   // TODO: allow 'other' values
@@ -39,6 +43,8 @@ const ProfileBuilder = () => {
   };
 
   const handleChange = (event) => {
+    console.log(event)
+    // console.log(type)
     setFormData({ ...formData, [event.target.name]: event.target.value.trim() });
   };
 
@@ -158,70 +164,80 @@ const ProfileBuilder = () => {
             ?
             <Box>
               <Typography>How young are you?</Typography>
-              <TextField
+              <StyledSelect
                 select
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
+                fullWidth
+                variant="filled"
               >
                 {ageOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </TextField>
+              </StyledSelect>
               <Typography>What gender do you identify as?</Typography>
-              <TextField
+              <StyledSelect
                 select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
+                fullWidth
+                variant="filled"
               >
                 {genderOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </TextField>
+              </StyledSelect>
               <Typography>What ethnicity or racial group do you identify as?</Typography>
-              <TextField
+              <StyledSelect
                 select
                 name="race"
                 value={formData.race}
                 onChange={handleChange}
+                fullWidth
+                variant="filled"
               >
                 {raceOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </TextField>
+              </StyledSelect>
               <Typography>What is your religion?</Typography>
-              <TextField
+              <StyledSelect
                 select
                 name="religion"
                 value={formData.religion}
                 onChange={handleChange}
+                fullWidth
+                variant="filled"
               >
                 {religionOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </TextField>
+              </StyledSelect>
               <Typography>What is your housing type?</Typography>
-              <TextField
+              <StyledSelect
                 select
                 name="housing"
                 value={formData.housing}
                 onChange={handleChange}
+                fullWidth
+                variant="filled"
               >
                 {housingOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </TextField>
+              </StyledSelect>
             </Box>
            : null
         }

@@ -26,11 +26,11 @@ import {
 } from "../styled/Dashboard/newRoomModal";
 import {
   FlexBoxCenter,
-  GeneralTextfield,
   FlexBoxCenterColumn,
   FlexBoxSpaceEvenly,
 } from "../styled/general";
 import { GeneralButton } from "../components/GeneralButton";
+import { GeneralTextField } from "../components/GeneralTextField";
 import { CHARACTER_MAP } from "../../models/storyMap";
 
 const initialFormData = {
@@ -215,7 +215,7 @@ const NewRoomModal = (props) => {
                           Add a new class / chapter
                         </Typography>
                         <Typography variant="h6">Organisation:</Typography>
-                        <GeneralTextfield
+                        <GeneralTextField
                           name="organisation"
                           variant="filled"
                           defaultValue={formData.organisation}
@@ -223,7 +223,7 @@ const NewRoomModal = (props) => {
                           disabled={isSubmitting}
                         />
                         <Typography variant="h6">Class:</Typography>
-                        <GeneralTextfield
+                        <GeneralTextField
                           name="name"
                           variant="filled"
                           defaultValue={formData.name}
@@ -231,7 +231,7 @@ const NewRoomModal = (props) => {
                           disabled={isSubmitting}
                         />
                         <Typography variant="h6">Date:</Typography>
-                        <GeneralTextfield
+                        <GeneralTextField
                           name="date"
                           variant="filled"
                           type="date"

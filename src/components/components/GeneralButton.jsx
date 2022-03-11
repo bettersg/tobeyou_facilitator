@@ -16,10 +16,6 @@ GeneralButton.propTypes = {
      */
     variant: PropTypes.oneOf(['text', 'contained', 'outlined']),
     /**
-     * Button contents
-     */
-    label: PropTypes.string.isRequired,
-    /**
      * Optional click handler
      */
     onClick: PropTypes.func,
@@ -27,7 +23,6 @@ GeneralButton.propTypes = {
   };
   
   GeneralButton.defaultProps = {
-    backgroundColor: null,
     variant: 'text',
     onClick: undefined,
     children: "Button Text"

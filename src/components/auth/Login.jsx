@@ -8,6 +8,9 @@ import {
   LoginFormSection,
   LoginBackground,
 } from "../styled/auth";
+import {
+  GeneralTextField
+} from "../components/GeneralTextField"
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -67,18 +70,17 @@ const Login = () => {
               justifyContent: "center",
             }}
           >
-            <Typography variant="h6">Email:</Typography>
-            <LoginTextfield
+            <GeneralTextField
               name="email"
-              placeholder="Your email here"
-              type="email"
+              variant="filled"
+              label="Email:"
+              defaultValue="example@email.com"
               onChange={handleChange}
               disabled={isLoading}
             />
-            <Typography variant="h6">Password:</Typography>
-            <LoginTextfield
+            <GeneralTextField
               name="password"
-              label="Password"
+              label="Password:"
               type="password"
               variant="filled"
               onChange={handleChange}
