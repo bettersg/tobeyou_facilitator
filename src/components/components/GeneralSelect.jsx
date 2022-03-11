@@ -3,16 +3,11 @@ import { StyledSelect } from "../styled/general";
 import PropTypes from 'prop-types';
 import { Box, Button, TextField, Typography, InputBase } from '@mui/material';
 
-export const GeneralSelect = ({select,value, label, name, variant, placeholder, onChange, disabled, children,  ...props}) => {
+export const GeneralSelect = ({label, children, ...props}) => {
     return (
       <Box>
         <Typography variant="h6">{label}</Typography>
         <StyledSelect
-            value={value}
-            
-            onChange={onChange}
-            // disabled={disabled}
-            fullWidth
             {...props}
         >
           {children}
@@ -21,21 +16,21 @@ export const GeneralSelect = ({select,value, label, name, variant, placeholder, 
     )
 }
 
-GeneralSelect.propTypes = {
-    label: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    variant: PropTypes.oneOf(['filled']),
-    placeholder: PropTypes.string,
-    onChange: PropTypes.func,
-    disabled: PropTypes.bool
-  };
+// GeneralSelect.propTypes = {
+//     label: PropTypes.string.isRequired,
+//     name: PropTypes.string.isRequired,
+//     variant: PropTypes.oneOf(['filled']),
+//     placeholder: PropTypes.string,
+//     onChange: PropTypes.func,
+//     disabled: PropTypes.bool
+//   };
 
-  GeneralSelect.defaultProps = {
-  // label: "Label:",
-  // name: "sample text box",
-  variant: 'filled',
-  select: false, 
-//   placeholder: "default text here",
-  // onChange: undefined,
-  disabled: false
-};
+//   GeneralSelect.defaultProps = {
+//   // label: "Label:",
+//   // name: "sample text box",
+//   variant: 'filled',
+//   select: false, 
+// //   placeholder: "default text here",
+//   // onChange: undefined,
+//   disabled: false
+// };

@@ -162,82 +162,82 @@ const ProfileBuilder = () => {
         {
           step.isForm
             ?
-            <Box>
-              <Typography>How young are you?</Typography>
-              <StyledSelect
+            <Box sx={{width:"100%"}}>
+              <GeneralSelect
                 select
                 name="age"
                 value={formData.age}
                 onChange={handleChange}
                 fullWidth
                 variant="filled"
+                label="How young are you?"
               >
                 {ageOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </StyledSelect>
-              <Typography>What gender do you identify as?</Typography>
-              <StyledSelect
+              </GeneralSelect>
+              <GeneralSelect
                 select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
                 fullWidth
                 variant="filled"
+                label="What gender do you identify as?"
               >
                 {genderOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </StyledSelect>
-              <Typography>What ethnicity or racial group do you identify as?</Typography>
-              <StyledSelect
+              </GeneralSelect>
+              <GeneralSelect
                 select
                 name="race"
                 value={formData.race}
                 onChange={handleChange}
                 fullWidth
                 variant="filled"
+                label="What ethnicity or racial group do you identify as?"
               >
                 {raceOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </StyledSelect>
-              <Typography>What is your religion?</Typography>
-              <StyledSelect
+              </GeneralSelect>
+              <GeneralSelect
                 select
                 name="religion"
                 value={formData.religion}
                 onChange={handleChange}
                 fullWidth
                 variant="filled"
+                label="What is your religion?"
               >
                 {religionOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </StyledSelect>
-              <Typography>What is your housing type?</Typography>
-              <StyledSelect
+              </GeneralSelect>
+              <GeneralSelect
                 select
                 name="housing"
                 value={formData.housing}
                 onChange={handleChange}
                 fullWidth
                 variant="filled"
+                label="What is your housing type?"
               >
                 {housingOptions.map((option, index) =>
                   <MenuItem key={index} value={option.value}>
                     {option.label}
                   </MenuItem>
                 )}
-              </StyledSelect>
+              </GeneralSelect>
             </Box>
            : null
         }
