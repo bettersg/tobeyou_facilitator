@@ -18,18 +18,18 @@ export const FlexBoxCenterColumn = styled(Box)(({theme}) => ({
 }))
 
 // space between flex box
-export const FlexBoxSpaceBetween = styled(Box)(({theme}) => ({
-    display: "flex", 
-    justifyContent: "space-between", 
-    alignItems: "center", 
-})) 
+export const FlexBoxSpaceBetween = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}));
 
 // space evenly flex box
-export const FlexBoxSpaceEvenly = styled(Box)(({theme}) => ({
-    display: "flex", 
-    justifyContent: "space-evenly", 
-    alignItems: "center", 
-})) 
+export const FlexBoxSpaceEvenly = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+}));
 
 // flex box
 export const FlexBox = styled(Box)(({theme}) => ({

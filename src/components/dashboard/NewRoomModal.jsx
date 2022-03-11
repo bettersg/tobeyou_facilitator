@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import QRCode from "react-qr-code";
-import moment from "moment";
+import React, { useCallback, useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
+import moment from 'moment';
 import {
   Box,
   Button,
@@ -14,16 +14,15 @@ import {
   StepLabel,
   TextField,
   Typography,
-} from "@mui/material";
-import { createDbRoomIfNotExists } from "../../models/roomModel";
-import { getDbUser } from "../../models/userModel";
-import { useAuth } from "../../contexts/AuthContext";
+} from '@mui/material';
+import { createDbRoomIfNotExists } from '../../models/roomModel';
+import { getDbUser } from '../../models/userModel';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   ModalBox,
-  ModalLeftSide,
   ModalRightSide,
   ModalStepConnector,
-} from "../styled/Dashboard/newRoomModal";
+} from '../styled/Dashboard/newRoomModal';
 import {
   FlexBoxCenter,
   FlexBoxCenterColumn,
@@ -34,13 +33,13 @@ import { GeneralTextField } from "../components/GeneralTextField";
 import { CHARACTER_MAP } from "../../models/storyMap";
 
 const initialFormData = {
-  name: "",
-  organisation: "",
+  name: '',
+  organisation: '',
   reflectionIds: [],
-  date: moment().format("YYYY-MM-DD"),
-  instructions: "",
+  date: moment().format('YYYY-MM-DD'),
+  instructions: '',
 };
-const steps = ["Enter room details", "Message for participants"];
+const steps = ['Enter room details', 'Message for participants'];
 
 const NewRoomModal = (props) => {
   const { isNewRoomModalOpen, setIsNewRoomModalOpen, loadRooms } = props;
@@ -54,9 +53,9 @@ const NewRoomModal = (props) => {
   const generateCode = () => {
     // credits: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
     const CODE_LENGTH = 6;
-    let code = "";
+    let code = '';
     const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     for (let i = 0; i < CODE_LENGTH; i++) {
       code += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -80,12 +79,14 @@ const NewRoomModal = (props) => {
     setFormData(() => {
       const changedReflectionId = parseInt(event.target.name);
       const oldReflectionIds = formData.reflectionIds;
-      const newReflectionIds = oldReflectionIds.some(id => id === changedReflectionId)
-        ? oldReflectionIds.filter(id => id !== changedReflectionId)
-        : oldReflectionIds.concat([changedReflectionId])
-      return { ...formData, reflectionIds: newReflectionIds }
+      const newReflectionIds = oldReflectionIds.some(
+        (id) => id === changedReflectionId
+      )
+        ? oldReflectionIds.filter((id) => id !== changedReflectionId)
+        : oldReflectionIds.concat([changedReflectionId]);
+      return { ...formData, reflectionIds: newReflectionIds };
     });
-  }
+  };
 
   const handleNextStep = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -107,9 +108,9 @@ const NewRoomModal = (props) => {
 
       const name = formData.name; // TODO: validate
       const code = generateCode(); // TODO: this might fail
-      const date = moment(formData.date, "YYYY-MM-DD").toDate();
+      const date = moment(formData.date, 'YYYY-MM-DD').toDate();
       const instructions = formData.instructions;
-      const reflectionIds = formData.reflectionIds;  // TODO: validate --- needs at least 1!
+      const reflectionIds = formData.reflectionIds; // TODO: validate --- needs at least 1!
       const organisation = formData.organisation;
       const facilitatorIds = [currentUser.id];
       const participantIds = [];
@@ -154,31 +155,33 @@ const NewRoomModal = (props) => {
     <Modal
       open={isNewRoomModalOpen}
       onClose={handleCloseModal}
-      aria-labelledby="modal-modal-title"
+      aria-labelledby='modal-modal-title'
     >
       <ModalBox>
         {createdRoom ? (
           <React.Fragment>
-            <Typography variant="h6" component="h2">
+            <Typography variant='h6' component='h2'>
               Success! New room added!
             </Typography>
             <QRCode value={getGameUrl(createdRoom.code)} />
             <Typography>Class: {createdRoom.name}</Typography>
-            <Typography>Reflection IDs: {JSON.stringify(createdRoom.reflectionIds)}</Typography>
             <Typography>
-              All facilitator IDs: {createdRoom.facilitatorIds.join(", ")}
+              Reflection IDs: {JSON.stringify(createdRoom.reflectionIds)}
+            </Typography>
+            <Typography>
+              All facilitator IDs: {createdRoom.facilitatorIds.join(', ')}
             </Typography>
             <Typography>Date: {JSON.stringify(createdRoom.date)}</Typography>
             <Typography>Code: {createdRoom.code}</Typography>
             <Typography>
-              Link:{" "}
-              <Link href={"https://" + getGameUrl(createdRoom.code)}>
+              Link:{' '}
+              <Link href={'https://' + getGameUrl(createdRoom.code)}>
                 {getGameUrl(createdRoom.code)}
               </Link>
             </Typography>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleCloseModal}
               style={{ marginTop: 10 }}
             >
@@ -189,7 +192,7 @@ const NewRoomModal = (props) => {
           <React.Fragment>
             <Stepper
               activeStep={activeStep}
-              sx={{ position: "absolute", bottom: 20, width: "10%" }}
+              sx={{ position: 'absolute', bottom: 20, width: '10%' }}
               connector={<ModalStepConnector />}
               alternativeLabel
             >
@@ -208,9 +211,9 @@ const NewRoomModal = (props) => {
                     <Box>
                       <FlexBoxCenterColumn sx={{ p: 10 }}>
                         <Typography
-                          id="modal-modal-title"
-                          variant="h5"
-                          component="h2"
+                          id='modal-modal-title'
+                          variant='h5'
+                          component='h2'
                         >
                           Add a new class / chapter
                         </Typography>
@@ -240,39 +243,44 @@ const NewRoomModal = (props) => {
                           disabled={isSubmitting}
                         />
                         <GeneralButton
-                          variant="contained"
+                          variant='contained'
                           onClick={handleNextStep}
                           disabled={isSubmitting}
-                          style={{ marginTop: 10, width: "250px" }}
+                          style={{ marginTop: 10, width: '250px' }}
                         >
                           Next
                         </GeneralButton>
                       </FlexBoxCenterColumn>
                       <ModalRightSide>
-                        <Typography variant="h6">Character / Chapter:</Typography>
-                        {
-                          Object.keys(CHARACTER_MAP).map(character => {
-                            const chapterMap = CHARACTER_MAP[character];
-                            return <FormGroup>
+                        <Typography variant='h6'>
+                          Character / Chapter:
+                        </Typography>
+                        {Object.keys(CHARACTER_MAP).map((character) => {
+                          const chapterMap = CHARACTER_MAP[character];
+                          return (
+                            <FormGroup key={character}>
                               <Typography>{character}</Typography>
-                              {
-                                Object.keys(chapterMap).map(reflectionId => {
-                                  const chapterName = chapterMap[reflectionId];
-                                  return <FormControlLabel
+                              {Object.keys(chapterMap).map((reflectionId) => {
+                                const chapterName = chapterMap[reflectionId];
+                                return (
+                                  <FormControlLabel
+                                    key={reflectionId}
                                     control={
                                       <Checkbox
-                                        checked={formData.reflectionIds.some(id => id === parseInt(reflectionId))}
+                                        checked={formData.reflectionIds.some(
+                                          (id) => id === parseInt(reflectionId)
+                                        )}
                                         onChange={toggleChapterCheckbox}
                                         name={reflectionId}
                                       />
                                     }
                                     label={chapterName}
                                   />
-                                })
-                              }
+                                );
+                              })}
                             </FormGroup>
-                          })
-                        }
+                          );
+                        })}
                       </ModalRightSide>
                     </Box>
                   </form>
@@ -281,12 +289,12 @@ const NewRoomModal = (props) => {
             ) : (
               <React.Fragment>
                 <form onSubmit={handleSubmit}>
-                  <Box style={{ display: "flex", flexDirection: "column" }}>
+                  <Box style={{ display: 'flex', flexDirection: 'column' }}>
                     <TextField
                       multiline
-                      name="instructions"
-                      label="Instructions"
-                      variant="filled"
+                      name='instructions'
+                      label='Instructions'
+                      variant='filled'
                       defaultValue={formData.instructions}
                       minRows={3}
                       maxRows={7}
@@ -294,8 +302,8 @@ const NewRoomModal = (props) => {
                       disabled={isSubmitting}
                     />
                     <Button
-                      variant="contained"
-                      color="primary"
+                      variant='contained'
+                      color='primary'
                       onClick={handleBackStep}
                       disabled={isSubmitting}
                       style={{ marginTop: 10 }}
@@ -303,9 +311,9 @@ const NewRoomModal = (props) => {
                       Back
                     </Button>
                     <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
+                      type='submit'
+                      variant='contained'
+                      color='primary'
                       onClick={handleSubmit}
                       disabled={isSubmitting}
                       style={{ marginTop: 10 }}

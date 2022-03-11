@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { Box, MenuItem, TextField, Typography, SvgIcon } from "@mui/material";
-import { LoginBackground, LoginFormSection, NadiaPic, NameLabel } from "../styled/auth";
-import { FlexBox } from "../styled/general";
-import { GeneralButton } from "../components/GeneralButton";
-import { useAuth } from "../../contexts/AuthContext";
-import { getDbUser, updateDbUser } from "../../models/userModel";
-import checkmark from "./assets/checkmark.svg";
-import {GeneralSelect} from "../components/GeneralSelect";
-import { StyledSelect } from "../styled/general";
-// import SelectUnstyled from '@mui/base/SelectUnstyled';
-// import {GeneralSelect, StyledOption, SelectStyled} from "../styled/StyledSelect"
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import {
+  LoginBackground,
+  LoginFormSection,
+  NadiaPic,
+  NameLabel,
+} from '../styled/auth';
+import { FlexBox } from '../styled/general';
+import {GeneralButton} from "../components/GeneralButton"
+import {GeneralSelect} from "../components/GeneralSelect"
+import { useAuth } from '../../contexts/AuthContext';
+import { getDbUser, updateDbUser } from '../../models/userModel';
+import checkmark from './assets/checkmark.svg';
 
 const ProfileBuilder = () => {
   // TODO: allow 'other' values
@@ -34,7 +36,7 @@ const ProfileBuilder = () => {
     formData.race = race || '';
     formData.religion = religion || '';
     formData.housing = housing || '';
-  }
+  };
 
   useEffect(() => getUserData(), []);
 
@@ -43,8 +45,6 @@ const ProfileBuilder = () => {
   };
 
   const handleChange = (event) => {
-    console.log(event)
-    // console.log(type)
     setFormData({ ...formData, [event.target.name]: event.target.value.trim() });
   };
 
@@ -114,21 +114,19 @@ const ProfileBuilder = () => {
     {
       isShowNadia: true,
       isForm: false,
-      text: [
-        "Through this facilitator dashboard, you'll be able to:"
-      ],
+      text: ["Through this facilitator dashboard, you'll be able to:"],
       check: [
-        "Choose characters and chapters that you want your participants to focus on",
+        'Choose characters and chapters that you want your participants to focus on',
         "Track participants' game progress",
         "Analyze participants' gameplay statistics to help bolster your discussions",
-      ]
+      ],
     },
     {
       isShowNadia: true,
       isForm: false,
       text: [
-        "You can also try the game out yourself! Using this same account, you can play the game and get a better understanding of what your participants will experience.",
-        "This account will be used to save your personal game progress, analyse trends, and share interesting insights. Your data will be anonymised so it will never be used to identify you.",
+        'You can also try the game out yourself! Using this same account, you can play the game and get a better understanding of what your participants will experience.',
+        'This account will be used to save your personal game progress, analyse trends, and share interesting insights. Your data will be anonymised so it will never be used to identify you.',
       ],
     },
     {
@@ -143,148 +141,156 @@ const ProfileBuilder = () => {
       isShowNadia: false,
       isFormReview: true,
       text: [
-        "Ok, so here's what I've got for your details. If you want to change something, you can rebuild your profile. If you're ready, let's get started!"
+        "Ok, so here's what I've got for your details. If you want to change something, you can rebuild your profile. If you're ready, let's get started!",
       ],
-    }
+    },
   ];
 
   const step = steps[activeStep];
 
   return (
     <LoginBackground>
-      { step.isShowNadia ? <NadiaPic /> : null }
-      { step.isShowNadia ? <NameLabel>Nadia</NameLabel> : null }
+      {step.isShowNadia ? <NadiaPic /> : null}
+      {step.isShowNadia ? <NameLabel>Nadia</NameLabel> : null}
 
-      <LoginFormSection isNadia = {step.isShowNadia}>
+      <LoginFormSection isNadia={step.isShowNadia}>
         {/* <Typography>(Nadia picture)</Typography> */}
-        { step.text.map(paragraph => <Typography sx={{marginBottom: "8px"}}>{paragraph}</Typography>) }
-        { step.check ? step.check.map(paragraph => <FlexBox sx={{width: "100%", marginBottom: "8px" }}><img src={checkmark} style={{marginRight: "8px"}}/><Typography>{paragraph}</Typography></FlexBox>) : null }
-        {
-          step.isForm
-            ?
-            <Box sx={{width:"100%"}}>
-              <GeneralSelect
-                select
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                fullWidth
-                variant="filled"
-                label="How young are you?"
-              >
-                {ageOptions.map((option, index) =>
-                  <MenuItem key={index} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                )}
-              </GeneralSelect>
-              <GeneralSelect
-                select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                fullWidth
-                variant="filled"
-                label="What gender do you identify as?"
-              >
-                {genderOptions.map((option, index) =>
-                  <MenuItem key={index} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                )}
-              </GeneralSelect>
-              <GeneralSelect
-                select
-                name="race"
-                value={formData.race}
-                onChange={handleChange}
-                fullWidth
-                variant="filled"
-                label="What ethnicity or racial group do you identify as?"
-              >
-                {raceOptions.map((option, index) =>
-                  <MenuItem key={index} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                )}
-              </GeneralSelect>
-              <GeneralSelect
-                select
-                name="religion"
-                value={formData.religion}
-                onChange={handleChange}
-                fullWidth
-                variant="filled"
-                label="What is your religion?"
-              >
-                {religionOptions.map((option, index) =>
-                  <MenuItem key={index} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                )}
-              </GeneralSelect>
-              <GeneralSelect
-                select
-                name="housing"
-                value={formData.housing}
-                onChange={handleChange}
-                fullWidth
-                variant="filled"
-                label="What is your housing type?"
-              >
-                {housingOptions.map((option, index) =>
-                  <MenuItem key={index} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                )}
-              </GeneralSelect>
-            </Box>
-           : null
-        }
-        {
-          step.isFormReview
-            ?
-            <Box>
-              {
-                Object.keys(formData).map(key => {
-                  const value = formData[key];
-                  return <Typography>{key}: {value}</Typography>;
-                })
-              }
-            </Box>
-            : null
-        }
-        {
-          !step.isFormReview
-            ?
-            <GeneralButton
-              variant="contained"
-              onClick={handleNext}
-              style={{ marginTop: 16, width: "190px" }}
+        {step.text.map((paragraph, i) => (
+          <Typography key={i} sx={{ marginBottom: '8px' }}>
+            {paragraph}
+          </Typography>
+        ))}
+        {step.check
+          ? step.check.map((paragraph, i) => (
+              <FlexBox key={i} sx={{ width: '100%', marginBottom: '8px' }}>
+                <img src={checkmark} style={{ marginRight: '8px' }} />
+                <Typography>{paragraph}</Typography>
+              </FlexBox>
+            ))
+          : null}
+        {step.isForm ? (
+          <Box sx={{width:"100%"}}>
+            <GeneralSelect
+              name='age'
+              value={formData.age}
+              onChange={handleChange}
+              variant="filled"
+              fullWidth
+              label="How young are you?"
             >
-              Next
+              {ageOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </GeneralSelect>
+            <GeneralSelect
+              name='gender'
+              value={formData.gender}
+              onChange={handleChange}
+              variant="filled"
+              fullWidth
+              label="What gender do you identify as?"
+            >
+              {genderOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </GeneralSelect>
+            <GeneralSelect
+              name='race'
+              value={formData.race}
+              onChange={handleChange}
+              variant="filled"
+              fullWidth
+              label="What ethnicity or racial group do you identify as?"
+            >
+              {raceOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </GeneralSelect>
+            <GeneralSelect
+              name='religion'
+              value={formData.religion}
+              onChange={handleChange}
+              variant="filled"
+              fullWidth
+              label="What is your religion?"
+            >
+              {religionOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </GeneralSelect>
+            <GeneralSelect
+              name='housing'
+              value={formData.housing}
+              onChange={handleChange}
+              variant="filled"
+              fullWidth
+              label="What is your housing type?"
+            >
+              {housingOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </GeneralSelect>
+          </Box>
+        ) : null}
+        {step.isFormReview ? (
+          <Box>
+            {Object.keys(formData).map((key) => {
+              const value = formData[key];
+              return (
+                <Typography key={key}>
+                  {key}: {value}
+                </Typography>
+              );
+            })}
+          </Box>
+        ) : null}
+        {!step.isFormReview ? (
+          <GeneralButton
+            variant='contained'
+            onClick={handleNext}
+            style={{ marginTop: 16, width: '190px' }}
+          >
+            Next
+          </GeneralButton>
+        ) : (
+          <Box>
+            <GeneralButton
+              variant='contained'
+              onClick={handleBack}
+              style={{ marginTop: 16, width: '190px' }}
+            >
+              Rebuild my profile
             </GeneralButton>
-            :
-            <Box>
-              <GeneralButton
-                variant="contained"
-                onClick={handleBack}
-                style={{ marginTop: 16, width: "190px" }}
-              >
-                Rebuild my profile
-              </GeneralButton>
-              <GeneralButton
-                variant="contained"
-                onClick={handleSave}
-                style={{ marginTop: 16, width: "190px" }}
-              >
-                Save and go to Facilitator Dashboard
-              </GeneralButton>
-            </Box>
-        }
+            <GeneralButton
+              variant='contained'
+              onClick={handleSave}
+              style={{ marginTop: 16, width: '190px' }}
+            >
+              Save and go to Facilitator Dashboard
+            </GeneralButton>
+          </Box>
+        )}
       </LoginFormSection>
-      <img src="/login_signup/logo.png" width="200" style={{position:'absolute', top: 10, left: 20}} />
-      <img src="/login_signup/characters.png" width="400" style={{position:'absolute', bottom: 0, right: 0}}/>
+      <img
+        src='/login_signup/logo.png'
+        width='200'
+        style={{ position: 'absolute', top: 10, left: 20 }}
+      />
+      <img
+        src='/login_signup/characters.png'
+        width='400'
+        style={{ position: 'absolute', bottom: 0, right: 0 }}
+      />
     </LoginBackground>
   );
 };
