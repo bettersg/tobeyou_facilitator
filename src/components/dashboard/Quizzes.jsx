@@ -67,7 +67,7 @@ const Quizzes = () => {
     return (
       <div>
         <p>{question.question}</p>
-        <ul>{question.answers.map(answer => <li>{answer.title} [count = {answer.count}] {answer.answer_id === question.correct_answer_id ? '[correct]' : null}</li>)}</ul>
+        <ul>{question.answers.map((answer, idx) => <li key={idx}>{answer.title} [count = {answer.count}] {answer.answer_id === question.correct_answer_id ? '[correct]' : null}</li>)}</ul>
       </div>
     );
   }

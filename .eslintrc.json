@@ -21,6 +21,8 @@
         "only-warn"
     ],
     "rules": {
+        "react/prop-types": 0, 
+        "prefer-const": 0
     }
 
 }
