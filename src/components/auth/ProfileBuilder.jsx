@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, MenuItem, Typography } from '@mui/material';
 import {
   LoginBackground,
   LoginFormSection,
@@ -150,7 +150,7 @@ const ProfileBuilder = () => {
   const step = steps[activeStep];
 
   const displayAge = () => {
-    for (var i = 0; i < ageOptions.length; i++){
+    for (let i = 0; i < ageOptions.length; i++){
       console.log(ageOptions[i].value, ageOptions[i].label, "age", formData.age)
       if (ageOptions[i].value === formData.age) {
         return ageOptions[i].label

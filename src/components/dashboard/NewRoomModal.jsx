@@ -24,9 +24,7 @@ import {
   ModalStepConnector,
 } from '../styled/Dashboard/newRoomModal';
 import {
-  FlexBoxCenter,
   FlexBoxCenterColumn,
-  FlexBoxSpaceEvenly,
 } from "../styled/general";
 import { GeneralButton } from "../components/GeneralButton";
 import { GeneralTextField } from "../components/GeneralTextField";

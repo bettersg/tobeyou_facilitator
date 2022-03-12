@@ -1,7 +1,7 @@
 import React from "react"; 
 import { StyledTextfield } from "../styled/general";
 import PropTypes from 'prop-types';
-import { Box, Button, TextField, Typography, InputBase } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export const GeneralTextField = ({select,value, label, name, variant, placeholder, onChange, disabled, children,  ...props}) => {
     return (
