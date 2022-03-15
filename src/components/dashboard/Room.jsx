@@ -52,7 +52,7 @@ const Room = () => {
   return (
     <div>
       <h3>
-        <KeyboardArrowLeft onClick={() => navigate(-1)} />{' '}
+        <KeyboardArrowLeft onClick={() => navigate('/')} />{' '}
         {room ? room.name : null} <Edit />
       </h3>
       <h4>
