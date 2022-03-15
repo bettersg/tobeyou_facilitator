@@ -13,12 +13,19 @@ const CompletionRate = () => {
   const [completionRate, setCompletionRate] = useState(null);
 
   async function getData() {
-    function hasParticipantCompleted(participant) {
+    // Returns whether a participant has completed any ending of the current chapter after the given date
+    // If date is falsy, don't check for ending being completed after the date
+    function hasParticipantCompleted(participant, date) {
       const { characterId, chapterId } = REFLECTION_ID_MAP[reflectionId];
       const participantAchievement = participant.achievements?.find(
         (achievement) =>
           achievement.chapter === chapterId &&
-          achievement.character === characterId
+          achievement.character === characterId &&
+          achievement.endings.length > 0 &&
+          (!date ||
+            achievement.endings.find(
+              (ending) => new Date(ending.completedAt) > date
+            ))
       );
       return !!participantAchievement;
     }
@@ -31,7 +38,9 @@ const CompletionRate = () => {
     const participants = await Promise.all(
       dbRoom.participantIds.map((participantId) => getDbUser(participantId))
     );
-    const completedParticipants = participants.filter(hasParticipantCompleted);
+    const completedParticipants = participants.filter((participant) =>
+      hasParticipantCompleted(participant, dbRoom.createdAt)
+    );
     // TODO: remove these console.logs
     console.log('IDs of participants who have completed the chapter: ');
     console.log(completedParticipants.map((x) => x.id));
