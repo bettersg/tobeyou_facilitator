@@ -23,12 +23,10 @@ import {
   ModalRightSide,
   ModalStepConnector,
 } from '../styled/Dashboard/newRoomModal';
-import {
-  FlexBoxCenterColumn,
-} from "../styled/general";
-import { GeneralButton } from "../components/GeneralButton";
-import { GeneralTextField } from "../components/GeneralTextField";
-import { CHARACTER_MAP } from "../../models/storyMap";
+import { FlexBoxCenterColumn } from '../styled/general';
+import { GeneralButton } from '../components/GeneralButton';
+import { GeneralTextField } from '../components/GeneralTextField';
+import { CHARACTER_MAP } from '../../models/storyMap';
 
 const initialFormData = {
   name: '',
@@ -113,6 +111,7 @@ const NewRoomModal = (props) => {
       const facilitatorIds = [currentUser.id];
       const participantIds = [];
       const isActive = true;
+      const createdAt = moment().toDate();
 
       const room = {
         name,
@@ -123,6 +122,7 @@ const NewRoomModal = (props) => {
         participantIds,
         isActive,
         date,
+        createdAt,
         instructions,
       };
 
@@ -215,27 +215,27 @@ const NewRoomModal = (props) => {
                         >
                           Add a new class / chapter
                         </Typography>
-                        <Typography variant="h6">Organisation:</Typography>
+                        <Typography variant='h6'>Organisation:</Typography>
                         <GeneralTextField
-                          name="organisation"
-                          variant="filled"
+                          name='organisation'
+                          variant='filled'
                           defaultValue={formData.organisation}
                           onChange={handleChange}
                           disabled={isSubmitting}
                         />
-                        <Typography variant="h6">Class:</Typography>
+                        <Typography variant='h6'>Class:</Typography>
                         <GeneralTextField
-                          name="name"
-                          variant="filled"
+                          name='name'
+                          variant='filled'
                           defaultValue={formData.name}
                           onChange={handleChange}
                           disabled={isSubmitting}
                         />
-                        <Typography variant="h6">Date:</Typography>
+                        <Typography variant='h6'>Date:</Typography>
                         <GeneralTextField
-                          name="date"
-                          variant="filled"
-                          type="date"
+                          name='date'
+                          variant='filled'
+                          type='date'
                           defaultValue={formData.date}
                           onChange={handleChange}
                           disabled={isSubmitting}
