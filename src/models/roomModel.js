@@ -21,7 +21,7 @@ export const createDbRoomIfNotExists = async (obj) => {
 
 // TODO: refactor
 function parseDate(firestoreTimestamp) {
-  return firestoreTimestamp.toDate();
+  return firestoreTimestamp?.toDate();
 }
 
 export const getDbRoom = async (id) => {
@@ -30,11 +30,12 @@ export const getDbRoom = async (id) => {
     if (!room.exists) return null;
     const roomData = { id: room.id, ...room.data() };
     roomData.date = parseDate(roomData.date);
+    roomData.createdAt = parseDate(roomData.createdAt);
     return roomData;
   } catch (err) {
     throw new Error(`Error at getDbRoom: ${err}`);
   }
-}
+};
 
 /**
  * Gets all the rooms of a facilitator with user ID `facilitatorId`.
@@ -45,9 +46,10 @@ export const getDbRooms = async (facilitatorId) => {
       .collection('rooms')
       .where('facilitatorIds', 'array-contains', facilitatorId)
       .get();
-    const rooms = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    const rooms = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     for (const room of rooms) {
       room.date = parseDate(room.date);
+      room.createdAt = parseDate(room.createdAt);
     }
     return rooms;
   } catch (err) {
@@ -64,7 +66,7 @@ export const deleteDbRoom = async (id) => {
   } catch (err) {
     throw new Error(`Error at deleteDbRoom: ${err}`);
   }
-}
+};
 
 /**
  * Updates an existing room with a new room.
@@ -72,9 +74,9 @@ export const deleteDbRoom = async (id) => {
 export const updateDbRoom = async (obj) => {
   try {
     const newRoom = Object.assign({}, obj);
-    delete newRoom.id;  // ID is already in doc ref, no need to store
+    delete newRoom.id; // ID is already in doc ref, no need to store
     await firestore.collection('rooms').doc(obj.id).update(newRoom);
   } catch (err) {
     throw new Error(`Error at updateDbRoom: ${err}`);
   }
-}
+};
