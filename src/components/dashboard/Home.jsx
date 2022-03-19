@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import moment from "moment";
-import { ToggleButton, Typography, Box } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import { useAuth } from "../../contexts/AuthContext";
-import { deleteDbRoom, getDbRooms, updateDbRoom } from "../../models/roomModel";
-import RoomCard from "./RoomCard";
-import NewRoomModal from "./NewRoomModal";
-import {
-  FlexBoxSpaceBetween,
-} from "../styled/general";
-import { GeneralButton } from "../components/GeneralButton";
-import { HomeToggleButtonGroup } from "../styled/Dashboard/home";
+import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
+import { Box, Grid, ToggleButton, Typography } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { useAuth } from '../../contexts/AuthContext';
+import { deleteDbRoom, getDbRooms, updateDbRoom } from '../../models/roomModel';
+import RoomCard from './RoomCard';
+import NewRoomModal from './NewRoomModal';
+import { FlexBoxSpaceBetween } from '../styled/general';
+import { GeneralButton } from '../components/GeneralButton';
+import { HomeToggleButtonGroup } from '../styled/Dashboard/home';
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -44,11 +42,29 @@ const Home = () => {
 
   useEffect(loadRooms, []);
 
+  const AddClassButton = () => {
+    return (
+      <GeneralButton
+        variant='contained'
+        onClick={() => setIsNewRoomModalOpen(true)}
+      >
+        <Add />
+        Add new class / chapter access
+      </GeneralButton>
+    );
+  };
+
   const Rooms = () => {
     if (rooms === null) {
       return '';
     } else if (rooms.length === 0) {
-      return 'You have no rooms'; // TODO: placeholder
+      return (
+        <Box>
+          <Typography>No classes yet</Typography>
+          <Typography>Get started by creating a class!</Typography>
+          <AddClassButton />
+        </Box>
+      );
     } else {
       const filteredRooms = rooms.filter((room) => {
         if (filters === 'upcoming') {
@@ -60,14 +76,19 @@ const Home = () => {
         }
         return true;
       });
-      return filteredRooms.map((room) => (
-        <RoomCard
-          key={room.id}
-          room={room}
-          toggleIsActive={() => toggleIsActiveRoom(room.id)}
-          handleDelete={() => handleDeleteRoom(room.id)}
-        />
-      ));
+      return (
+        <Grid container spacing={2}>
+          {filteredRooms.map((room) => (
+            <Grid item key={room.id} xs={4}>
+              <RoomCard
+                room={room}
+                toggleIsActive={() => toggleIsActiveRoom(room.id)}
+                handleDelete={() => handleDeleteRoom(room.id)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      );
     }
   };
 
@@ -99,14 +120,7 @@ const Home = () => {
             </ToggleButton>
           </HomeToggleButtonGroup>
         </Box>
-
-        <GeneralButton
-          variant='contained'
-          onClick={() => setIsNewRoomModalOpen(true)}
-        >
-          <Add />
-          Add new class / chapter access
-        </GeneralButton>
+        <AddClassButton />
       </FlexBoxSpaceBetween>
       <Box>
         <Rooms />
