@@ -8,8 +8,8 @@ import {
   NameLabel,
 } from '../styled/auth';
 import { FlexBox, FlexBoxCenterColumn } from '../styled/general';
-import {GeneralButton} from "../components/GeneralButton"
-import {GeneralSelect} from "../components/GeneralSelect"
+import {GeneralButton} from "../components/GeneralButton/GeneralButton"
+import {GeneralSelect} from "../components/GeneralSelect/GeneralSelect"
 import { useAuth } from '../../contexts/AuthContext';
 import { getDbUser, updateDbUser } from '../../models/userModel';
 import checkmark from './assets/checkmark.svg';

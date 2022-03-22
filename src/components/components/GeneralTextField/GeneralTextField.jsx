@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledTextfield } from '../styled/general';
+import { StyledTextfield } from './StyledTextField';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 

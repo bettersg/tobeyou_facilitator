@@ -9,7 +9,7 @@ import {
 } from "../styled/auth";
 import {
   GeneralTextField
-} from "../components/GeneralTextField"
+} from "../components/GeneralTextField/GeneralTextField"
 import { Link } from "react-router-dom";
 
 const Login = () => {

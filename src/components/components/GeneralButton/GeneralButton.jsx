@@ -1,6 +1,7 @@
 import React from "react"; 
-import { StyledButton } from "../styled/general";
+import { StyledButton } from "./StyledButton";
 import PropTypes from 'prop-types';
+
 
 export const GeneralButton = ({children, variant, onClick, ...props}) => {
     return (

@@ -26,8 +26,8 @@ import {
 import {
   FlexBoxCenterColumn,
 } from "../styled/general";
-import { GeneralButton } from "../components/GeneralButton";
-import { GeneralTextField } from "../components/GeneralTextField";
+import { GeneralButton } from "../components/GeneralButton/GeneralButton";
+import { GeneralTextField } from "../components/GeneralTextField/GeneralTextField";
 import { CHARACTER_MAP } from "../../models/storyMap";
 
 const initialFormData = {
