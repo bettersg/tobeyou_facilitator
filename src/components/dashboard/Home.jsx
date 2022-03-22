@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
-import { ToggleButton, Typography, Box } from "@mui/material";
+import { ToggleButton, Typography, Box, Grid } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useAuth } from "../../contexts/AuthContext";
 import { deleteDbRoom, getDbRooms, updateDbRoom } from "../../models/roomModel";
@@ -9,7 +9,7 @@ import NewRoomModal from "./NewRoomModal";
 import {
   FlexBoxSpaceBetween,
 } from "../styled/general";
-import { GeneralButton } from "../components/GeneralButton";
+import { GeneralButton } from "../components/GeneralButton/GeneralButton";
 import { HomeToggleButtonGroup } from "../styled/Dashboard/home";
 
 const Home = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router';
-import Topbar from '../topbar/Topbar';
+import {Topbar} from '../components/Topbar/Topbar';
 
 const DashboardLayout = () => {
   return (

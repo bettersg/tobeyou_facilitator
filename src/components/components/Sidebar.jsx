@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LineStyle, Logout, Menu, Person } from '@mui/icons-material';
+import { LineStyle, Logout, Circle, Person } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -12,16 +12,16 @@ import {
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
     <React.Fragment key={'left'}>
-      <Button onClick={() => setIsDrawerOpen(true)} sx={{color:"white"}}><Menu/></Button>
+      <Button onClick={() => setIsDrawerOpen(true)} sx={{color:"midnight.60"}}><Circle fontSize="large"/></Button>
       <SwipeableDrawer
-        anchor={'left'}
+        anchor={'right'}
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         onOpen={() => setIsDrawerOpen(true)}
@@ -50,4 +50,3 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;

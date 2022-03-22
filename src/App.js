@@ -27,6 +27,10 @@ const theme = createTheme({
       main: '#664EFC',
     },
     secondary: blue,
+    midnight: {
+      60: "#747A98",
+      100: "#172153", 
+    }
   },
   typography: {
     h4: {
