@@ -44,11 +44,29 @@ const Home = () => {
 
   useEffect(loadRooms, []);
 
+  const AddClassButton = () => {
+    return (
+      <GeneralButton
+        variant='contained'
+        onClick={() => setIsNewRoomModalOpen(true)}
+      >
+        <Add />
+        Add new class / chapter access
+      </GeneralButton>
+    );
+  };
+
   const Rooms = () => {
     if (rooms === null) {
       return '';
     } else if (rooms.length === 0) {
-      return 'You have no rooms'; // TODO: placeholder
+      return (
+        <Box>
+          <Typography>No classes yet</Typography>
+          <Typography>Get started by creating a class!</Typography>
+          <AddClassButton />
+        </Box>
+      );
     } else {
       const filteredRooms = rooms.filter((room) => {
         if (filters === 'upcoming') {
@@ -60,14 +78,19 @@ const Home = () => {
         }
         return true;
       });
-      return filteredRooms.map((room) => (
-        <RoomCard
-          key={room.id}
-          room={room}
-          toggleIsActive={() => toggleIsActiveRoom(room.id)}
-          handleDelete={() => handleDeleteRoom(room.id)}
-        />
-      ));
+      return (
+        <Grid container spacing={2}>
+          {filteredRooms.map((room) => (
+            <Grid item key={room.id} xs={4}>
+              <RoomCard
+                room={room}
+                toggleIsActive={() => toggleIsActiveRoom(room.id)}
+                handleDelete={() => handleDeleteRoom(room.id)}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      );
     }
   };
 
@@ -99,14 +122,7 @@ const Home = () => {
             </ToggleButton>
           </HomeToggleButtonGroup>
         </Box>
-
-        <GeneralButton
-          variant='contained'
-          onClick={() => setIsNewRoomModalOpen(true)}
-        >
-          <Add />
-          Add new class / chapter access
-        </GeneralButton>
+        <AddClassButton />
       </FlexBoxSpaceBetween>
       <Box>
         <Rooms />
