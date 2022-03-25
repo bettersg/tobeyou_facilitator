@@ -4,6 +4,7 @@ import { Select } from '@mui/material';
 export const StyledSelect = styled(Select)(({theme}) => ({
     margin: "8px 0", 
     borderRadius: "4px", 
+    minWidth: "200px", 
     '&:hover:not(.Mui-disabled):before': {
       borderBottom: "unset", 
       '&:before' : {

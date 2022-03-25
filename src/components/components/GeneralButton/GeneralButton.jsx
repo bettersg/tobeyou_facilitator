@@ -24,7 +24,7 @@ GeneralButton.propTypes = {
   };
   
   GeneralButton.defaultProps = {
-    variant: 'text',
+    variant: 'contained',
     onClick: undefined,
     children: "Button Text"
   };
