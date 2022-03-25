@@ -33,6 +33,7 @@ const theme = createTheme({
     }
   },
   typography: {
+    fontFamily: ['Inter', 'sans-serif'].join(","),
     h4: {
       fontWeight: 700,
       fontSize: 20,

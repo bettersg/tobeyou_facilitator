@@ -4,14 +4,16 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { Sidebar } from '../Sidebar';
 import { StyledTopbar, NavbarText } from './StyledTopbar';
 import { FlexBoxCenter } from '../../styled/general';
-import "./style.scss"
+import { Box } from '@mui/material';
 
 export const Topbar = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
   return (
     <StyledTopbar>
-      <img src="/general/logo.png" width="60" onClick={() => navigate('/')} className="Topbar__logo"/>
+      <Box sx={{cursor: "pointer", marginLeft: "20px"}}>
+        <img src="/general/logo.png" width="60" onClick={() => navigate('/')} />
+      </Box>
       <FlexBoxCenter>
         <NavbarText variant="body2">Play Game</NavbarText>
         <NavbarText variant="body2">Lesson Plan</NavbarText>
@@ -19,6 +21,5 @@ export const Topbar = () => {
         <Sidebar/>
       </FlexBoxCenter>
     </StyledTopbar>
-
   );
 };
