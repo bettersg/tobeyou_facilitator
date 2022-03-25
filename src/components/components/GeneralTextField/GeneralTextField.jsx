@@ -44,11 +44,10 @@ GeneralTextField.propTypes = {
 };
 
 GeneralTextField.defaultProps = {
-  // label: "Label:",
-  // name: "sample text box",
+  label: "Label:",
+  name: "label",
   variant: 'filled',
-  select: false,
-  //   placeholder: "default text here",
-  // onChange: undefined,
+  placeholder: "label", 
+  onChange: undefined,
   disabled: false,
 };
