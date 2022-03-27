@@ -7,14 +7,7 @@ const DashboardLayout = () => {
   return (
     <Box>
       <Topbar />
-      <Box
-        style={{
-          marginTop: 50,
-          marginLeft: 50,
-          marginRight: 50,
-          marginBottom: 20,
-        }}
-      >
+      <Box sx={{paddingTop: "50px", height: "100vh"}}>
         <Outlet />
       </Box>
     </Box>

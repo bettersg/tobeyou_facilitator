@@ -1,22 +1,35 @@
 import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
-import { ToggleButton, Typography, Box, Grid } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { ToggleButton, Typography, Box, Grid, Paper, MenuItem } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
 import { deleteDbRoom, getDbRooms, updateDbRoom } from "../../models/roomModel";
 import RoomCard from "./RoomCard";
 import NewRoomModal from "./NewRoomModal";
 import {
   FlexBoxSpaceBetween,
+  FlexBoxCenter
 } from "../styled/general";
 import { GeneralButton } from "../components/GeneralButton/GeneralButton";
-import { HomeToggleButtonGroup } from "../styled/Dashboard/home";
+import { HomeToggleButtonGroup } from "../components/HomeToggleButtonGroup/HomeToggleButtonGroup";
+import { GeneralSelect } from "../components/GeneralSelect/GeneralSelect";
 
 const Home = () => {
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState(null);
   const [filters, setFilters] = useState(() => ['all']);
   const [isNewRoomModalOpen, setIsNewRoomModalOpen] = useState(false);
+
+  // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
+  // const filterOptions = 
+  //   { 
+  //     all: "All", 
+  //     upcoming: "Upcoming"
+  //   }
+  
+
+  // const handleChange = (event) => {
+  //   setRoomFilter({ [event.target.value]: filterOptions[event.target.value] });
+  // };
 
   async function handleDeleteRoom(id) {
     await deleteDbRoom(id);
@@ -47,11 +60,10 @@ const Home = () => {
   const AddClassButton = () => {
     return (
       <GeneralButton
-        variant='contained'
+        variant='special'
         onClick={() => setIsNewRoomModalOpen(true)}
       >
-        <Add />
-        Add new class / chapter access
+        Add a class
       </GeneralButton>
     );
   };
@@ -62,8 +74,8 @@ const Home = () => {
     } else if (rooms.length === 0) {
       return (
         <Box>
-          <Typography>No classes yet</Typography>
-          <Typography>Get started by creating a class!</Typography>
+          <Typography variant="h5">No classes yet</Typography>
+          <Typography>Get started by starting a class!</Typography>
           <AddClassButton />
         </Box>
       );
@@ -95,43 +107,63 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ padding: '12px' }}>
-      <FlexBoxSpaceBetween>
+    <Box sx={{height: "100%"}}>
+      <Paper sx={{position: "absolute", left: 0, right: 0, padding: "20px 68px"}}>
+        <FlexBoxSpaceBetween>
+          <Box>
+            <Typography variant='h4' sx={{ marginBottom: '12px' }}>
+            Your classes
+            </Typography>
+            <FlexBoxCenter>
+              <HomeToggleButtonGroup
+                color='primary'
+                value={filters}
+                exclusive
+                onChange={handleFilters}
+                aria-label='room filters'
+              >
+                <ToggleButton value='all' aria-label='all'>
+                  ALL
+                </ToggleButton>
+                <ToggleButton value='upcoming' aria-label='upcoming'>
+                  UPCOMING
+                </ToggleButton>
+                <ToggleButton value='active' aria-label='active'>
+                  ACTIVE
+                </ToggleButton>
+                <ToggleButton value='archived' aria-label='archived'>
+                  ARCHIVED
+                </ToggleButton>
+              </HomeToggleButtonGroup>
+                {/* <GeneralSelect
+                  name="filter"
+                  value={roomFilter.key}
+                  onChange={handleChange}
+                  variant="filled"
+                  label={null}
+                >
+                  {Object.keys(filterOptions).map((filterValue, idx) => {
+                    return (
+                      <MenuItem key={filterValue} value={filterValue}>{filterOptions[filterValue]}</MenuItem>
+                    )
+                  })}
+                </GeneralSelect> */}
+            </FlexBoxCenter>
+          </Box>
+          <AddClassButton />
+        </FlexBoxSpaceBetween>
+      </Paper>
+      <Box sx={{ padding: '68px', paddingTop: "140px", background: (theme) => theme.palette.lapis[10], height: "calc(100vh - 120px)" }}>
         <Box>
-          <Typography variant='h5' sx={{ marginBottom: '12px' }}>
-            Class / Chapter Access
-          </Typography>
-          <HomeToggleButtonGroup
-            color='primary'
-            value={filters}
-            exclusive
-            onChange={handleFilters}
-            aria-label='room filters'
-          >
-            <ToggleButton value='all' aria-label='all'>
-              ALL
-            </ToggleButton>
-            <ToggleButton value='upcoming' aria-label='upcoming'>
-              UPCOMING
-            </ToggleButton>
-            <ToggleButton value='active' aria-label='active'>
-              ACTIVE
-            </ToggleButton>
-            <ToggleButton value='archived' aria-label='archived'>
-              ARCHIVED
-            </ToggleButton>
-          </HomeToggleButtonGroup>
+          <Rooms />
         </Box>
-        <AddClassButton />
-      </FlexBoxSpaceBetween>
-      <Box>
-        <Rooms />
+        <NewRoomModal
+          isNewRoomModalOpen={isNewRoomModalOpen}
+          setIsNewRoomModalOpen={setIsNewRoomModalOpen}
+          loadRooms={loadRooms}
+        />
       </Box>
-      <NewRoomModal
-        isNewRoomModalOpen={isNewRoomModalOpen}
-        setIsNewRoomModalOpen={setIsNewRoomModalOpen}
-        loadRooms={loadRooms}
-      />
+
     </Box>
   );
 };
