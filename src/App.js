@@ -22,6 +22,28 @@ import {
 import { blue } from '@mui/material/colors';
 
 const theme = createTheme({
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: "special" }, 
+          style: {
+            backgroundColor: "#3DCAD3", 
+            backgroundImage:`url('/general/SpecialButton.png')`,  
+            color: "white", 
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: "no-repeat", 
+            minWidth: "160px",
+            padding: "12px",  
+            "&:hover": {
+              backgroundColor: "#39A2A9",
+            }
+          }
+        }
+      ]
+    }
+  }, 
   palette: {
     primary: {
       main: '#664EFC',
@@ -30,6 +52,13 @@ const theme = createTheme({
     midnight: {
       60: "#747A98",
       100: "#172153", 
+    }, 
+    aqua: {
+      100: "#3DCAD3", 
+    }, 
+    lapis: {
+      10: "#F0F1FC", 
+      100: "#6C70DD", 
     }
   },
   typography: {

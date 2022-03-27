@@ -4,14 +4,14 @@ import { ToggleButtonGroup } from '@mui/material';
 export const HomeToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
     margin: '0 12px 0 0',
-    border: 'solid 1px black',
+    border: `solid 1px ${theme.palette.lapis[10]}`,
     borderRadius: '50px',
-    minWidth: '100px',
     padding: '4px 12px',
-    color: 'black',
+    color: theme.palette.lapis[100],
+    fontWeight: "700", 
     '&:not(:first-of-type)': {
       borderRadius: '50px',
-      border: 'solid 1px black',
+      backgroundColor: theme.palette.lapis[10],
     },
     '&:first-of-type': {
       borderRadius: '50px',
@@ -19,7 +19,7 @@ export const HomeToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     '&.Mui-selected': {
       border: 0,
       color: 'white',
-      backgroundColor: '#3DCAD3',
+      backgroundColor: theme.palette.lapis[100],
     },
   },
 }));

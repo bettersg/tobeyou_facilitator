@@ -1,6 +1,6 @@
 import React from "react"; 
 import { StyledSelect } from "./StyledSelect";
-import { Typography, Box, MenuItem } from '@mui/material';
+import { Typography, Box, MenuItem, InputLabel } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export const GeneralSelect = ({label, children, ...props}) => {

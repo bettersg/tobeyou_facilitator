@@ -10,6 +10,7 @@ export const StyledTopbar = styled(Box)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex: 1000, 
 }));
 
 export const NavbarText = styled(Link)(({ theme }) => ({
