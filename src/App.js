@@ -54,6 +54,7 @@ const theme = createTheme({
       100: "#172153", 
     }, 
     aqua: {
+      1: "#19A3AD", 
       100: "#3DCAD3", 
     }, 
     lapis: {
@@ -63,6 +64,10 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(","),
+    h3: {
+      fontWeight: 700,
+      fontSize: 28,
+    },
     h4: {
       fontWeight: 700,
       fontSize: 20,
