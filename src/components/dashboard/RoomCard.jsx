@@ -1,9 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
-import { Edit, QrCode, Download } from '@mui/icons-material';
+import { EditOutlined , QrCode, FileDownloadOutlined } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, Grid, Typography } from '@mui/material';
+import { FlexBoxSpaceBetween, FlexBoxCenter, FlexBoxCenterColumn } from '../styled/general';
 import { REFLECTION_ID_MAP } from '../../models/storyMap';
+import { StyledRoomCardTag } from '../components/RoomCardTag/StyledRoomCardTag';
+import { palette } from '@mui/system';
 
 const RoomCard = (props) => {
   const { room, handleDelete, toggleIsActive } = props;
@@ -16,9 +19,8 @@ const RoomCard = (props) => {
   return (
     <Card
       variant='outlined'
-      style={{
-        borderRadius: 10,
-        marginTop: 10,
+      sx={{
+        borderRadius: 4,
         height: '100%',
         cursor: 'pointer',
       }}
@@ -26,35 +28,38 @@ const RoomCard = (props) => {
         navigate(`/room/${room.id}/reflectionId/${firstReflectionId}`)
       }
     >
-      <CardContent
-        style={{
-          padding: 15,
-          backgroundColor: room.isActive ? 'white' : 'lightgrey',
-        }}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={7}>
-            <Chip
+        
+
+        <Grid container sx={{padding: "36px 40px", height: "100%" }} spacing={1}>
+          <FlexBoxSpaceBetween sx={{width: "100%", mb: "8px", height: "28px"}}>
+            <StyledRoomCardTag
               label={'TODO: upcoming/archived'}
               variant='outlined'
               size='small'
-              style={{ textTransform: 'uppercase' }}
             />
-            <Typography variant='h6' style={{ textTransform: 'uppercase' }}>
-              {dateString}
-            </Typography>
-            <Typography variant='h4'>{room.name}</Typography>
-            <Typography variant='h6'>Class Code: {room.code}</Typography>
-            <Typography variant='h6' style={{ textTransform: 'uppercase' }}>
-              {room.organisation}
-            </Typography>
+            <FlexBoxCenter>
+              <EditOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
+              <QrCode sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
+              <FileDownloadOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
+            </FlexBoxCenter>
+          </FlexBoxSpaceBetween>
+          <Grid item xs={7} sx={{paddingRight: "8px", height: "100%"}} direction="column" display="flex" justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5" sx={{ textTransform: 'uppercase', fontSize: "18px", opacity: 0.5, mb: "8px" }}>
+                  {dateString}
+                </Typography>
+                <Typography variant='h3' sx={{ mb: "8px"}}>{room.name}</Typography>
+                <Typography>Class Code: {room.code}</Typography>
+
+              </Grid>
+              <Grid>
+                <Typography variant='body2' sx={{ textTransform: 'uppercase', marginBottom: "36px" }}>
+                  {room.organisation}
+                </Typography>
+              </Grid>
           </Grid>
           <Grid item xs={5}>
-            <Box>
-              <Edit />
-              <QrCode />
-              <Download />
-            </Box>
+           
             {room.reflectionIds.map((reflectionId) => {
               const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
               return (
@@ -87,7 +92,6 @@ const RoomCard = (props) => {
             </Typography>
           </Grid>
         </Grid>
-      </CardContent>
     </Card>
   );
 };
