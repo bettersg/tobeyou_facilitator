@@ -5,7 +5,7 @@ import { EditOutlined , QrCode, FileDownloadOutlined } from '@mui/icons-material
 import { Box, Card, CardContent, Chip, Grid, Typography } from '@mui/material';
 import { FlexBoxSpaceBetween, FlexBoxCenter, FlexBoxCenterColumn } from '../styled/general';
 import { REFLECTION_ID_MAP } from '../../models/storyMap';
-import { StyledRoomCardTag } from '../components/RoomCardTag/StyledRoomCardTag';
+import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
 import { palette } from '@mui/system';
 
 const RoomCard = (props) => {

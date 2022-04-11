@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import { ToggleButton, Typography, Box, Grid, Paper, MenuItem } from "@mui/material";
-import { useAuth } from "../../contexts/AuthContext";
-import { deleteDbRoom, getDbRooms, updateDbRoom } from "../../models/roomModel";
-import RoomCard from "./RoomCard";
-import NewRoomModal from "./NewRoomModal";
+import { useAuth } from "../contexts/AuthContext";
+import { deleteDbRoom, getDbRooms, updateDbRoom } from "../models/roomModel";
+import RoomCard from "../components/dashboard/RoomCard";
+import NewRoomModal from "../components/dashboard/NewRoomModal";
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter
-} from "../styled/general";
+} from "../components/styled/general";
 import { GeneralButton } from "../components/GeneralButton/GeneralButton";
 import { HomeToggleButtonGroup } from "../components/HomeToggleButtonGroup/HomeToggleButtonGroup";
 import { GeneralSelect } from "../components/GeneralSelect/GeneralSelect";

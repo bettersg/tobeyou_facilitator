@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Box, Typography } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import {
   LoginButton,
   LoginFormSection,
   LoginBackground,
-} from "../styled/auth";
+} from "../components/styled/auth";
 import {
   GeneralTextField
 } from "../components/GeneralTextField/GeneralTextField"
