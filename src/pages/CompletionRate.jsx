@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useAuth } from '../../contexts/AuthContext';
-import { getDbRoom } from '../../models/roomModel';
-import { getDbUser } from '../../models/userModel';
-import REFLECTION_ID_MAP from '../../models/reflectionIdMap';
+import { useAuth } from '../contexts/AuthContext';
+import { getDbRoom } from '../models/roomModel';
+import { getDbUser } from '../models/userModel';
+import REFLECTION_ID_MAP from '../models/reflectionIdMap';
 
 const CompletionRate = () => {
   const { roomId, reflectionId } = useParams();

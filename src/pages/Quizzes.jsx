@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useAuth } from '../../contexts/AuthContext';
-import { getDbRoom } from '../../models/roomModel';
-import { getDbQuizAnswers } from '../../models/quizAnswerModel';
-import { MINI_GAME_MAP } from '../../models/miniGameMap';
+import { useAuth } from '../contexts/AuthContext';
+import { getDbRoom } from '../models/roomModel';
+import { getDbQuizAnswers } from '../models/quizAnswerModel';
+import { MINI_GAME_MAP } from '../models/miniGameMap';
 
 const Quizzes = () => {
   let { roomId, reflectionId } = useParams();

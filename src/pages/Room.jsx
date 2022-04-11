@@ -6,9 +6,9 @@ import {
 } from '@mui/icons-material';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
-import { useAuth } from '../../contexts/AuthContext';
-import { getDbRoom } from '../../models/roomModel';
-import { REFLECTION_ID_MAP } from '../../models/storyMap';
+import { useAuth } from '../contexts/AuthContext';
+import { getDbRoom } from '../models/roomModel';
+import { REFLECTION_ID_MAP } from '../models/storyMap';
 
 const Room = () => {
   let { roomId, reflectionId } = useParams();

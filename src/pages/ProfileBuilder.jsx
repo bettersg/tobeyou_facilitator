@@ -6,12 +6,12 @@ import {
   LoginFormSection,
   NadiaPic,
   NameLabel,
-} from '../styled/auth';
-import { FlexBox, FlexBoxCenterColumn } from '../styled/general';
+} from '../components/styled/auth';
+import { FlexBox, FlexBoxCenterColumn } from '../components/styled/general';
 import {GeneralButton} from "../components/GeneralButton/GeneralButton"
 import {GeneralSelect} from "../components/GeneralSelect/GeneralSelect"
-import { useAuth } from '../../contexts/AuthContext';
-import { getDbUser, updateDbUser } from '../../models/userModel';
+import { useAuth } from '../contexts/AuthContext';
+import { getDbUser, updateDbUser } from '../models/userModel';
 import checkmark from './assets/checkmark.svg';
 
 const ProfileBuilder = () => {

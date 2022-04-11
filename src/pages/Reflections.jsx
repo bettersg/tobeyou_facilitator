@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { Modal, Typography } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
-import { getDbRoom } from '../../models/roomModel';
-import { getDbReflectionResponses } from '../../models/reflectionResponseModel';
-import { ModalArrowBox, ModalContentBox, ModalBox, ReflectionCard } from '../styled/Dashboard/reflections';
+import { useAuth } from '../contexts/AuthContext';
+import { getDbRoom } from '../models/roomModel';
+import { getDbReflectionResponses } from '../models/reflectionResponseModel';
+import { ModalArrowBox, ModalContentBox, ModalBox, ReflectionCard } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
 
 const ReflectionModal = (props) => {

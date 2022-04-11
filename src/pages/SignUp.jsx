@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Box, Typography } from '@mui/material';
-import { useAuth } from '../../contexts/AuthContext';
-import { createDbUserIfNotExists } from '../../models/userModel';
+import { useAuth } from '../contexts/AuthContext';
+import { createDbUserIfNotExists } from '../models/userModel';
 import { Link } from 'react-router-dom';
-import { LoginTextfield, LoginButton, LoginFormSection, LoginBackground } from '../styled/auth';
+import { LoginTextfield, LoginButton, LoginFormSection, LoginBackground } from '../components/styled/auth';
 
 const SignUp = () => {
   const { signUp, login } = useAuth();
