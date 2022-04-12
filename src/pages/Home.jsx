@@ -3,7 +3,7 @@ import moment from "moment";
 import { ToggleButton, Typography, Box, Grid, Paper, MenuItem } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import { deleteDbRoom, getDbRooms, updateDbRoom } from "../models/roomModel";
-import RoomCard from "../components/dashboard/RoomCard";
+import RoomCard from "../components/RoomCard/RoomCard";
 import NewRoomModal from "../components/dashboard/NewRoomModal";
 import {
   FlexBoxSpaceBetween,
