@@ -2,17 +2,17 @@ import React from 'react';
 import { Outlet, BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/AuthContext';
-import DashboardLayout from './pages/DashboardLayout';
-import Home from './pages/Home';
-import Room from './pages/Room';
-import CompletionRate from './pages/CompletionRate';
-import Reflections from './pages/Reflections';
-import Quizzes from './pages/Quizzes';
-import ProfileBuilder from './pages/ProfileBuilder';
-import AuthLayout from './pages/AuthLayout';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import RequireAuth from './pages/RequireAuth';
+import DashboardLayout from './page/DashboardLayout';
+import Home from './page/Home';
+import Room from './page/Room';
+import CompletionRate from './page/CompletionRate';
+import Reflections from './page/Reflections';
+import Quizzes from './page/Quizzes';
+import ProfileBuilder from './page/ProfileBuilder';
+import AuthLayout from './page/AuthLayout';
+import Login from './page/Login';
+import SignUp from './page/SignUp';
+import RequireAuth from './page/RequireAuth';
 
 import {
   createTheme,
