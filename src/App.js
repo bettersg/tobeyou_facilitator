@@ -60,6 +60,9 @@ const theme = createTheme({
     lapis: {
       10: "#F0F1FC", 
       100: "#6C70DD", 
+    }, 
+    chicky: {
+      100: '#FFE55E', 
     }
   },
   typography: {
