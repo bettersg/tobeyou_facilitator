@@ -99,9 +99,9 @@ const Reflections = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
-
+    const roomCode = dbRoom.code;
     const dbReflectionResponses = await getDbReflectionResponses(
-      roomId,
+      roomCode,
       reflectionId,
       true
     );

@@ -90,8 +90,8 @@ const Quizzes = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
-
-    const dbQuizAnswers = await getDbQuizAnswers(roomId, reflectionId); // reflectionId serves as the gameId
+    const roomCode = dbRoom.code;
+    const dbQuizAnswers = await getDbQuizAnswers(roomCode, reflectionId); // reflectionId serves as the gameId
     setQuizAnswers(dbQuizAnswers);
   }
 
