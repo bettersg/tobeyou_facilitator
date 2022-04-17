@@ -15,7 +15,7 @@ const AddClassesBox = styled(FlexBoxCenter)(({ theme }) => ({
     border: "2px dashed " + theme.palette.midnight[20], 
     borderRadius: "12px", 
     minHeight: "152px", 
-    width: "100%", 
+    width: "152px", 
     color: theme.palette.midnight[60]
 }));
 

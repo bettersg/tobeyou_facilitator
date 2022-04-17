@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
-import { EditOutlined , QrCode, FileDownloadOutlined, ArchiveOutlined } from '@mui/icons-material';
+import { EditOutlined , QrCode, FileDownloadOutlined, ArchiveOutlined, DeleteOutlineOutlined } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, Grid, Typography, AvatarGroup } from '@mui/material';
 import { FlexBoxSpaceBetween, FlexBoxCenter, FlexBoxCenterColumn } from '../styled/general';
 import { REFLECTION_ID_MAP } from '../../models/storyMap';
@@ -9,9 +9,10 @@ import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
 import { palette } from '@mui/system';
 import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
 import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGroup';
+import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 
 const RoomCard = (props) => {
-  const { room, handleDelete, toggleIsActive } = props;
+  const { room, handleDelete, toggleIsActive, roomStatus } = props;
   const navigate = useNavigate();
   const firstReflectionId = room.reflectionIds[0];
 
@@ -32,16 +33,29 @@ const RoomCard = (props) => {
     >
         <Grid container sx={{padding: "36px 40px", height: "100%" }} spacing={1}>
           <FlexBoxSpaceBetween sx={{width: "100%", height: "28px"}}>
-            <StyledRoomCardTag
-              label={'TODO: upcoming/archived'}
+            <RoomCardTag
+              label={!roomStatus?  "archived" : isUpcoming ? "upcoming" : "active" }
               variant='outlined'
+              status={roomStatus}
               size='small'
             />
             <FlexBoxCenter>
-              <ArchiveOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
+              <DeleteOutlineOutlined 
+                sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}} 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete();
+                }}
+              />
               <EditOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
               <QrCode sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
-              <FileDownloadOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
+              <ArchiveOutlined 
+                sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleIsActive();
+                }}
+              />
             </FlexBoxCenter>
           </FlexBoxSpaceBetween>
           <Grid item xs={12}>
@@ -74,28 +88,6 @@ const RoomCard = (props) => {
                 </Typography>
               );
             })} */}
-            <Typography>
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleIsActive();
-                }}
-              >
-                Toggle
-              </span>
-            </Typography>
-            <Typography>
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete();
-                }}
-              >
-                Delete
-              </span>
-            </Typography>
           </Grid>
         </Grid>
     </Card>

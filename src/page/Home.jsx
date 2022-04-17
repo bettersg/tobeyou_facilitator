@@ -7,7 +7,8 @@ import RoomCard from "../components/RoomCard/RoomCard";
 import NewRoomModal from "../components/dashboard/NewRoomModal";
 import {
   FlexBoxSpaceBetween,
-  FlexBoxCenter
+  FlexBoxCenter, 
+  FlexBoxCenterColumnAlign, 
 } from "../components/styled/general";
 import { GeneralButton } from "../components/GeneralButton/GeneralButton";
 import { HomeToggleButtonGroup } from "../components/HomeToggleButtonGroup/HomeToggleButtonGroup";
@@ -20,11 +21,6 @@ const Home = () => {
   const [isNewRoomModalOpen, setIsNewRoomModalOpen] = useState(false);
 
   // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
-  // const filterOptions = 
-  //   { 
-  //     all: "All", 
-  //     upcoming: "Upcoming"
-  //   }
   
 
   // const handleChange = (event) => {
@@ -62,6 +58,7 @@ const Home = () => {
       <GeneralButton
         variant='special'
         onClick={() => setIsNewRoomModalOpen(true)}
+        sx={{maxWidth: "360px"}}
       >
         Add a class
       </GeneralButton>
@@ -73,11 +70,11 @@ const Home = () => {
       return '';
     } else if (rooms.length === 0) {
       return (
-        <Box>
-          <Typography variant="h5">No classes yet</Typography>
-          <Typography>Get started by starting a class!</Typography>
-          <AddClassButton />
-        </Box>
+        <FlexBoxCenterColumnAlign mt={"200px"}>
+          <Typography variant="h4" mb={2}>No classes yet</Typography>
+          <Typography mb={2}>Get started by starting a class!</Typography>
+          <AddClassButton/>
+        </FlexBoxCenterColumnAlign>
       );
     } else {
       const filteredRooms = rooms.filter((room) => {
@@ -98,6 +95,7 @@ const Home = () => {
                 room={room}
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
                 handleDelete={() => handleDeleteRoom(room.id)}
+                roomStatus={room.isActive}
               />
             </Grid>
           ))}
