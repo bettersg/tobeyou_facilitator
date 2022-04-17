@@ -50,6 +50,8 @@ const theme = createTheme({
     },
     secondary: blue,
     midnight: {
+      10: "#E8E9EE", 
+      20: "#D1D3DD", 
       60: "#747A98",
       100: "#172153", 
     }, 

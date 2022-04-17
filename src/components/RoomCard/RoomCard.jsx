@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
-import { EditOutlined , QrCode, FileDownloadOutlined } from '@mui/icons-material';
+import { EditOutlined , QrCode, FileDownloadOutlined, ArchiveOutlined } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, Grid, Typography, AvatarGroup } from '@mui/material';
 import { FlexBoxSpaceBetween, FlexBoxCenter, FlexBoxCenterColumn } from '../styled/general';
 import { REFLECTION_ID_MAP } from '../../models/storyMap';
@@ -38,6 +38,7 @@ const RoomCard = (props) => {
               size='small'
             />
             <FlexBoxCenter>
+              <ArchiveOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
               <EditOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
               <QrCode sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
               <FileDownloadOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
@@ -64,7 +65,7 @@ const RoomCard = (props) => {
           {/* right side */}
           <Grid item xs={5}>
 
-            <CharacterAvatarGroup data={room.reflectionIds}/>
+            <CharacterAvatarGroup data={room.reflectionIds} type="roomCard" />
             {/* {room.reflectionIds.map((reflectionId) => {
               const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
               return (
