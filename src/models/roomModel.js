@@ -1,5 +1,9 @@
 import { firestore } from '../firebase';
 
+/**
+ * Creates room if it does not exist, i.e. no duplicate `code` field.
+ * Returns the `id` of the created room.
+ */
 export const createDbRoomIfNotExists = async (obj) => {
   // TODO: perform validation on room
   try {
@@ -9,11 +13,12 @@ export const createDbRoomIfNotExists = async (obj) => {
       .where('code', '==', obj.code)
       .get();
     if (existingRooms.docs.length > 0) {
-      throw new Error('The room with the given code already exists.');
+      throw new Error(
+        'The room with the given code already exists. Please try again!'
+      );
     }
     const { id } = await firestore.collection('rooms').add(obj);
-    const room = await firestore.collection('rooms').doc(id).get();
-    return { id, ...room.data() };
+    return id;
   } catch (err) {
     throw new Error(`Error at createDbRoomIfNotExists: ${err}`);
   }
@@ -69,7 +74,8 @@ export const deleteDbRoom = async (id) => {
 };
 
 /**
- * Updates an existing room with a new room.
+ * Updates an existing room by its ID. (Does not overwrite document)
+ * Assumes that the ID field is already in the object.
  */
 export const updateDbRoom = async (obj) => {
   try {
