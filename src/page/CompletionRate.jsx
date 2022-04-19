@@ -6,7 +6,8 @@ import { getDbUser } from '../models/userModel';
 import REFLECTION_ID_MAP from '../models/reflectionIdMap';
 
 const CompletionRate = () => {
-  const { roomId, reflectionId } = useParams();
+  let { roomId, reflectionId } = useParams();
+  reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -24,7 +25,11 @@ const CompletionRate = () => {
     }
 
     const dbRoom = await getDbRoom(roomId);
-    if (!dbRoom || !dbRoom.facilitatorIds.includes(currentUser.id)) {
+    if (
+      !dbRoom ||
+      !dbRoom.facilitatorIds.includes(currentUser.id) ||
+      !dbRoom.reflectionIds.includes(reflectionId)
+    ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
 

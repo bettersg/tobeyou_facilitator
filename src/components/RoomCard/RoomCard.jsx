@@ -7,29 +7,20 @@ import {
   FileDownloadOutlined,
 } from '@mui/icons-material';
 import {
-  Box,
   Card,
-  CardContent,
-  Chip,
   Grid,
   Typography,
-  AvatarGroup,
 } from '@mui/material';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
-  FlexBoxCenterColumn,
 } from '../styled/general';
-import { REFLECTION_ID_MAP } from '../../models/storyMap';
 import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
-import { palette } from '@mui/system';
-import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
 import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGroup';
 
 const RoomCard = (props) => {
   const { room, handleDelete, handleEdit, toggleIsActive } = props;
   const navigate = useNavigate();
-  const firstReflectionId = room.reflectionIds[0];
 
   const isUpcoming = moment(room.date) - moment() > 0;
   const dateString = moment(room.date).format('DD MMM YYYY');
@@ -42,9 +33,7 @@ const RoomCard = (props) => {
         height: '100%',
         cursor: 'pointer',
       }}
-      onClick={() =>
-        navigate(`/room/${room.id}/reflectionId/${firstReflectionId}`)
-      }
+      onClick={() => navigate(`/room/${room.id}`)}
     >
       <Grid container sx={{ padding: '36px 40px', height: '100%' }} spacing={1}>
         <FlexBoxSpaceBetween sx={{ width: '100%', height: '28px' }}>

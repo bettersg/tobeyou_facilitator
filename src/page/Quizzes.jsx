@@ -12,7 +12,9 @@ const Quizzes = () => {
   const navigate = useNavigate();
 
   const [quizAnswers, setQuizAnswers] = useState(null);
-  const miniGameQuestions = MINI_GAME_MAP.find(game => game.game_id === reflectionId).questions;
+  const miniGameQuestions = MINI_GAME_MAP.find(
+    (game) => game.game_id === reflectionId
+  ).questions;
   const [miniGameResults, setMiniGameResults] = useState(miniGameQuestions);
 
   // Returns the count of answers as an object, indexed by questionId then answerId
@@ -44,41 +46,52 @@ const Quizzes = () => {
       for (let answerId in answerCounts[questionId]) {
         questionId = parseInt(questionId);
         answerId = parseInt(answerId);
-        const result = results.find(x => x.question_id === questionId);
+        const result = results.find((x) => x.question_id === questionId);
         const count = answerCounts[questionId][answerId];
-        result.answers.find(answer => answer.answer_id === answerId).count += count;
+        result.answers.find((answer) => answer.answer_id === answerId).count +=
+          count;
       }
     }
     return results;
   }
 
-  const compileResults = useCallback(
-    () => {
-      if (quizAnswers === null) return;
-      const answers = quizAnswers.map(x => x.answers).flat();
-      const answerCounts = getAnswerCounts(answers);
-      const results = getMiniGameResults(answerCounts);
-      setMiniGameResults(results);
-    },
-    [quizAnswers]
-  );
+  const compileResults = useCallback(() => {
+    if (quizAnswers === null) return;
+    const answers = quizAnswers.map((x) => x.answers).flat();
+    const answerCounts = getAnswerCounts(answers);
+    const results = getMiniGameResults(answerCounts);
+    setMiniGameResults(results);
+  }, [quizAnswers]);
 
   function buildResultCard(question) {
     return (
       <div>
         <p>{question.question}</p>
-        <ul>{question.answers.map((answer, idx) => <li key={idx}>{answer.title} [count = {answer.count}] {answer.answer_id === question.correct_answer_id ? '[correct]' : null}</li>)}</ul>
+        <ul>
+          {question.answers.map((answer, idx) => (
+            <li key={idx}>
+              {answer.title} [count = {answer.count}]{' '}
+              {answer.answer_id === question.correct_answer_id
+                ? '[correct]'
+                : null}
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
 
   async function getData() {
     const dbRoom = await getDbRoom(roomId);
-    if (!dbRoom || !dbRoom.facilitatorIds.includes(currentUser.id)) {
-      navigate('/');  // redirect if the room does not exist, or facilitator is unauthorised to access it
+    if (
+      !dbRoom ||
+      !dbRoom.facilitatorIds.includes(currentUser.id) ||
+      !dbRoom.reflectionIds.includes(reflectionId)
+    ) {
+      navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
 
-    const dbQuizAnswers = await getDbQuizAnswers(roomId, reflectionId);  // reflectionId serves as the gameId
+    const dbQuizAnswers = await getDbQuizAnswers(roomId, reflectionId); // reflectionId serves as the gameId
     setQuizAnswers(dbQuizAnswers);
   }
 
@@ -86,9 +99,7 @@ const Quizzes = () => {
   useEffect(() => compileResults(), [quizAnswers]);
 
   return (
-    <div>
-      { miniGameResults ? miniGameResults.map(buildResultCard) : null }
-    </div>
+    <div>{miniGameResults ? miniGameResults.map(buildResultCard) : null}</div>
   );
 };
 
