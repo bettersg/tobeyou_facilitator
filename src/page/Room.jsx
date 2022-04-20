@@ -3,6 +3,7 @@ import { Edit, KeyboardArrowRight } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import { getDbRoom } from '../models/roomModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 
@@ -12,6 +13,9 @@ const Room = () => {
   const navigate = useNavigate();
 
   const [room, setRoom] = useState(null);
+  const [completionRateNumerators, setCompletionRateNumerators] = useState({});
+  const [completionRateDenominator, setCompletionRateDenominator] =
+    useState(null);
 
   async function getRoom() {
     const dbRoom = await getDbRoom(roomId);
@@ -19,6 +23,31 @@ const Room = () => {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
     setRoom(dbRoom);
+
+    // Get completion rate statistics (numerator and denominator)
+    const roomCode = dbRoom.code;
+    const allReflectionResponses = await getDbReflectionResponses(
+      roomCode,
+      null,
+      true
+    );
+    const numerators = {};
+    for (const reflectionId of dbRoom.reflectionIds) {
+      const reflectionResponses = allReflectionResponses.filter(
+        (rr) => rr.reflectionId === reflectionId
+      );
+      const userIdsWithReflection = reflectionResponses.map((rr) => rr.userId);
+      const userIdsInRoomWithReflection = userIdsWithReflection.filter(
+        (userId) => dbRoom.participantIds.includes(userId)
+      );
+      const numUniqueUserIdsInRoomWithReflection = [
+        ...new Set(userIdsInRoomWithReflection),
+      ].length;
+      numerators[reflectionId] = numUniqueUserIdsInRoomWithReflection;
+    }
+    setCompletionRateNumerators(numerators);
+    const denominator = dbRoom.participantIds.length;
+    setCompletionRateDenominator(denominator);
   }
 
   useEffect(() => getRoom(), []);
@@ -41,15 +70,9 @@ const Room = () => {
             <Typography>
               {character} / Chapter {chapter}
             </Typography>
-            <Typography
-              style={{ cursor: 'pointer' }}
-              onClick={() =>
-                navigate(
-                  `/room/${room.id}/reflectionId/${reflectionId}/completionRate`
-                )
-              }
-            >
-              [TODO] X/Y students completed
+            <Typography>
+              {completionRateNumerators[reflectionId]}/
+              {completionRateDenominator} students completed
             </Typography>
             <Typography
               style={{ cursor: 'pointer' }}
