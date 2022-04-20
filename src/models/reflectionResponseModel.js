@@ -1,5 +1,10 @@
 import { firestore } from '../firebase';
 
+/**
+ * Gets reflection responses for a given room code.
+ * `reflectionId`: optional number for filtering for reflectionId
+ * `getOnlyReflections`: optional boolean for getting only verbatim (long-form) reflections
+ */
 export const getDbReflectionResponses = async (
   roomCode,
   reflectionId,
@@ -9,8 +14,10 @@ export const getDbReflectionResponses = async (
     reflectionId = parseInt(reflectionId);
     let query = firestore
       .collection('reflectionResponses')
-      .where('roomCode', '==', roomCode)
-      .where('reflectionId', '==', reflectionId);
+      .where('roomCode', '==', roomCode);
+    if (reflectionId) {
+      query = query.where('reflectionId', '==', reflectionId);
+    }
     if (getOnlyReflections) {
       query = query.where('questionId', '==', 3);
     }

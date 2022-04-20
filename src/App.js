@@ -5,7 +5,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import DashboardLayout from './page/DashboardLayout';
 import Home from './page/Home';
 import Room from './page/Room';
-import CompletionRate from './page/CompletionRate';
 import GameChoices from './page/GameChoices';
 import Reflections from './page/Reflections';
 import Quizzes from './page/Quizzes';
@@ -119,7 +118,6 @@ function App() {
                 <Route path='/room/:roomId/'>
                   <Route path='' element={<Room />} />
                   <Route path='reflectionId/:reflectionId'>
-                    <Route path='completionRate' element={<CompletionRate />} />
                     <Route path='gameChoices' element={<GameChoices />} />
                     <Route path='reflections' element={<Reflections />} />
                     <Route path='quizzes' element={<Quizzes />} />
