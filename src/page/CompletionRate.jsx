@@ -37,9 +37,6 @@ const CompletionRate = () => {
       dbRoom.participantIds.map((participantId) => getDbUser(participantId))
     );
     const completedParticipants = participants.filter(hasParticipantCompleted);
-    // TODO: remove these console.logs
-    console.log('IDs of participants who have completed the chapter: ');
-    console.log(completedParticipants.map((x) => x.id));
     const participantsCount = participants.length;
     const completionCount = completedParticipants.length;
     setCompletionRate(((completionCount / participantsCount) * 100).toFixed(0));

@@ -135,7 +135,7 @@ const Home = () => {
         }
         return true;
       });
-      // TODO: sort rooms by some order
+      filteredRooms.sort((x, y) => x.date - y.date);
       return (
         <Grid container spacing={2}>
           {filteredRooms.map((room) => (
