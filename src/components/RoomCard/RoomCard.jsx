@@ -6,20 +6,13 @@ import {
   QrCode,
   FileDownloadOutlined,
 } from '@mui/icons-material';
-import {
-  Card,
-  Grid,
-  Typography,
-} from '@mui/material';
-import {
-  FlexBoxSpaceBetween,
-  FlexBoxCenter,
-} from '../styled/general';
+import { Card, Grid, Typography } from '@mui/material';
+import { FlexBoxSpaceBetween, FlexBoxCenter } from '../styled/general';
 import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
 import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGroup';
 
 const RoomCard = (props) => {
-  const { room, handleDelete, handleEdit, toggleIsActive } = props;
+  const { room, handleSoftDelete, handleEdit, toggleIsActive } = props;
   const navigate = useNavigate();
 
   const isUpcoming = moment(room.date) - moment() > 0;
@@ -126,7 +119,7 @@ const RoomCard = (props) => {
               style={{ cursor: 'pointer' }}
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete();
+                handleSoftDelete();
               }}
             >
               Delete

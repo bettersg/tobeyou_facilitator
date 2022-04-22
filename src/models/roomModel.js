@@ -63,6 +63,17 @@ export const getDbRooms = async (facilitatorId) => {
 };
 
 /**
+ * Soft deletes the room with ID `id`.
+ */
+export const softDeleteDbRoom = async (id) => {
+  try {
+    await firestore.collection('rooms').doc(id).update({ isDeleted: true });
+  } catch (err) {
+    throw new Error(`Error at deleteDbRoom: ${err}`);
+  }
+};
+
+/**
  * Deletes the room with ID `id`.
  */
 export const deleteDbRoom = async (id) => {
