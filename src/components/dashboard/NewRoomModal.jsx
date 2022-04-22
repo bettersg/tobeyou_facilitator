@@ -37,6 +37,7 @@ const NewRoomModal = (props) => {
       facilitatorIds: [currentUser.id],
       participantIds: [],
       isActive: true,
+      isDeleted: false,
       date: moment(formData.date, 'YYYY-MM-DD').toDate(),
       createdAt: moment().toDate(),
       instructions: formData.instructions,
