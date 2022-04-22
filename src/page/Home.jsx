@@ -1,27 +1,43 @@
-import React, { useCallback, useEffect, useState } from "react";
-import moment from "moment";
-import { ToggleButton, Typography, Box, Grid, Paper, MenuItem } from "@mui/material";
-import { useAuth } from "../contexts/AuthContext";
-import { deleteDbRoom, getDbRooms, updateDbRoom } from "../models/roomModel";
-import RoomCard from "../components/RoomCard/RoomCard";
-import NewRoomModal from "../components/dashboard/NewRoomModal";
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import { ToggleButton, Typography, Box, Grid, Paper } from '@mui/material';
+import { useAuth } from '../contexts/AuthContext';
+import { deleteDbRoom, getDbRooms, updateDbRoom } from '../models/roomModel';
+import { getDbUser } from '../models/userModel';
+import RoomCard from '../components/RoomCard/RoomCard';
+import NewRoomModal from '../components/dashboard/NewRoomModal';
+import EditRoomModal from '../components/dashboard/EditRoomModal';
 import {
   FlexBoxSpaceBetween,
-  FlexBoxCenter, 
-  FlexBoxCenterColumnAlign, 
-} from "../components/styled/general";
-import { GeneralButton } from "../components/GeneralButton/GeneralButton";
-import { HomeToggleButtonGroup } from "../components/HomeToggleButtonGroup/HomeToggleButtonGroup";
-import { GeneralSelect } from "../components/GeneralSelect/GeneralSelect";
+  FlexBoxCenter,
+  FlexBoxCenterColumnAlign,
+} from '../components/styled/general';
+import { GeneralButton } from '../components/GeneralButton/GeneralButton';
+import { HomeToggleButtonGroup } from '../components/HomeToggleButtonGroup/HomeToggleButtonGroup';
+import { GeneralSelect } from '../components/GeneralSelect/GeneralSelect';
+
+const formDataTemplate = {
+  name: '',
+  organisation: '',
+  reflectionIds: [],
+  date: moment().format('YYYY-MM-DD'),
+  instructions: '',
+};
 
 const Home = () => {
   const { currentUser } = useAuth();
   const [rooms, setRooms] = useState(null);
   const [filters, setFilters] = useState(() => ['all']);
   const [isNewRoomModalOpen, setIsNewRoomModalOpen] = useState(false);
+  const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
+  const [newRoomFormData, setNewRoomFormData] = useState(formDataTemplate);
+  const [editRoomFormData, setEditRoomFormData] = useState(formDataTemplate);
+  // Used to reset the new room modal's form data after a room is created.
+  // Its organisation field will be updated to match user.organisation once it's loaded.
+  const [initialRoomFormData, setInitialRoomFormData] =
+    useState(formDataTemplate);
 
   // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
-  
 
   // const handleChange = (event) => {
   //   setRoomFilter({ [event.target.value]: filterOptions[event.target.value] });
@@ -30,6 +46,25 @@ const Home = () => {
   async function handleDeleteRoom(id) {
     await deleteDbRoom(id);
     setRooms(rooms.filter((room) => room.id !== id));
+  }
+
+  async function handleNewRoom() {
+    setNewRoomFormData(initialRoomFormData); // This is optional: wipes existing data when we re-open the new room modal
+    setIsNewRoomModalOpen(true);
+  }
+
+  async function handleEditRoom(id) {
+    const room = rooms.find((room) => room.id === id);
+    setEditRoomFormData({
+      name: room.name,
+      organisation: room.organisation,
+      reflectionIds: room.reflectionIds,
+      date: moment(room.date).format('YYYY-MM-DD'),
+      instructions: room.instructions,
+      // Also pass in ID into formData, necessary for editing the room
+      id: room.id,
+    });
+    setIsEditRoomModalOpen(true);
   }
 
   async function toggleIsActiveRoom(id) {
@@ -45,20 +80,34 @@ const Home = () => {
     setFilters(newFilters);
   }
 
-  const loadRooms = useCallback(async () => {
+  const loadRooms = async () => {
     const facilitatorId = currentUser.id;
     const rooms = await getDbRooms(facilitatorId);
     setRooms(rooms);
-  }, [currentUser]);
+  };
+
+  const loadUserOrganisation = async () => {
+    const dbUser = await getDbUser(currentUser.id);
+    // Set the new room's organisation to be user's organisation by default
+    setNewRoomFormData({
+      ...newRoomFormData,
+      organisation: dbUser.organisation,
+    });
+    setInitialRoomFormData({
+      ...initialRoomFormData,
+      organisation: dbUser.organisation,
+    });
+  };
 
   useEffect(loadRooms, []);
+  useEffect(loadUserOrganisation, []);
 
   const AddClassButton = () => {
     return (
       <GeneralButton
         variant='special'
-        onClick={() => setIsNewRoomModalOpen(true)}
-        sx={{maxWidth: "360px"}}
+        onClick={handleNewRoom}
+        sx={{ maxWidth: '360px' }}
       >
         Add a class
       </GeneralButton>
@@ -70,10 +119,12 @@ const Home = () => {
       return '';
     } else if (rooms.length === 0) {
       return (
-        <FlexBoxCenterColumnAlign mt={"200px"}>
-          <Typography variant="h4" mb={2}>No classes yet</Typography>
+        <FlexBoxCenterColumnAlign mt={'200px'}>
+          <Typography variant='h4' mb={2}>
+            No classes yet
+          </Typography>
           <Typography mb={2}>Get started by starting a class!</Typography>
-          <AddClassButton/>
+          <AddClassButton />
         </FlexBoxCenterColumnAlign>
       );
     } else {
@@ -87,6 +138,7 @@ const Home = () => {
         }
         return true;
       });
+      filteredRooms.sort((x, y) => x.date - y.date);
       return (
         <Grid container spacing={2}>
           {filteredRooms.map((room) => (
@@ -96,6 +148,7 @@ const Home = () => {
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
                 handleDelete={() => handleDeleteRoom(room.id)}
                 roomStatus={room.isActive}
+                handleEdit={() => handleEditRoom(room.id)}
               />
             </Grid>
           ))}
@@ -105,12 +158,14 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{height: "100%"}}>
-      <Paper sx={{position: "absolute", left: 0, right: 0, padding: "20px 68px"}}>
+    <Box sx={{ height: '100%' }}>
+      <Paper
+        sx={{ position: 'absolute', left: 0, right: 0, padding: '20px 68px' }}
+      >
         <FlexBoxSpaceBetween>
           <Box>
             <Typography variant='h4' sx={{ marginBottom: '12px' }}>
-            Your classes
+              Your classes
             </Typography>
             <FlexBoxCenter>
               <HomeToggleButtonGroup
@@ -133,7 +188,7 @@ const Home = () => {
                   ARCHIVED
                 </ToggleButton>
               </HomeToggleButtonGroup>
-                {/* <GeneralSelect
+              {/* <GeneralSelect
                   name="filter"
                   value={roomFilter.key}
                   onChange={handleChange}
@@ -151,17 +206,34 @@ const Home = () => {
           <AddClassButton />
         </FlexBoxSpaceBetween>
       </Paper>
-      <Box sx={{ padding: '68px', paddingTop: "140px", background: (theme) => theme.palette.lapis[10], height: "calc(100vh - 120px)" }}>
+      <Box
+        sx={{
+          padding: '68px',
+          paddingTop: '140px',
+          background: (theme) => theme.palette.lapis[10],
+          height: 'calc(100vh - 120px)',
+        }}
+      >
         <Box>
           <Rooms />
         </Box>
         <NewRoomModal
-          isNewRoomModalOpen={isNewRoomModalOpen}
-          setIsNewRoomModalOpen={setIsNewRoomModalOpen}
+          isModalOpen={isNewRoomModalOpen}
+          setIsModalOpen={setIsNewRoomModalOpen}
+          formData={newRoomFormData}
+          setFormData={setNewRoomFormData}
+          initialFormData={initialRoomFormData}
+          loadRooms={loadRooms}
+        />
+        <EditRoomModal
+          isModalOpen={isEditRoomModalOpen}
+          setIsModalOpen={setIsEditRoomModalOpen}
+          formData={editRoomFormData}
+          setFormData={setEditRoomFormData}
+          initialFormData={initialRoomFormData}
           loadRooms={loadRooms}
         />
       </Box>
-
     </Box>
   );
 };

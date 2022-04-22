@@ -1,111 +1,113 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Edit,
-  KeyboardArrowDown,
-  KeyboardArrowLeft,
-} from '@mui/icons-material';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Edit, KeyboardArrowRight } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
+import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import { getDbRoom } from '../models/roomModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 
 const Room = () => {
-  let { roomId, reflectionId } = useParams();
+  let { roomId } = useParams();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   const [room, setRoom] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  reflectionId = parseInt(reflectionId);
-  const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
+  const [completionRateNumerators, setCompletionRateNumerators] = useState({});
+  const [completionRateDenominator, setCompletionRateDenominator] =
+    useState(null);
 
   async function getRoom() {
     const dbRoom = await getDbRoom(roomId);
-    if (
-      !dbRoom ||
-      !dbRoom.facilitatorIds.includes(currentUser.id) ||
-      !dbRoom.reflectionIds.includes(reflectionId)
-    ) {
+    if (!dbRoom || !dbRoom.facilitatorIds.includes(currentUser.id)) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
     setRoom(dbRoom);
-  }
 
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  function handleClose() {
-    setAnchorEl(null);
-  }
-
-  function handleMenuItemClick(newReflectionId) {
-    handleClose();
-    navigate(`/room/${roomId}/reflectionId/${newReflectionId}`);
+    // Get completion rate statistics (numerator and denominator)
+    const roomCode = dbRoom.code;
+    const allReflectionResponses = await getDbReflectionResponses(
+      roomCode,
+      null,
+      true
+    );
+    const numerators = {};
+    for (const reflectionId of dbRoom.reflectionIds) {
+      const reflectionResponses = allReflectionResponses.filter(
+        (rr) => rr.reflectionId === reflectionId
+      );
+      const userIdsWithReflection = reflectionResponses.map((rr) => rr.userId);
+      const userIdsInRoomWithReflection = userIdsWithReflection.filter(
+        (userId) => dbRoom.participantIds.includes(userId)
+      );
+      const numUniqueUserIdsInRoomWithReflection = [
+        ...new Set(userIdsInRoomWithReflection),
+      ].length;
+      numerators[reflectionId] = numUniqueUserIdsInRoomWithReflection;
+    }
+    setCompletionRateNumerators(numerators);
+    const denominator = dbRoom.participantIds.length;
+    setCompletionRateDenominator(denominator);
   }
 
   useEffect(() => getRoom(), []);
 
   return (
     <div>
-      <h3>
-        <KeyboardArrowLeft onClick={() => navigate('/')} />{' '}
-        {room ? room.name : null} <Edit />
-      </h3>
       <h4>
-        {character} / Chapter {chapter}{' '}
-        <Button onClick={handleClick}>
-          <KeyboardArrowDown />
-        </Button>
+        <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
+          Your Classes
+        </span>
+        <KeyboardArrowRight />
+        {room?.name}
+        <Edit />
       </h4>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {room
-          ? Object.keys(REFLECTION_ID_MAP)
-              .filter((reflectionId) =>
-                room.reflectionIds.includes(parseInt(reflectionId))
-              )
-              .map((reflectionId) => {
-                const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
-                return (
-                  <MenuItem
-                    key={reflectionId}
-                    onClick={() => handleMenuItemClick(reflectionId)}
-                  >
-                    {character} / Chapter {chapter}
-                  </MenuItem>
-                );
-              })
-          : null}
-      </Menu>
-      <p
-        style={{ cursor: 'pointer' }}
-        onClick={() =>
-          navigate(
-            `/room/${roomId}/reflectionId/${reflectionId}/completionRate`
-          )
-        }
-      >
-        Completion Rate
-      </p>
-      <p
-        style={{ cursor: 'pointer' }}
-        onClick={() =>
-          navigate(`/room/${roomId}/reflectionId/${reflectionId}/reflections`)
-        }
-      >
-        Reflections
-      </p>
-      <p
-        style={{ cursor: 'pointer' }}
-        onClick={() =>
-          navigate(`/room/${roomId}/reflectionId/${reflectionId}/quizzes`)
-        }
-      >
-        Mini Game
-      </p>
+      <h3>Class Code: {room?.code}</h3>
+      {room?.reflectionIds.map((reflectionId) => {
+        const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
+        return (
+          <Box key={reflectionId}>
+            <Typography>
+              {character} / Chapter {chapter}
+            </Typography>
+            <Typography>
+              {completionRateNumerators[reflectionId]}/
+              {completionRateDenominator} students completed
+            </Typography>
+            <Typography
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                navigate(
+                  `/room/${room.id}/reflectionId/${reflectionId}/reflections`
+                )
+              }
+            >
+              View Reflections
+            </Typography>
+            <Typography
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                navigate(
+                  `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
+                )
+              }
+            >
+              Review Game Choices
+            </Typography>
+            <Typography
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                navigate(
+                  `/room/${room.id}/reflectionId/${reflectionId}/quizzes`
+                )
+              }
+            >
+              Review Mini Game
+            </Typography>
+            <br />
+          </Box>
+        );
+      })}
     </div>
   );
 };

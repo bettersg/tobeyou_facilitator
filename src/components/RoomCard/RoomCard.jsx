@@ -1,9 +1,27 @@
 import React from 'react';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
-import { EditOutlined , QrCode, FileDownloadOutlined, ArchiveOutlined, DeleteOutlineOutlined } from '@mui/icons-material';
-import { Box, Card, CardContent, Chip, Grid, Typography, AvatarGroup } from '@mui/material';
-import { FlexBoxSpaceBetween, FlexBoxCenter, FlexBoxCenterColumn } from '../styled/general';
+import {
+  EditOutlined,
+  QrCode,
+  FileDownloadOutlined,
+  ArchiveOutlined,
+  DeleteOutlineOutlined,
+} from '@mui/icons-material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Grid,
+  Typography,
+  AvatarGroup,
+} from '@mui/material';
+import {
+  FlexBoxSpaceBetween,
+  FlexBoxCenter,
+  FlexBoxCenterColumn,
+} from '../styled/general';
 import { REFLECTION_ID_MAP } from '../../models/storyMap';
 import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
 import { palette } from '@mui/system';
@@ -12,7 +30,7 @@ import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGro
 import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 
 const RoomCard = (props) => {
-  const { room, handleDelete, toggleIsActive, roomStatus } = props;
+  const { room, handleDelete, toggleIsActive, handleEdit, roomStatus } = props;
   const navigate = useNavigate();
   const firstReflectionId = room.reflectionIds[0];
 
@@ -31,56 +49,91 @@ const RoomCard = (props) => {
         navigate(`/room/${room.id}/reflectionId/${firstReflectionId}`)
       }
     >
-        <Grid container sx={{padding: "36px 40px", height: "100%" }} spacing={1}>
-          <FlexBoxSpaceBetween sx={{width: "100%", height: "28px"}}>
-            <RoomCardTag
-              label={!roomStatus?  "archived" : isUpcoming ? "upcoming" : "active" }
-              variant='outlined'
-              status={roomStatus}
-              size='small'
+      <Grid container sx={{ padding: '36px 40px', height: '100%' }} spacing={1}>
+        <FlexBoxSpaceBetween sx={{ width: '100%', height: '28px' }}>
+          <RoomCardTag
+            label={
+              !roomStatus ? 'archived' : isUpcoming ? 'upcoming' : 'active'
+            }
+            variant='outlined'
+            status={roomStatus}
+            size='small'
+          />
+          <FlexBoxCenter>
+            <DeleteOutlineOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
             />
-            <FlexBoxCenter>
-              <DeleteOutlineOutlined 
-                sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}} 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete();
-                }}
-              />
-              <EditOutlined sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
-              <QrCode sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}/>
-              <ArchiveOutlined 
-                sx={{color: (theme) => theme.palette.lapis[100], marginLeft: "4px"}}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleIsActive();
-                }}
-              />
-            </FlexBoxCenter>
-          </FlexBoxSpaceBetween>
-          <Grid item xs={12}>
-            <Typography variant="h6" sx={{ textTransform: 'uppercase', opacity: 0.5, fontSize: 14 }}>
-              {dateString}
+            <EditOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEdit();
+              }}
+            />
+            <QrCode
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginLeft: '4px',
+              }}
+            />
+            <ArchiveOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleIsActive();
+              }}
+            />
+          </FlexBoxCenter>
+        </FlexBoxSpaceBetween>
+        <Grid item xs={12}>
+          <Typography
+            variant='h6'
+            sx={{ textTransform: 'uppercase', opacity: 0.5, fontSize: 14 }}
+          >
+            {dateString}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={7}
+          sx={{ paddingRight: '8px', height: '100%' }}
+          direction='column'
+          display='flex'
+          justifyContent='space-between'
+        >
+          <Grid item>
+            <Typography variant='h4' sx={{ mb: '8px' }}>
+              {room.name}
+            </Typography>
+            <Typography>Class Code: {room.code}</Typography>
+          </Grid>
+          <Grid>
+            <Typography
+              variant='body2'
+              sx={{ textTransform: 'uppercase', marginBottom: '52px' }}
+            >
+              {room.organisation}
             </Typography>
           </Grid>
-          <Grid item xs={7} sx={{paddingRight: "8px", height: "100%"}} direction="column" display="flex" justifyContent="space-between">
-              <Grid item>
-                <Typography variant='h4' sx={{ mb: "8px"}}>{room.name}</Typography>
-                <Typography>Class Code: {room.code}</Typography>
+        </Grid>
 
-              </Grid>
-              <Grid>
-                <Typography variant='body2' sx={{ textTransform: 'uppercase', marginBottom: "52px" }}>
-                  {room.organisation}
-                </Typography>
-              </Grid>
-          </Grid>
-          
-          {/* right side */}
-          <Grid item xs={5}>
-
-            <CharacterAvatarGroup data={room.reflectionIds} type="roomCard" />
-            {/* {room.reflectionIds.map((reflectionId) => {
+        {/* right side */}
+        <Grid item xs={5}>
+          <CharacterAvatarGroup data={room.reflectionIds} type='roomCard' />
+          {/* {room.reflectionIds.map((reflectionId) => {
               const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
               return (
                 <Typography key={reflectionId}>
@@ -88,8 +141,8 @@ const RoomCard = (props) => {
                 </Typography>
               );
             })} */}
-          </Grid>
         </Grid>
+      </Grid>
     </Card>
   );
 };

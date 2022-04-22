@@ -5,7 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import DashboardLayout from './page/DashboardLayout';
 import Home from './page/Home';
 import Room from './page/Room';
-import CompletionRate from './page/CompletionRate';
+import GameChoices from './page/GameChoices';
 import Reflections from './page/Reflections';
 import Quizzes from './page/Quizzes';
 import ProfileBuilder from './page/ProfileBuilder';
@@ -26,24 +26,24 @@ const theme = createTheme({
     MuiButton: {
       variants: [
         {
-          props: { variant: "special" }, 
+          props: { variant: 'special' },
           style: {
-            backgroundColor: "#3DCAD3", 
-            backgroundImage:`url('/general/SpecialButton.png')`,  
-            color: "white", 
+            backgroundColor: '#3DCAD3',
+            backgroundImage: `url('/general/SpecialButton.png')`,
+            color: 'white',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
-            backgroundRepeat: "no-repeat", 
-            minWidth: "160px",
-            padding: "12px",  
-            "&:hover": {
-              backgroundColor: "#39A2A9",
-            }
-          }
-        }
-      ]
-    }
-  }, 
+            backgroundRepeat: 'no-repeat',
+            minWidth: '160px',
+            padding: '12px',
+            '&:hover': {
+              backgroundColor: '#39A2A9',
+            },
+          },
+        },
+      ],
+    },
+  },
   palette: {
     primary: {
       main: '#664EFC',
@@ -56,19 +56,19 @@ const theme = createTheme({
       100: "#172153", 
     }, 
     aqua: {
-      1: "#19A3AD", 
-      100: "#3DCAD3", 
-    }, 
+      1: '#19A3AD',
+      100: '#3DCAD3',
+    },
     lapis: {
-      10: "#F0F1FC", 
-      100: "#6C70DD", 
-    }, 
+      10: '#F0F1FC',
+      100: '#6C70DD',
+    },
     chicky: {
-      100: '#FFE55E', 
-    }
+      100: '#FFE55E',
+    },
   },
   typography: {
-    fontFamily: ['Inter', 'sans-serif'].join(","),
+    fontFamily: ['Inter', 'sans-serif'].join(','),
     h3: {
       fontWeight: 700,
       fontSize: 28,
@@ -117,11 +117,13 @@ function App() {
                 }
               >
                 <Route exact path='/' element={<Home />} />
-                <Route path='/room/:roomId/reflectionId/:reflectionId'>
+                <Route path='/room/:roomId/'>
                   <Route path='' element={<Room />} />
-                  <Route path='completionRate' element={<CompletionRate />} />
-                  <Route path='reflections' element={<Reflections />} />
-                  <Route path='quizzes' element={<Quizzes />} />
+                  <Route path='reflectionId/:reflectionId'>
+                    <Route path='gameChoices' element={<GameChoices />} />
+                    <Route path='reflections' element={<Reflections />} />
+                    <Route path='quizzes' element={<Quizzes />} />
+                  </Route>
                 </Route>
               </Route>
               <Route
