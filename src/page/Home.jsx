@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { ToggleButton, Typography, Box, Grid, Paper } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { deleteDbRoom, getDbRooms, updateDbRoom } from '../models/roomModel';
+import {
+  getDbRooms,
+  softDeleteDbRoom,
+  updateDbRoom,
+} from '../models/roomModel';
 import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
 import NewRoomModal from '../components/GeneralRoomModel/NewRoomModal';
@@ -43,8 +47,8 @@ const Home = () => {
   //   setRoomFilter({ [event.target.value]: filterOptions[event.target.value] });
   // };
 
-  async function handleDeleteRoom(id) {
-    await deleteDbRoom(id);
+  async function handleSoftDeleteRoom(id) {
+    await softDeleteDbRoom(id);
     setRooms(rooms.filter((room) => room.id !== id));
   }
 
@@ -128,16 +132,18 @@ const Home = () => {
         </FlexBoxCenterColumnAlign>
       );
     } else {
-      const filteredRooms = rooms.filter((room) => {
-        if (filters === 'upcoming') {
-          return moment(room.date) - moment() > 0;
-        } else if (filters === 'active') {
-          return room.isActive;
-        } else if (filters === 'archived') {
-          return !room.isActive;
-        }
-        return true;
-      });
+      const filteredRooms = rooms
+        .filter((room) => {
+          if (filters === 'upcoming') {
+            return moment(room.date) - moment() > 0;
+          } else if (filters === 'active') {
+            return room.isActive;
+          } else if (filters === 'archived') {
+            return !room.isActive;
+          }
+          return true;
+        })
+        .filter((room) => !room.isDeleted);
       filteredRooms.sort((x, y) => x.date - y.date);
       return (
         <Grid container spacing={2}>
@@ -146,7 +152,7 @@ const Home = () => {
               <RoomCard
                 room={room}
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
-                handleDelete={() => handleDeleteRoom(room.id)}
+                handleSoftDelete={() => handleSoftDeleteRoom(room.id)}
                 roomStatus={room.isActive}
                 handleEdit={() => handleEditRoom(room.id)}
               />

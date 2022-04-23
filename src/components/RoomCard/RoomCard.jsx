@@ -30,7 +30,7 @@ import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGro
 import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 
 const RoomCard = (props) => {
-  const { room, handleDelete, toggleIsActive, handleEdit, roomStatus } = props;
+  const { room, handleSoftDelete, toggleIsActive, handleEdit, roomStatus } = props;
   const navigate = useNavigate();
   const firstReflectionId = room.reflectionIds[0];
 
@@ -67,7 +67,7 @@ const RoomCard = (props) => {
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete();
+                handleSoftDelete();
               }}
             />
             <EditOutlined
