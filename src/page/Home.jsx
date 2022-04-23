@@ -5,8 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { deleteDbRoom, getDbRooms, updateDbRoom } from '../models/roomModel';
 import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
-import NewRoomModal from '../components/dashboard/NewRoomModal';
-import EditRoomModal from '../components/dashboard/EditRoomModal';
+import NewRoomModal from '../components/GeneralRoomModel/NewRoomModal';
+import EditRoomModal from '../components/GeneralRoomModel/EditRoomModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,

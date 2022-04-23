@@ -13,16 +13,31 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ContentCopy, MailOutline, WhatsApp } from '@mui/icons-material';
+import { ContentCopy, MailOutline, WhatsApp, Check } from '@mui/icons-material';
 import {
   ModalBox,
   ModalRightSide,
   ModalStepConnector,
-} from '../styled/Dashboard/generalRoomModal';
-import { FlexBoxCenterColumn } from '../styled/general';
+  StyledModalStepIcon
+} from './StyledRoomModalComponents';
+import { FlexBoxCenterColumn, FlexBoxCenterColumnAlign } from '../styled/general';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { CHARACTER_MAP } from '../../models/storyMap';
+
+function ModalStepIcon(props) {
+  const { active, completed, className } = props;
+
+  return (
+    <StyledModalStepIcon ownerState={{ completed, active }} className={className}>
+      {completed ? (
+        <Check className="ModalStepIcon-completedIcon" sx={{width: "20px", height: "20px"}}/>
+      ) : (
+        <Box sx={{fontSize:"12px", fontWeight: 700}}>{props.icon}</Box>
+      )}
+    </StyledModalStepIcon>
+  );
+}
 
 const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
   // TODO: refactor?
@@ -61,14 +76,14 @@ const ModalStepper = ({ steps, activeStep }) => {
   return (
     <Stepper
       activeStep={activeStep}
-      sx={{ position: 'absolute', bottom: 20, width: '10%' }}
+      sx={{width: "160px"}}
       connector={<ModalStepConnector />}
       alternativeLabel
     >
       {steps.map((_, index) => {
         return (
-          <Step key={index}>
-            <StepLabel />
+          <Step key={index+1}>
+            <StepLabel StepIconComponent={ModalStepIcon}></StepLabel>
           </Step>
         );
       })}
@@ -87,29 +102,29 @@ const Step0 = ({
   return (
     <form onSubmit={handleSubmit}>
       <Box>
-        <FlexBoxCenterColumn sx={{ p: 10 }}>
-          <Typography id='modal-modal-title' variant='h4' component='h2'>
+        <FlexBoxCenterColumnAlign>
+          <Typography id='modal-modal-title' variant='h4' component='h2' sx={{margin: "24px 0", textAlign: "center"}}>
             {title}
           </Typography>
-          <Typography variant='h6'>Organisation:</Typography>
           <GeneralTextField
             name='organisation'
+            label="Organisation:"
             variant='filled'
             defaultValue={formData.organisation}
             onChange={handleChange}
             disabled={isSubmitting}
           />
-          <Typography variant='h6'>Class:</Typography>
           <GeneralTextField
             name='name'
+            label="Class:"
             variant='filled'
             defaultValue={formData.name}
             onChange={handleChange}
             disabled={isSubmitting}
           />
-          <Typography variant='h6'>Date:</Typography>
           <GeneralTextField
             name='date'
+            label="Date:"
             variant='filled'
             type='date'
             defaultValue={formData.date}
@@ -124,7 +139,7 @@ const Step0 = ({
           >
             Next: Assign Chapters
           </GeneralButton>
-        </FlexBoxCenterColumn>
+        </FlexBoxCenterColumnAlign>
       </Box>
     </form>
   );
@@ -142,7 +157,7 @@ const Step1 = ({
     <form onSubmit={handleSubmit}>
       <Box>
         <FlexBoxCenterColumn>
-          <Typography id='modal-modal-title' variant='h4' component='h2'>
+          <Typography id='modal-modal-title' variant='h4' component='h2' sx={{margin: "24px 0", textAlign: "center"}}>
             Assign chapters
           </Typography>
           {Object.keys(CHARACTER_MAP).map((character) => {
@@ -171,22 +186,24 @@ const Step1 = ({
               </FormGroup>
             );
           })}
-          <GeneralButton
-            variant='contained'
-            onClick={handleNextStep}
-            disabled={isSubmitting}
-            style={{ marginTop: 10, width: '250px' }}
-          >
-            Next: Message to Participants
-          </GeneralButton>
-          <GeneralButton
-            variant='contained'
-            onClick={handleBackStep}
-            disabled={isSubmitting}
-            style={{ marginTop: 10, width: '250px' }}
-          >
-            Back
-          </GeneralButton>
+          <FlexBoxCenterColumnAlign>
+            <GeneralButton
+              variant='contained'
+              onClick={handleNextStep}
+              disabled={isSubmitting}
+              style={{ marginTop: 10, width: '250px' }}
+            >
+              Next: Message to Participants
+            </GeneralButton>
+            <GeneralButton
+              variant='contained'
+              onClick={handleBackStep}
+              disabled={isSubmitting}
+              style={{ marginTop: 10, width: '250px' }}
+            >
+              Back
+            </GeneralButton>
+          </FlexBoxCenterColumnAlign>
         </FlexBoxCenterColumn>
       </Box>
     </form>
@@ -362,10 +379,10 @@ const GeneralRoomModal = (props) => {
             handleCloseModal={handleCloseModal}
           />
         ) : (
-          <React.Fragment>
+          <FlexBoxCenterColumnAlign>
             <ModalStepper steps={steps} activeStep={activeStep} />
             {currentStep}
-          </React.Fragment>
+          </FlexBoxCenterColumnAlign>
         )}
       </ModalBox>
     </Modal>

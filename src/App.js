@@ -60,7 +60,9 @@ const theme = createTheme({
       100: '#3DCAD3',
     },
     lapis: {
+      0: "#664EFC", 
       10: '#F0F1FC',
+      20: "#E2E2F8",
       100: '#6C70DD',
     },
     chicky: {

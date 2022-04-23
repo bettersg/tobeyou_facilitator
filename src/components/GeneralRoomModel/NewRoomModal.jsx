@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { createDbRoomIfNotExists, getDbRoom } from '../../models/roomModel';
-import GeneralRoomModal from '../dashboard/GeneralRoomModal';
+import GeneralRoomModal from '../GeneralRoomModel/GeneralRoomModal';
 
 const NewRoomModal = (props) => {
   const {
