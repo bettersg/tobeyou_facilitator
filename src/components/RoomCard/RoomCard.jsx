@@ -12,7 +12,8 @@ import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
 import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGroup';
 
 const RoomCard = (props) => {
-  const { room, handleSoftDelete, handleEdit, toggleIsActive } = props;
+  const { room, handleSoftDelete, handleQrModal, handleEdit, toggleIsActive } =
+    props;
   const navigate = useNavigate();
 
   const isUpcoming = moment(room.date) - moment() > 0;
@@ -50,6 +51,10 @@ const RoomCard = (props) => {
               sx={{
                 color: (theme) => theme.palette.lapis[100],
                 marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleQrModal();
               }}
             />
             <FileDownloadOutlined

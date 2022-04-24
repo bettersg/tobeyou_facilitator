@@ -11,6 +11,7 @@ import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
 import NewRoomModal from '../components/dashboard/NewRoomModal';
 import EditRoomModal from '../components/dashboard/EditRoomModal';
+import QrModal from '../components/dashboard/QrModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
@@ -38,6 +39,9 @@ const Home = () => {
   // Its organisation field will be updated to match user.organisation once it's loaded.
   const [initialRoomFormData, setInitialRoomFormData] =
     useState(formDataTemplate);
+
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+  const [qrModalRoom, setQrModalRoom] = useState(null);
 
   // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
   // const filterOptions =
@@ -72,6 +76,12 @@ const Home = () => {
       id: room.id,
     });
     setIsEditRoomModalOpen(true);
+  }
+
+  async function handleQrModal(id) {
+    const room = rooms.find((room) => room.id === id);
+    setQrModalRoom(room);
+    setIsQrModalOpen(true);
   }
 
   async function toggleIsActiveRoom(id) {
@@ -150,6 +160,7 @@ const Home = () => {
                 room={room}
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
                 handleSoftDelete={() => handleSoftDeleteRoom(room.id)}
+                handleQrModal={() => handleQrModal(room.id)}
                 handleEdit={() => handleEditRoom(room.id)}
               />
             </Grid>
@@ -234,6 +245,11 @@ const Home = () => {
           setFormData={setEditRoomFormData}
           initialFormData={initialRoomFormData}
           loadRooms={loadRooms}
+        />
+        <QrModal
+          isModalOpen={isQrModalOpen}
+          setIsModalOpen={setIsQrModalOpen}
+          room={qrModalRoom}
         />
       </Box>
     </Box>

@@ -23,13 +23,9 @@ import { FlexBoxCenterColumn } from '../styled/general';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { CHARACTER_MAP } from '../../models/storyMap';
+import { getGameUrl } from '../../utils';
 
 const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
-  // TODO: refactor?
-  const getGameUrl = (code) => {
-    return `game.tobeyou.sg/room/${code}`;
-  };
-
   const gameUrl = getGameUrl(createdOrEditedRoom.code);
 
   return (
