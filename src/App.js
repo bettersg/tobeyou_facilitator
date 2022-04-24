@@ -75,6 +75,11 @@ const theme = createTheme({
     },
     grey: {
       0: "#F5F4FD",
+    }, 
+    lemongrass: {
+      dark1: "#8DC000",
+      dark2: "#4B7C24",
+      20: "#F5FBDE", 
     }
   },
   typography: {

@@ -9,8 +9,8 @@ import {
 } from '../models/roomModel';
 import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
-import NewRoomModal from '../components/GeneralRoomModel/NewRoomModal';
-import EditRoomModal from '../components/GeneralRoomModel/EditRoomModal';
+import NewRoomModal from '../components/GeneralRoomModal/NewRoomModal';
+import EditRoomModal from '../components/GeneralRoomModal/EditRoomModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,

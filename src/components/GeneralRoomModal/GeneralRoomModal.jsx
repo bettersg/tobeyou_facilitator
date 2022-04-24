@@ -13,8 +13,15 @@ import {
   TextField,
   Typography,
   Grid,
+  Alert,
 } from '@mui/material';
-import { ContentCopy, MailOutline, WhatsApp, Check } from '@mui/icons-material';
+import {
+  ContentCopy,
+  MailOutline,
+  WhatsApp,
+  Check,
+  CheckCircleOutline,
+} from '@mui/icons-material';
 import {
   ModalBox,
   ModalRightSide,
@@ -26,6 +33,7 @@ import {
 import {
   FlexBoxCenterColumn,
   FlexBoxCenterColumnAlign,
+  FlexBoxSpaceEvenly,
 } from '../styled/general';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
@@ -62,24 +70,81 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
 
   return (
     <React.Fragment>
-      <Typography variant='h4'>Class set up!</Typography>
-      <Typography>Share with your class</Typography>
-      <QRCode value={gameUrl} />
-      <Typography>
-        <Link href={'https://' + gameUrl}>{gameUrl}</Link>
-      </Typography>
-      <Typography>Share via:</Typography>
-      <WhatsApp />
-      <MailOutline />
-      <ContentCopy />
-      <GeneralButton variant='contained' onClick={handleCloseModal}>
-        Return to dashboard
-      </GeneralButton>
+      <ModalLeftSide>
+        <FlexBoxCenterColumnAlign
+          sx={{
+            backgroundColor: (theme) => theme.palette.lemongrass[20],
+            borderRadius: '16px',
+            width: '50%',
+            p: '24px',
+            mb: 3,
+          }}
+        >
+          <CheckCircleOutline
+            fontSize='large'
+            sx={{ color: (theme) => theme.palette.lemongrass.dark1 }}
+          />
+          <Typography
+            variant='h4'
+            sx={{ color: (theme) => theme.palette.lemongrass.dark2 }}
+          >
+            Class set up!
+          </Typography>
+        </FlexBoxCenterColumnAlign>
+
+        <Typography variant='h4' sx={{ mb: 2, fontWeight: 800 }}>
+          Share with your class
+        </Typography>
+        <QRCode size={128} value={gameUrl} />
+        <Typography m='12px 0 18px 0' variant={'h6'}>
+          <Link target='_blank' color='inherit' href={'https://' + gameUrl}>
+            {gameUrl}
+          </Link>
+        </Typography>
+        <Typography variant='body2' sx={{ mb: 1 }}>
+          Share via:
+        </Typography>
+        <FlexBoxSpaceEvenly sx={{ width: '40%', mb: 2 }}>
+          <WhatsApp
+            fontSize='large'
+            sx={{ color: (theme) => theme.palette.lapis[100] }}
+          />
+          <MailOutline
+            fontSize='large'
+            sx={{ color: (theme) => theme.palette.lapis[100] }}
+          />
+          <ContentCopy
+            fontSize='large'
+            sx={{ color: (theme) => theme.palette.lapis[100] }}
+          />
+        </FlexBoxSpaceEvenly>
+        <GeneralButton variant='contained' onClick={handleCloseModal}>
+          Return to dashboard
+        </GeneralButton>
+      </ModalLeftSide>
       <ModalRightSide>
-        <Typography variant='h4'>What's next?</Typography>
-        <Typography variant='h6'>Let's get you ready for class</Typography>
-        <Typography variant='h5'>Check out the Lesson Plan</Typography>
-        <Typography variant='h5'>Play the game</Typography>
+        <Typography variant='h3' sx={{ fontWeight: 900, mb: 1 }}>
+          What's next?
+        </Typography>
+        <Typography variant='body' sx={{ mb: 2 }}>
+          Let's get you ready for class
+        </Typography>
+        <Link href='#' target='_blank'>
+          <FlexBoxCenterColumnAlign>
+            <img src='/modal/lessonplan.png' style={{ width: '55%' }} />
+          </FlexBoxCenterColumnAlign>
+        </Link>
+        <Typography variant='h5' sx={{ m: '20px 0' }}>
+          Check out the Lesson Plan
+        </Typography>
+        <Link href='https://game.tobeyou.sg/' target='_blank'>
+          <FlexBoxCenterColumnAlign>
+            <img src='/modal/playgame.png' style={{ width: '55%' }} />
+          </FlexBoxCenterColumnAlign>
+        </Link>
+        <Typography variant='h5' sx={{ mt: 2 }}>
+          Play the game
+        </Typography>
       </ModalRightSide>
     </React.Fragment>
   );
@@ -332,10 +397,21 @@ const Step2 = ({
         </FlexBoxCenterColumn>
       </ModalLeftSide>
       <ModalRightSide>
-        <Typography variant='body2' sx={{ width: "50%", textAlign: "center", mb: 2, color: (theme) => theme.palette.lapis[100] }}>
+        <Typography
+          variant='body2'
+          sx={{
+            width: '50%',
+            textAlign: 'center',
+            mb: 2,
+            color: (theme) => theme.palette.lapis[100],
+          }}
+        >
           Sample of what players see when they enter the game
         </Typography>
-        <img src="/modal/sampleview_students.png" style={{maxHeight: "80%"}} />
+        <img
+          src='/modal/sampleview_students.png'
+          style={{ maxHeight: '80%' }}
+        />
       </ModalRightSide>
     </form>
   );
@@ -449,12 +525,23 @@ const GeneralRoomModal = (props) => {
       onClose={handleCloseModal}
       aria-labelledby='modal-modal-title'
     >
-      <ModalBox big={activeStep === 2}>
+      <ModalBox big={activeStep === 2 || createdOrEditedRoom}>
         {createdOrEditedRoom ? (
-          <SuccessPanel
-            createdOrEditedRoom={createdOrEditedRoom}
-            handleCloseModal={handleCloseModal}
-          />
+          <ModalBoxContentWrapper big>
+            <ModalStepper
+              steps={steps}
+              activeStep={3}
+              sx={{
+                width: '160px',
+                marginLeft: '16.5%',
+                mb: 2,
+              }}
+            />
+            <SuccessPanel
+              createdOrEditedRoom={createdOrEditedRoom}
+              handleCloseModal={handleCloseModal}
+            />
+          </ModalBoxContentWrapper>
         ) : (
           <ModalBoxContentWrapper big={activeStep === 2}>
             <ModalStepper
