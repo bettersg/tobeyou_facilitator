@@ -5,15 +5,20 @@ import StepConnector, {
 } from '@mui/material/StepConnector';
 import {FlexBoxCenterColumnAlign} from "../styled/general"
 
-export const ModalBox = styled(FlexBoxCenterColumnAlign)(({ theme }) => ({
+export const ModalBox = styled(FlexBoxCenterColumnAlign)(({ theme, big }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
+  backgroundColor:'white',
   boxShadow: 24,
   borderRadius: '20px',
-  padding: '80px',
+  padding: big ? "40px 0" : '80px',
+}));
+
+export const ModalBoxContentWrapper = styled(FlexBoxCenterColumnAlign)(({ theme, big }) => ({
+  width: big ? "1000px" : "auto", 
+  display: big ? "unset" : "",
 }));
 
 export const StyledModalStepIcon = styled('div')(({ theme, ownerState }) => ({
@@ -50,7 +55,7 @@ export const ModalStepConnector = styled(StepConnector)(({ theme }) => ({
   },
 }));
 
-export const ModalRightSide = styled(Box)(({ theme }) => ({
+export const ModalRightSide = styled(FlexBoxCenterColumnAlign)(({ theme }) => ({
   position: 'absolute',
   right: 0,
   top: 0,
@@ -58,4 +63,9 @@ export const ModalRightSide = styled(Box)(({ theme }) => ({
   height: '100%',
   backgroundColor: '#F5F4FD',
   borderRadius: '0 20px 20px 0',
+}));
+
+export const ModalLeftSide = styled(FlexBoxCenterColumnAlign)(({ theme }) => ({
+  width: "50%", 
+  paddingRight: "30px"
 }));

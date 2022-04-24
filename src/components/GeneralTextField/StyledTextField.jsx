@@ -1,5 +1,5 @@
 import { alpha, styled } from '@mui/material/styles';
-import { InputBase } from '@mui/material';
+import { InputBase, TextField } from '@mui/material';
 
 export const StyledTextfield = styled(InputBase)(({theme}) => ({
     'label + &': {
@@ -20,5 +20,11 @@ export const StyledTextfield = styled(InputBase)(({theme}) => ({
         borderColor: theme.palette.primary.main,
       },
     },
+    "&.MuiInputBase-multiline": {
+      height: "auto",
+      padding: 10,
+      borderRadius: 8,
+      background: theme.palette.grey[0]
+    }
   
   })) 

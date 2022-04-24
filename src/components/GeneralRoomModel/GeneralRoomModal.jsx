@@ -18,8 +18,10 @@ import { ContentCopy, MailOutline, WhatsApp, Check } from '@mui/icons-material';
 import {
   ModalBox,
   ModalRightSide,
+  ModalLeftSide,
   ModalStepConnector,
   StyledModalStepIcon,
+  ModalBoxContentWrapper,
 } from './StyledRoomModalComponents';
 import {
   FlexBoxCenterColumn,
@@ -83,13 +85,14 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
   );
 };
 
-const ModalStepper = ({ steps, activeStep }) => {
+const ModalStepper = ({ steps, activeStep, ...props }) => {
   return (
     <Stepper
       activeStep={activeStep}
       sx={{ width: '160px' }}
       connector={<ModalStepConnector />}
       alternativeLabel
+      {...props}
     >
       {steps.map((_, index) => {
         return (
@@ -184,7 +187,7 @@ const Step1 = ({
           <Box
             sx={{
               maxHeight: '360px',
-              paddingBottom: "10px", 
+              paddingBottom: '10px',
               overflow: 'auto',
               borderBottom: (theme) => `1px solid ` + theme.palette.lapis[20],
             }}
@@ -258,7 +261,7 @@ const Step1 = ({
             Next: Message to Participants
           </GeneralButton>
           <GeneralButton
-            variant='contained'
+            variant='outlined'
             onClick={handleBackStep}
             disabled={isSubmitting}
             style={{ marginTop: 10, width: '250px' }}
@@ -280,46 +283,59 @@ const Step2 = ({
 }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <Typography id='modal-modal-title' variant='h4' component='h2'>
-        Message to participants
-      </Typography>
-      <Typography variant='h6'>
-        We'll show the instructions to your class when they play the game
-      </Typography>
-      <FlexBoxCenterColumn>
-        <TextField
-          style={{ width: 350 }}
-          multiline
-          name='instructions'
-          label='Instructions'
-          variant='filled'
-          defaultValue={formData.instructions}
-          minRows={3}
-          maxRows={7}
-          onChange={handleChange}
-          disabled={isSubmitting}
-        />
-        <GeneralButton
-          variant='contained'
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          style={{ marginTop: 10, width: '250px' }}
+      <ModalLeftSide>
+        <Typography
+          id='modal-modal-title'
+          variant='h4'
+          component='h2'
+          sx={{ m: '18px 0 12px 0' }}
         >
-          Confirm
-        </GeneralButton>
-        <GeneralButton
-          variant='contained'
-          onClick={handleBackStep}
-          disabled={isSubmitting}
-          style={{ marginTop: 10, width: '250px' }}
+          Message to participants
+        </Typography>
+        <Typography
+          variant='body2'
+          sx={{ mb: '10px', maxWidth: '60%', textAlign: 'center' }}
         >
-          Back
-        </GeneralButton>
-      </FlexBoxCenterColumn>
+          We'll show the instructions to your class when they play the game
+        </Typography>
+        <FlexBoxCenterColumn>
+          <GeneralTextField
+            multiline
+            name='instructions'
+            label='Message:'
+            placeholder=''
+            variant='filled'
+            defaultValue={formData.instructions}
+            minRows={3}
+            maxRows={7}
+            onChange={handleChange}
+            disabled={isSubmitting}
+            fullWidth
+            sx={{ background: (theme) => theme.palette.grey[0] }}
+          />
+          <GeneralButton
+            variant='contained'
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            style={{ marginTop: 10, width: '250px' }}
+          >
+            Confirm
+          </GeneralButton>
+          <GeneralButton
+            variant='outlined'
+            onClick={handleBackStep}
+            disabled={isSubmitting}
+            style={{ marginTop: 10, width: '250px' }}
+          >
+            Back
+          </GeneralButton>
+        </FlexBoxCenterColumn>
+      </ModalLeftSide>
       <ModalRightSide>
-        <Typography variant='h6'>
+        <Typography variant='body2' sx={{ width: "50%", textAlign: "center", mb: 2, color: (theme) => theme.palette.lapis[100] }}>
           Sample of what players see when they enter the game
         </Typography>
+        <img src="/modal/sampleview_students.png" style={{maxHeight: "80%"}} />
       </ModalRightSide>
     </form>
   );
@@ -433,17 +449,24 @@ const GeneralRoomModal = (props) => {
       onClose={handleCloseModal}
       aria-labelledby='modal-modal-title'
     >
-      <ModalBox>
+      <ModalBox big={activeStep === 2}>
         {createdOrEditedRoom ? (
           <SuccessPanel
             createdOrEditedRoom={createdOrEditedRoom}
             handleCloseModal={handleCloseModal}
           />
         ) : (
-          <FlexBoxCenterColumnAlign>
-            <ModalStepper steps={steps} activeStep={activeStep} />
+          <ModalBoxContentWrapper big={activeStep === 2}>
+            <ModalStepper
+              steps={steps}
+              activeStep={activeStep}
+              sx={{
+                width: '160px',
+                marginLeft: activeStep === 2 ? '16.5%' : '',
+              }}
+            />
             {currentStep}
-          </FlexBoxCenterColumnAlign>
+          </ModalBoxContentWrapper>
         )}
       </ModalBox>
     </Modal>

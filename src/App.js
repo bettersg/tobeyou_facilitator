@@ -73,6 +73,9 @@ const theme = createTheme({
     chicky: {
       100: '#FFE55E',
     },
+    grey: {
+      0: "#F5F4FD",
+    }
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(','),
