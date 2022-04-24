@@ -12,28 +12,39 @@ import {
   StepLabel,
   TextField,
   Typography,
+  Grid,
 } from '@mui/material';
 import { ContentCopy, MailOutline, WhatsApp, Check } from '@mui/icons-material';
 import {
   ModalBox,
   ModalRightSide,
   ModalStepConnector,
-  StyledModalStepIcon
+  StyledModalStepIcon,
 } from './StyledRoomModalComponents';
-import { FlexBoxCenterColumn, FlexBoxCenterColumnAlign } from '../styled/general';
+import {
+  FlexBoxCenterColumn,
+  FlexBoxCenterColumnAlign,
+} from '../styled/general';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { CHARACTER_MAP } from '../../models/storyMap';
+import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
 
 function ModalStepIcon(props) {
   const { active, completed, className } = props;
 
   return (
-    <StyledModalStepIcon ownerState={{ completed, active }} className={className}>
+    <StyledModalStepIcon
+      ownerState={{ completed, active }}
+      className={className}
+    >
       {completed ? (
-        <Check className="ModalStepIcon-completedIcon" sx={{width: "20px", height: "20px"}}/>
+        <Check
+          className='ModalStepIcon-completedIcon'
+          sx={{ width: '20px', height: '20px' }}
+        />
       ) : (
-        <Box sx={{fontSize:"12px", fontWeight: 700}}>{props.icon}</Box>
+        <Box sx={{ fontSize: '12px', fontWeight: 700 }}>{props.icon}</Box>
       )}
     </StyledModalStepIcon>
   );
@@ -76,13 +87,13 @@ const ModalStepper = ({ steps, activeStep }) => {
   return (
     <Stepper
       activeStep={activeStep}
-      sx={{width: "160px"}}
+      sx={{ width: '160px' }}
       connector={<ModalStepConnector />}
       alternativeLabel
     >
       {steps.map((_, index) => {
         return (
-          <Step key={index+1}>
+          <Step key={index + 1}>
             <StepLabel StepIconComponent={ModalStepIcon}></StepLabel>
           </Step>
         );
@@ -103,12 +114,17 @@ const Step0 = ({
     <form onSubmit={handleSubmit}>
       <Box>
         <FlexBoxCenterColumnAlign>
-          <Typography id='modal-modal-title' variant='h4' component='h2' sx={{margin: "24px 0", textAlign: "center"}}>
+          <Typography
+            id='modal-modal-title'
+            variant='h4'
+            component='h2'
+            sx={{ margin: '24px 0', textAlign: 'center' }}
+          >
             {title}
           </Typography>
           <GeneralTextField
             name='organisation'
-            label="Organisation:"
+            label='Organisation:'
             variant='filled'
             defaultValue={formData.organisation}
             onChange={handleChange}
@@ -116,7 +132,7 @@ const Step0 = ({
           />
           <GeneralTextField
             name='name'
-            label="Class:"
+            label='Class:'
             variant='filled'
             defaultValue={formData.name}
             onChange={handleChange}
@@ -124,7 +140,7 @@ const Step0 = ({
           />
           <GeneralTextField
             name='date'
-            label="Date:"
+            label='Date:'
             variant='filled'
             type='date'
             defaultValue={formData.date}
@@ -157,54 +173,99 @@ const Step1 = ({
     <form onSubmit={handleSubmit}>
       <Box>
         <FlexBoxCenterColumn>
-          <Typography id='modal-modal-title' variant='h4' component='h2' sx={{margin: "24px 0", textAlign: "center"}}>
+          <Typography
+            id='modal-modal-title'
+            variant='h4'
+            component='h2'
+            sx={{ margin: '24px 0', textAlign: 'center' }}
+          >
             Assign chapters
           </Typography>
-          {Object.keys(CHARACTER_MAP).map((character) => {
-            const chapterMap = CHARACTER_MAP[character];
-            return (
-              <FormGroup key={character}>
-                <Typography>{character}</Typography>
-                {Object.keys(chapterMap).map((reflectionId) => {
-                  const chapterName = chapterMap[reflectionId];
-                  return (
-                    <FormControlLabel
-                      key={reflectionId}
-                      control={
-                        <Checkbox
-                          checked={formData.reflectionIds.some(
-                            (id) => id === parseInt(reflectionId)
-                          )}
-                          onChange={toggleChapterCheckbox}
-                          name={reflectionId}
-                        />
-                      }
-                      label={chapterName}
-                    />
-                  );
-                })}
-              </FormGroup>
-            );
-          })}
-          <FlexBoxCenterColumnAlign>
-            <GeneralButton
-              variant='contained'
-              onClick={handleNextStep}
-              disabled={isSubmitting}
-              style={{ marginTop: 10, width: '250px' }}
-            >
-              Next: Message to Participants
-            </GeneralButton>
-            <GeneralButton
-              variant='contained'
-              onClick={handleBackStep}
-              disabled={isSubmitting}
-              style={{ marginTop: 10, width: '250px' }}
-            >
-              Back
-            </GeneralButton>
-          </FlexBoxCenterColumnAlign>
+          <Box
+            sx={{
+              maxHeight: '360px',
+              paddingBottom: "10px", 
+              overflow: 'auto',
+              borderBottom: (theme) => `1px solid ` + theme.palette.lapis[20],
+            }}
+          >
+            {Object.keys(CHARACTER_MAP).map((character) => {
+              const chapterMap = CHARACTER_MAP[character];
+              return (
+                <FormGroup key={character}>
+                  <Grid container>
+                    <Grid
+                      item
+                      xs={2}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <CharacterAvatar avatarContent={character} />
+                      <Typography variant='h5'>{character}</Typography>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={10}
+                      sx={{ display: 'flex', flexDirection: 'column' }}
+                    >
+                      {Object.keys(chapterMap).map((reflectionId) => {
+                        const chapterName = chapterMap[reflectionId];
+                        return (
+                          <FormControlLabel
+                            key={reflectionId}
+                            sx={{ margin: 'unset' }}
+                            control={
+                              <Checkbox
+                                checked={formData.reflectionIds.some(
+                                  (id) => id === parseInt(reflectionId)
+                                )}
+                                sx={{
+                                  color: (theme) => theme.palette.lapis[40],
+                                }}
+                                onChange={toggleChapterCheckbox}
+                                name={reflectionId}
+                              />
+                            }
+                            label={chapterName}
+                          />
+                        );
+                      })}
+                    </Grid>
+                  </Grid>
+                </FormGroup>
+              );
+            })}
+          </Box>
         </FlexBoxCenterColumn>
+        <FlexBoxCenterColumnAlign
+          sx={{
+            marginTop: '20px',
+            color: (theme) => theme.palette.midnight[80],
+          }}
+        >
+          <Typography variant='h5'>Estimated assigned time: 0mins</Typography>
+
+          <GeneralButton
+            variant='contained'
+            onClick={handleNextStep}
+            disabled={isSubmitting}
+            style={{ marginTop: 10, width: '250px' }}
+          >
+            Next: Message to Participants
+          </GeneralButton>
+          <GeneralButton
+            variant='contained'
+            onClick={handleBackStep}
+            disabled={isSubmitting}
+            style={{ marginTop: 10, width: '250px' }}
+          >
+            Back
+          </GeneralButton>
+        </FlexBoxCenterColumnAlign>
       </Box>
     </form>
   );

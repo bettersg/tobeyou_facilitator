@@ -45,6 +45,9 @@ const theme = createTheme({
     },
   },
   palette: {
+    text: {
+      primary: "#172153",
+    }, 
     primary: {
       main: '#664EFC',
     },
@@ -53,6 +56,7 @@ const theme = createTheme({
       10: "#E8E9EE", 
       20: "#D1D3DD", 
       60: "#747A98",
+      80: "#464E75", 
       100: "#172153", 
     }, 
     aqua: {
@@ -63,6 +67,7 @@ const theme = createTheme({
       0: "#664EFC", 
       10: '#F0F1FC',
       20: "#E2E2F8",
+      40: "#C4C6F1",
       100: '#6C70DD',
     },
     chicky: {
