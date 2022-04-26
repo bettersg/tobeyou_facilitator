@@ -32,7 +32,6 @@ import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 const RoomCard = (props) => {
   const { room, handleSoftDelete, toggleIsActive, handleEdit, roomStatus } = props;
   const navigate = useNavigate();
-  const firstReflectionId = room.reflectionIds[0];
 
   const isUpcoming = moment(room.date) - moment() > 0;
   const dateString = moment(room.date).format('DD MMM YYYY');
