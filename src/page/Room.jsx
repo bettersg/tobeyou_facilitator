@@ -88,6 +88,16 @@ const Room = () => {
               style={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate(
+                  `/room/${room.id}/reflectionId/${reflectionId}/engagementLevels`
+                )
+              }
+            >
+              View Engagement Levels
+            </Typography>
+            <Typography
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                navigate(
                   `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
                 )
               }

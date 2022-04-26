@@ -22,12 +22,30 @@ export const getDbReflectionResponses = async (
       query = query.where('questionId', '==', 3);
     }
     const snapshot = await query.get();
-    const savedStates = snapshot.docs.map((doc) => ({
+    const reflectionResponses = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    return savedStates;
+    return reflectionResponses;
   } catch (err) {
     throw new Error(`Error at getDbReflectionResponses: ${err}`);
+  }
+};
+
+export const getDbEngagementLevels = async (roomCode, reflectionId) => {
+  try {
+    const snapshot = await firestore
+      .collection('reflectionResponses')
+      .where('roomCode', '==', roomCode)
+      .where('reflectionId', '==', reflectionId)
+      .where('questionId', '==', 2)
+      .get();
+    const engagementLevels = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return engagementLevels;
+  } catch (err) {
+    throw new Error(`Error at getDbEngagementLevels: ${err}`);
   }
 };
