@@ -13,27 +13,26 @@ export const GeneralTextField = ({
   onChange,
   disabled,
   children,
-  multiline, 
+  multiline,
   ...props
 }) => {
   return (
     <Box>
       <Typography variant='h6'>{label}</Typography>
 
-        <StyledTextfield
-          select
-          multiline
-          value={value}
-          name={name}
-          variant='filled'
-          placeholder={placeholder}
-          onChange={onChange}
-          disabled={disabled}
-          {...props}
-        >
-          {children}
-        </StyledTextfield>
-
+      <StyledTextfield
+        select
+        multiline={multiline}
+        value={value}
+        name={name}
+        variant='filled'
+        placeholder={placeholder}
+        onChange={onChange}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </StyledTextfield>
     </Box>
   );
 };
@@ -48,10 +47,10 @@ GeneralTextField.propTypes = {
 };
 
 GeneralTextField.defaultProps = {
-  label: "Label:",
-  name: "label",
+  label: 'Label:',
+  name: 'label',
   variant: 'filled',
-  placeholder: "label", 
+  placeholder: 'label',
   onChange: undefined,
   disabled: false,
 };
