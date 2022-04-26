@@ -15,6 +15,14 @@ export const FlexBoxCenterColumn = styled(Box)(({theme}) => ({
     flexDirection: "column", 
 }))
 
+// column flex box align center
+export const FlexBoxCenterColumnAlign = styled(Box)(({theme}) => ({
+  display: "flex", 
+  justifyContent: "center", 
+  alignItems: "center", 
+  flexDirection: "column", 
+}))
+
 // space between flex box
 export const FlexBoxSpaceBetween = styled(Box)(({ theme }) => ({
   display: 'flex',
