@@ -11,7 +11,7 @@ import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
 import NewRoomModal from '../components/GeneralRoomModal/NewRoomModal';
 import EditRoomModal from '../components/GeneralRoomModal/EditRoomModal';
-import QrModal from '../components/dashboard/QrModal';
+import QrModal from '../components/GeneralRoomModal/QrModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
