@@ -1,4 +1,4 @@
-export const GLOBAL_VAR_MAP = [
+const GLOBAL_VAR_MAP = [
   {
     characterId: 1,
     name: 'Nadia Binte Rahim',
@@ -982,3 +982,5 @@ export const GLOBAL_VAR_MAP = [
 // chapter_id: 1
 // character_id: 2
 // story_finished: 1
+
+export default GLOBAL_VAR_MAP;
