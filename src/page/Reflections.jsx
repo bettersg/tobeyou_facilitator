@@ -105,7 +105,11 @@ const Reflections = () => {
       reflectionId,
       true
     );
-    setReflectionResponses(dbReflectionResponses);
+    // Filter for non-empty reflection responses
+    const filteredDbReflectionResponses = dbReflectionResponses.filter(
+      (rr) => rr.answer.length > 5
+    );
+    setReflectionResponses(filteredDbReflectionResponses);
   }
 
   useEffect(() => getData(), []);
