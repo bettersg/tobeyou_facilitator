@@ -20,7 +20,8 @@ const NewRoomModal = (props) => {
     // credits: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
     const CODE_LENGTH = 6;
     let code = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const characters =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const charactersLength = characters.length;
     for (let i = 0; i < CODE_LENGTH; i++) {
       code += characters.charAt(Math.floor(Math.random() * charactersLength));
