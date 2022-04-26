@@ -9,14 +9,16 @@ import {
 } from '../models/roomModel';
 import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
-import NewRoomModal from '../components/dashboard/NewRoomModal';
-import EditRoomModal from '../components/dashboard/EditRoomModal';
+import NewRoomModal from '../components/GeneralRoomModal/NewRoomModal';
+import EditRoomModal from '../components/GeneralRoomModal/EditRoomModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
+  FlexBoxCenterColumnAlign,
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
 import { HomeToggleButtonGroup } from '../components/HomeToggleButtonGroup/HomeToggleButtonGroup';
+import { GeneralSelect } from '../components/GeneralSelect/GeneralSelect';
 
 const formDataTemplate = {
   name: '',
@@ -40,11 +42,6 @@ const Home = () => {
     useState(formDataTemplate);
 
   // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
-  // const filterOptions =
-  //   {
-  //     all: "All",
-  //     upcoming: "Upcoming"
-  //   }
 
   // const handleChange = (event) => {
   //   setRoomFilter({ [event.target.value]: filterOptions[event.target.value] });
@@ -111,7 +108,11 @@ const Home = () => {
 
   const AddClassButton = () => {
     return (
-      <GeneralButton variant='special' onClick={handleNewRoom}>
+      <GeneralButton
+        variant='special'
+        onClick={handleNewRoom}
+        sx={{ maxWidth: '360px' }}
+      >
         Add a class
       </GeneralButton>
     );
@@ -122,11 +123,13 @@ const Home = () => {
       return '';
     } else if (rooms.length === 0) {
       return (
-        <Box>
-          <Typography variant='h5'>No classes yet</Typography>
-          <Typography>Get started by starting a class!</Typography>
+        <FlexBoxCenterColumnAlign mt={'200px'}>
+          <Typography variant='h4' mb={2}>
+            No classes yet
+          </Typography>
+          <Typography mb={2}>Get started by starting a class!</Typography>
           <AddClassButton />
-        </Box>
+        </FlexBoxCenterColumnAlign>
       );
     } else {
       const filteredRooms = rooms
@@ -150,6 +153,7 @@ const Home = () => {
                 room={room}
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
                 handleSoftDelete={() => handleSoftDeleteRoom(room.id)}
+                roomStatus={room.isActive}
                 handleEdit={() => handleEditRoom(room.id)}
               />
             </Grid>

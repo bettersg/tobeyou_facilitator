@@ -13,23 +13,27 @@ export const GeneralTextField = ({
   onChange,
   disabled,
   children,
+  multiline, 
   ...props
 }) => {
   return (
     <Box>
       <Typography variant='h6'>{label}</Typography>
-      <StyledTextfield
-        select
-        value={value}
-        name={name}
-        variant='filled'
-        placeholder={placeholder}
-        onChange={onChange}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </StyledTextfield>
+
+        <StyledTextfield
+          select
+          multiline
+          value={value}
+          name={name}
+          variant='filled'
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          {...props}
+        >
+          {children}
+        </StyledTextfield>
+
     </Box>
   );
 };

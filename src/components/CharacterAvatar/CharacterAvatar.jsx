@@ -29,6 +29,6 @@ export const CharacterAvatar = ({avatarContent, badgeContent, numExcess}) => {
         : 
         
         // normal avatar
-        <Avatar sx={{ width: 56, height: 56 }} alt={avatarContent} src="/static/images/avatar/1.jpg"/>
+        <Avatar sx={{ width: 56, height: 56 }} alt={avatarContent} src={`/avatar/${avatarContent.toLowerCase()}.png`}/>
     )
 }

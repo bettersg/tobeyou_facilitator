@@ -45,25 +45,42 @@ const theme = createTheme({
     },
   },
   palette: {
+    text: {
+      primary: "#172153",
+    }, 
     primary: {
       main: '#664EFC',
     },
     secondary: blue,
     midnight: {
-      60: '#747A98',
-      100: '#172153',
-    },
+      10: "#E8E9EE", 
+      20: "#D1D3DD", 
+      60: "#747A98",
+      80: "#464E75", 
+      100: "#172153", 
+    }, 
     aqua: {
       1: '#19A3AD',
       100: '#3DCAD3',
     },
     lapis: {
+      0: "#664EFC", 
       10: '#F0F1FC',
+      20: "#E2E2F8",
+      40: "#C4C6F1",
       100: '#6C70DD',
     },
     chicky: {
       100: '#FFE55E',
     },
+    grey: {
+      0: "#F5F4FD",
+    }, 
+    lemongrass: {
+      dark1: "#8DC000",
+      dark2: "#4B7C24",
+      20: "#F5FBDE", 
+    }
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(','),
