@@ -30,7 +30,14 @@ import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGro
 import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 
 const RoomCard = (props) => {
-  const { room, handleSoftDelete, toggleIsActive, handleEdit, roomStatus } = props;
+  const {
+    room,
+    handleSoftDelete,
+    handleQrModal,
+    toggleIsActive,
+    handleEdit,
+    roomStatus,
+  } = props;
   const navigate = useNavigate();
 
   const isUpcoming = moment(room.date) - moment() > 0;
@@ -81,6 +88,10 @@ const RoomCard = (props) => {
               sx={{
                 color: (theme) => theme.palette.lapis[100],
                 marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleQrModal();
               }}
             />
             <ArchiveOutlined
