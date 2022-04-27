@@ -4,11 +4,21 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { StyledTopbar, NavbarText } from './StyledTopbar';
 import { FlexBoxCenter } from '../styled/general';
-import { Box } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
 
 export const Topbar = () => {
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <StyledTopbar>
       <Box sx={{ cursor: 'pointer', marginLeft: '20px' }}>
@@ -18,7 +28,36 @@ export const Topbar = () => {
         <NavbarText href={'https://game.tobeyou.sg/'} variant='body2'>
           Play Game
         </NavbarText>
-        <NavbarText variant='body2'>Lesson Plan</NavbarText>
+        <NavbarText
+          variant='body2'
+          component='button'
+          id='demo-positioned-button'
+          aria-controls={open ? 'demo-positioned-menu' : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
+          Lesson Plan
+        </NavbarText>
+        <Menu
+          id='demo-positioned-menu'
+          aria-labelledby='demo-positioned-button'
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Classroom</MenuItem>
+          <MenuItem onClick={handleClose}>Corporate</MenuItem>
+          <MenuItem onClick={handleClose}>Youth Engagement</MenuItem>
+        </Menu>
         <NavbarText onClick={logout}>{currentUser.displayName}</NavbarText>
         <Sidebar />
       </FlexBoxCenter>
