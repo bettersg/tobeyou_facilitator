@@ -44,7 +44,6 @@ export const Topbar = () => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          
         >
           <MenuItem onClick={handleClose}>Classroom</MenuItem>
           <MenuItem onClick={handleClose}>Corporate</MenuItem>
