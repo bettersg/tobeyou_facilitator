@@ -39,6 +39,7 @@ import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { CHARACTER_MAP } from '../../models/storyMap';
 import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
+import { getGameUrl } from '../../utils';
 
 function ModalStepIcon(props) {
   const { active, completed, className } = props;
@@ -61,11 +62,6 @@ function ModalStepIcon(props) {
 }
 
 const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
-  // TODO: refactor?
-  const getGameUrl = (code) => {
-    return `game.tobeyou.sg/room/${code}`;
-  };
-
   const gameUrl = getGameUrl(createdOrEditedRoom.code);
 
   return (
@@ -97,7 +93,7 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
         </Typography>
         <QRCode size={128} value={gameUrl} />
         <Typography m='12px 0 18px 0' variant={'h6'}>
-          <Link target='_blank' color='inherit' href={'https://' + gameUrl}>
+          <Link target='_blank' color='inherit' href={gameUrl}>
             {gameUrl}
           </Link>
         </Typography>

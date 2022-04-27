@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 export const getGameUrl = (code) => {
-  return `game.tobeyou.sg/room/${code}`;
+  return `https://game.tobeyou.sg/room/${code}`;
 };
 
 // Hook. Source: https://usehooks.com/useEventListener/
