@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { Modal, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { getDbRoom } from '../models/roomModel';
+import { getDbRoomByCode } from '../models/roomModel';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import {
   ModalArrowBox,
@@ -82,7 +82,7 @@ const ReflectionModal = (props) => {
 };
 
 const Reflections = () => {
-  let { roomId, reflectionId } = useParams();
+  let { roomCode, reflectionId } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -91,7 +91,7 @@ const Reflections = () => {
   const [modalReflectionIndex, setModalReflectionIndex] = useState(null); // null means modal is inactive; an index means its reflection is displayed in the modal
 
   async function getData() {
-    const dbRoom = await getDbRoom(roomId);
+    const dbRoom = await getDbRoomByCode(roomCode);
     if (
       !dbRoom ||
       !dbRoom.facilitatorIds.includes(currentUser.id) ||
@@ -99,7 +99,6 @@ const Reflections = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
-    const roomCode = dbRoom.code;
     const dbReflectionResponses = await getDbReflectionResponses(
       roomCode,
       reflectionId,

@@ -133,7 +133,7 @@ function App() {
                 }
               >
                 <Route exact path='/' element={<Home />} />
-                <Route path='/room/:roomId/'>
+                <Route path='/room/:roomCode/'>
                   <Route path='' element={<Room />} />
                   <Route path='reflectionId/:reflectionId'>
                     <Route path='gameChoices' element={<GameChoices />} />
