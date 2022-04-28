@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Edit, KeyboardArrowRight } from '@mui/icons-material';
 import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
@@ -10,9 +9,17 @@ import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBrea
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
+  FlexBoxCenterColumnAlign,
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
-import { KeyboardArrowDown } from '@mui/icons-material';
+import {
+  KeyboardArrowDown,
+  PeopleAltOutlined,
+  EditOutlined,
+  Edit,
+  KeyboardArrowRight,
+  QrCode,
+} from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 
 const Room = () => {
@@ -28,6 +35,7 @@ const Room = () => {
   // for menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentCharChapt, setCurrentCharChapt] = React.useState(null);
+  const [currentReflectionId, setCurrentReflectionId] = React.useState(null);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -72,6 +80,7 @@ const Room = () => {
   useEffect(() => {
     console.log('room', room);
     setCurrentCharChapt(REFLECTION_ID_MAP[room?.reflectionIds[0]]);
+    setCurrentReflectionId(room?.reflectionIds[0]);
     console.log(room?.reflectionIds[0]);
     console.log(currentCharChapt);
   }, [room]);
@@ -84,7 +93,7 @@ const Room = () => {
   console.log(currentCharChapt);
 
   return (
-    <Box sx={{ height: '100%' }}>
+    <Box sx={{ height: '100%', overflow: 'auto' }}>
       <Paper
         sx={{
           position: 'absolute',
@@ -107,8 +116,12 @@ const Room = () => {
                         <CharacterAvatar
                           avatarContent={currentCharChapt?.character}
                         />
-                        <Typography sx={{ ml: 2, fontWeight: 700 }}>
-                          {currentCharChapt?.character} / Chapter {currentCharChapt?.chapterId}
+                        <Typography
+                          sx={{ ml: 2, fontWeight: 700 }}
+                          variant='h4'
+                        >
+                          {currentCharChapt?.character} / Chapter{' '}
+                          {currentCharChapt?.chapterId}
                         </Typography>
                       </FlexBoxCenter>
                     ),
@@ -149,6 +162,7 @@ const Room = () => {
                       onClick={() => {
                         handleClose();
                         setCurrentCharChapt(REFLECTION_ID_MAP[reflectionId]);
+                        setCurrentReflectionId(reflectionId);
                       }}
                     >
                       <CharacterAvatar avatarContent={character} />
@@ -161,8 +175,88 @@ const Room = () => {
               </Menu>
             </Box>
           </FlexBoxCenter>
+          <FlexBoxCenter>
+            <PeopleAltOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginRight: 1,
+              }}
+              fontSize='large'
+            />
+            <EditOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginRight: 1,
+              }}
+              fontSize='large'
+            />
+            <QrCode
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginRight: 1,
+              }}
+              fontSize='large'
+            />
+            <GeneralButton sx={{ml: 1}}>Download report</GeneralButton>
+          </FlexBoxCenter>
         </FlexBoxSpaceBetween>
       </Paper>
+
+      {currentCharChapt&&currentReflectionId ? (
+        <FlexBoxCenterColumnAlign sx={{ height: '100%', overflow: 'auto', background: (theme) => theme.palette.lapis[10] }}>
+          <Paper
+            sx={{
+              top: 210,
+              padding: '68px',
+              background: 'white',
+              maxWidth: '80%',
+            }}
+          >
+            <Box>
+              <Typography>
+                {currentCharChapt.character} / Chapter{' '}
+                {currentCharChapt.chapter}
+              </Typography>
+              <Typography>
+                {completionRateNumerators[currentReflectionId]}/
+                {completionRateDenominator} students completed
+              </Typography>
+              <Typography
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  navigate(
+                    `/room/${room.id}/reflectionId/${currentReflectionId}/reflections`
+                  )
+                }
+              >
+                View Reflections
+              </Typography>
+              <Typography
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  navigate(
+                    `/room/${room.id}/reflectionId/${currentReflectionId}/gameChoices`
+                  )
+                }
+              >
+                Review Game Choices
+              </Typography>
+              <Typography
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  navigate(
+                    `/room/${room.id}/reflectionId/${currentReflectionId}/quizzes`
+                  )
+                }
+              >
+                Review Mini Game
+              </Typography>
+              <br />
+            </Box>
+          </Paper>
+        </FlexBoxCenterColumnAlign>
+      ) : null}
+{/* 
       <Box
         sx={{
           padding: '68px',
@@ -217,7 +311,7 @@ const Room = () => {
             </Box>
           );
         })}
-      </Box>
+      </Box> */}
     </Box>
   );
 };
