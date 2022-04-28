@@ -52,6 +52,8 @@ const Home = () => {
   // };
 
   async function handleSoftDeleteRoom(id) {
+    const isConfirm = confirm('Are you sure you want to delete this room?');
+    if (!isConfirm) return;
     await softDeleteDbRoom(id);
     setRooms(rooms.filter((room) => room.id !== id));
   }
@@ -83,6 +85,10 @@ const Home = () => {
 
   async function toggleIsActiveRoom(id) {
     const room = rooms.find((x) => x.id === id);
+    const isConfirm = confirm(
+      `Are you sure you want to ${room.isActive ? '' : 'un'}archive this room?`
+    );
+    if (!isConfirm) return;
     const restRooms = rooms.filter((x) => x.id !== id);
     room.isActive = !room.isActive;
     const newRooms = [...restRooms, room];
