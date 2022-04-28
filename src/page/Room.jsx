@@ -4,11 +4,11 @@ import { Box, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
-import { getDbRoom } from '../models/roomModel';
+import { getDbRoomByCode } from '../models/roomModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 
 const Room = () => {
-  let { roomId } = useParams();
+  let { roomCode } = useParams();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -18,14 +18,13 @@ const Room = () => {
     useState(null);
 
   async function getRoom() {
-    const dbRoom = await getDbRoom(roomId);
+    const dbRoom = await getDbRoomByCode(roomCode);
     if (!dbRoom || !dbRoom.facilitatorIds.includes(currentUser.id)) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
     setRoom(dbRoom);
 
     // Get completion rate statistics (numerator and denominator)
-    const roomCode = dbRoom.code;
     const allReflectionResponses = await getDbReflectionResponses(
       roomCode,
       null,
@@ -78,7 +77,7 @@ const Room = () => {
               style={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate(
-                  `/room/${room.id}/reflectionId/${reflectionId}/reflections`
+                  `/room/${room.code}/reflectionId/${reflectionId}/reflections`
                 )
               }
             >
@@ -88,7 +87,7 @@ const Room = () => {
               style={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate(
-                  `/room/${room.id}/reflectionId/${reflectionId}/engagementLevels`
+                  `/room/${room.code}/reflectionId/${reflectionId}/engagementLevels`
                 )
               }
             >
@@ -98,7 +97,7 @@ const Room = () => {
               style={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate(
-                  `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
+                  `/room/${room.code}/reflectionId/${reflectionId}/gameChoices`
                 )
               }
             >
@@ -108,7 +107,7 @@ const Room = () => {
               style={{ cursor: 'pointer' }}
               onClick={() =>
                 navigate(
-                  `/room/${room.id}/reflectionId/${reflectionId}/quizzes`
+                  `/room/${room.code}/reflectionId/${reflectionId}/quizzes`
                 )
               }
             >

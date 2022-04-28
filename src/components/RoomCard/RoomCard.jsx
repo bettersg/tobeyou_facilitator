@@ -51,7 +51,7 @@ const RoomCard = (props) => {
         height: '100%',
         cursor: 'pointer',
       }}
-      onClick={() => navigate(`/room/${room.id}`)}
+      onClick={() => navigate(`/room/${room.code}`)}
     >
       <Grid container sx={{ padding: '36px 40px', height: '100%' }} spacing={1}>
         <FlexBoxSpaceBetween sx={{ width: '100%', height: '28px' }}>

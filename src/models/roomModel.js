@@ -29,6 +29,8 @@ function parseDate(firestoreTimestamp) {
   return firestoreTimestamp?.toDate();
 }
 
+// TODO: refactor logic for parsing dates across getting functions
+// TODO: refactor logic for { id: X.id, ...X.data() }
 export const getDbRoom = async (id) => {
   try {
     const room = await firestore.collection('rooms').doc(id).get();
@@ -39,6 +41,22 @@ export const getDbRoom = async (id) => {
     return roomData;
   } catch (err) {
     throw new Error(`Error at getDbRoom: ${err}`);
+  }
+};
+
+export const getDbRoomByCode = async (code) => {
+  try {
+    const snapshot = await firestore
+      .collection('rooms')
+      .where('code', '==', code)
+      .get();
+    const rooms = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    if (rooms.length === 0) {
+      return null;
+    }
+    return rooms[0];
+  } catch (err) {
+    throw new Error(`Error at getDbRoomByCode: ${err}`);
   }
 };
 

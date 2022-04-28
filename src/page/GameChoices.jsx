@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbSavedState } from '../models/savedStateModel';
-import { getDbRoom } from '../models/roomModel';
+import { getDbRoomByCode } from '../models/roomModel';
 import { useEventListener } from '../utils';
 import REFLECTION_ID_MAP from '../models/reflectionIdMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
 
 const GameChoices = () => {
-  let { roomId, reflectionId } = useParams();
+  let { roomCode, reflectionId } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const GameChoices = () => {
   const gameChoices = chapter.variables;
 
   async function getData() {
-    const dbRoom = await getDbRoom(roomId);
+    const dbRoom = await getDbRoomByCode(roomCode);
     if (
       !dbRoom ||
       !dbRoom.facilitatorIds.includes(currentUser.id) ||

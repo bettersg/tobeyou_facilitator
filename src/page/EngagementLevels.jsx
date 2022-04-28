@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
-import { getDbRoom } from '../models/roomModel';
+import { getDbRoomByCode } from '../models/roomModel';
 import { getDbEngagementLevels } from '../models/reflectionResponseModel';
 
 const EngagementLevels = () => {
-  let { roomId, reflectionId } = useParams();
+  let { roomCode, reflectionId } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const EngagementLevels = () => {
   const [averageEngagementLevel, setAverageEngagementLevel] = useState(null);
 
   async function getData() {
-    const dbRoom = await getDbRoom(roomId);
+    const dbRoom = await getDbRoomByCode(roomCode);
     if (
       !dbRoom ||
       !dbRoom.facilitatorIds.includes(currentUser.id) ||
@@ -21,7 +21,6 @@ const EngagementLevels = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
-    const roomCode = dbRoom.code;
     const dbEngagementLevels = await getDbEngagementLevels(
       roomCode,
       reflectionId
