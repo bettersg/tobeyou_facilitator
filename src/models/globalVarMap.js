@@ -851,6 +851,104 @@ const GLOBAL_VAR_MAP = [
             title: 'Ravi is still looking for a place to stay',
             inkVar: 'chapter_1_ending_2',
           },
+        ],         
+        variables: [
+          {
+            name: 'ravi_1_agent',
+            description: 'Ravi reacts to the property agent',
+            values: [
+              {
+                value: 'polite',
+                description: 'Polite',
+              },
+              {
+                value: 'angry',
+                description: 'Angry',
+              },
+            ],
+          },
+          {
+            name: 'ravi_1_dormhousing',
+            description: "Ravi chooses dorm housing",
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_1_emailuniversity',
+            description: "Ravi emails the university",
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_1_motherempathy',
+            description: 'Ravi displays empathy for his mother',
+            values: [
+              {
+                value: 0,
+                description: 'nil',
+              },
+              {
+                value: 1,
+                description: '1/4',
+              },
+              {
+                value: 2,
+                description: '2/4',
+              },
+              {
+                value: 3,
+                description: '3/4',
+              },
+              {
+                value: 4,
+                description: '4/4',
+              },
+            ],
+          },
+          {
+            name: 'ravi_1_notlikeotherindians',
+            description: 'Ravi tells the property agent he is not like other indians',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_1_sharefrustrations',
+            description: 'Ravi shares his frustrations with Revati',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
         ],
       },
 
@@ -866,13 +964,49 @@ const GLOBAL_VAR_MAP = [
         endings: [
           {
             endingId: 1,
-            title: 'Ravi shows concern for mum',
-            inkVar: 'chapter2_ending_1',
+            title: 'Ravi calls Val',
           },
           {
             endingId: 2,
-            title: 'Ravi is confused by the news',
-            inkVar: 'chapter2_ending_2',
+            title: 'Ravi does not call val',
+          },
+        ],
+        variables: [
+          {
+            name: 'ravi_2_talktomarie',
+            description: 'Ravi opens up to Marie ',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_2_modernart',
+            description: "Ravi score in the Art game ",
+            values: [
+              {
+                value: 0,
+                description: 'nil',
+              },
+              {
+                value: 1,
+                description: '1/3',
+              },
+              {
+                value: 2,
+                description: '2/3',
+              },
+              {
+                value: 3,
+                description: '3/3',
+              },
+            ],
           },
         ],
       },
@@ -889,39 +1023,101 @@ const GLOBAL_VAR_MAP = [
         endings: [
           {
             endingId: 1,
-            title: 'Azlin gets upset with you',
-            inkVar: 'chapter2_ending_1',
+            title: 'Ravi resigns the internship',
           },
           {
             endingId: 2,
-            title: 'Azlin tells you to give him up',
-            inkVar: 'chapter2_ending_2',
+            title: 'Ravi asks for better workplace conditions',
+          },
+        ],
+        variables: [
+          {
+            name: 'ravi_3_afraidtotellmum',
+            description: 'Ravi is afraid to tell his mother about Val ',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_3_checktranslation',
+            description: 'Ravi asks his boss about the Chinese instructions ',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_3_confrontcolleagues',
+            description: 'Ravi confronts his colleagues on whatsapp',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_3_correctname',
+            description: 'Ravi corrects Rogers pronunciation of his name ',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_3_tellvaltruth',
+            description: 'Ravi reveals to Val why he is worried ',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'ravi_3_internshipchoicetomum',
+            description: 'Ravi tells his mother what he intends to do about his job ',
+            values: [
+              {
+                value: "stay",
+                description: 'Stay',
+              },
+              {
+                value: "quit",
+                description: 'Quit',
+              },
+            ],
           },
         ],
       },
-      {
-        chapterId: 4,
-        number: 4,
-        reflectionId: 10,
-        title: 'Cleared for Take Off',
-        knotTag: 'ravi_4_intro',
-        summary:
-          'Ravi breaks down and reveals his fears to both Valerie and Revati. They give him a new perspective, and much-needed reminders. ',
-        playable: false,
-        images: ['/images/bg_launch.jpg', '/images/bg_reflections.jpg'],
-        endings: [
-          {
-            endingId: 1,
-            title: 'Azlin gets upset with you',
-            inkVar: 'chapter2_ending_1',
-          },
-          {
-            endingId: 2,
-            title: 'Azlin tells you to give him up',
-            inkVar: 'chapter2_ending_2',
-          },
-        ],
-      },
+      
     ],
   },
   {
@@ -958,6 +1154,30 @@ const GLOBAL_VAR_MAP = [
     playable: false,
   },
 ];
+ 
+
+export default GLOBAL_VAR_MAP;
+
+
+// NADIA
+// chapter_id: 1
+// character_id: 1
+// nadia_liar: 0
+// nadia_mood: 10
+// nadia_trackpants_choice: 1
+// nadia_gavinsharefood: 1
+// gavin_mood: 10
+// chapter_1_ending: 1
+// nadia_2_chloelibrarychoice: 1
+// nadia_2_confidenthijab: 1
+// nadia_2_confrontchloe: 0
+// nadia_2_hidewithgavin: 1
+// nadia_2_huggavin: 1
+// chapter_2_ending: 1
+// nadia_3_gavinchoice: "no"
+// nadia_3_relationship: 1
+// chapter_3_ending: 1
+// story_finished: 1
 
 // AMAN
 // aman_1_familydinner: ""
@@ -983,4 +1203,23 @@ const GLOBAL_VAR_MAP = [
 // character_id: 2
 // story_finished: 1
 
-export default GLOBAL_VAR_MAP;
+// RAVI
+// chapter_1_ending: 2
+// chapter_2_ending: 1
+// chapter_3_ending: 1
+// chapter_id: 3
+// character_id: 3
+// ravi_1_agent: "polite"
+// ravi_1_dormhousing: 0
+// ravi_1_emailuniversity: 1
+// ravi_1_motherempathy: 4
+// ravi_1_notlikeotherindians: 1
+// ravi_1_sharefrustrations: 0
+// ravi_2_modernart: 3
+// ravi_3_afraidtotellmum: 0
+// ravi_3_checktranslation: 1
+// ravi_3_confrontcolleagues: 0
+// ravi_3_correctname: 1
+// ravi_3_internshipchoicetomum: "stay"
+// ravi_3_tellvaltruth: 0
+// story_finished: 1
