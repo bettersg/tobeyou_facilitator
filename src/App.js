@@ -60,9 +60,12 @@ const theme = createTheme({
       60: '#747A98',
       80: '#464E75',
       100: '#172153',
+      dark1: '#072435', 
     },
     aqua: {
       1: '#19A3AD',
+      2: '#005B69',
+      20: "#D8F4F6",
       100: '#3DCAD3',
     },
     lapis: {
@@ -71,6 +74,7 @@ const theme = createTheme({
       20: '#E2E2F8',
       40: '#C4C6F1',
       100: '#6C70DD',
+      dark2: "#26248F", 
     },
     chicky: {
       100: '#FFE55E',
@@ -83,6 +87,9 @@ const theme = createTheme({
       dark2: '#4B7C24',
       20: '#F5FBDE',
     },
+    tangerine: {
+      80: '#FF8944',
+    }
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(','),

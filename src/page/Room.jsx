@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Paper, Button, Menu, MenuItem } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Menu,
+  MenuItem,
+  Grid,
+} from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
@@ -10,6 +18,9 @@ import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
   FlexBoxCenterColumnAlign,
+  FlexBoxCenterColumn,
+  FlexBoxAlign,
+  FlexBoxAlignColumn,
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
 import {
@@ -21,6 +32,8 @@ import {
   QrCode,
 } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
+import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
+import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
 
 const Room = () => {
   let { roomCode } = useParams();
@@ -93,7 +106,7 @@ const Room = () => {
   console.log(currentCharChapt);
 
   return (
-    <Box sx={{ height: '100%', overflow: 'auto' }}>
+    <Box sx={{ height: '100%', overflow: 'auto', paddingTop: '76px' }}>
       <Paper
         sx={{
           position: 'absolute',
@@ -110,70 +123,9 @@ const Room = () => {
                 breadcrumbItems={[
                   { label: 'Your Classes', link: '/' },
                   { label: room?.name },
-                  {
-                    label: (
-                      <FlexBoxCenter>
-                        <CharacterAvatar
-                          avatarContent={currentCharChapt?.character}
-                        />
-                        <Typography
-                          sx={{ ml: 2, fontWeight: 700 }}
-                          variant='h4'
-                        >
-                          {currentCharChapt?.character} / Chapter{' '}
-                          {currentCharChapt?.chapterId}
-                        </Typography>
-                      </FlexBoxCenter>
-                    ),
-                  },
                 ]}
               />
             ) : null}
-            <Box>
-              <GeneralButton
-                id='basic-button'
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup='true'
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-                customcolor='lapis10'
-                sx={{ p: 1, minWidth: '52px', ml: 2 }}
-                disableElevation
-              >
-                <KeyboardArrowDown />
-              </GeneralButton>
-              <Menu
-                id='basic-menu'
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'basic-button',
-                }}
-              >
-                {room?.reflectionIds.map((reflectionId, idx) => {
-                  // TODO: ensure reflectionIds are sorted by character ordering then chapter ID (in storyMap.js)
-                  const { character, chapterId } =
-                    REFLECTION_ID_MAP[reflectionId];
-
-                  return (
-                    <MenuItem
-                      key={idx}
-                      onClick={() => {
-                        handleClose();
-                        setCurrentCharChapt(REFLECTION_ID_MAP[reflectionId]);
-                        setCurrentReflectionId(reflectionId);
-                      }}
-                    >
-                      <CharacterAvatar avatarContent={character} />
-                      <Typography sx={{ ml: 2, fontWeight: 700 }}>
-                        {character} / Chapter {chapterId}
-                      </Typography>
-                    </MenuItem>
-                  );
-                })}
-              </Menu>
-            </Box>
           </FlexBoxCenter>
           <FlexBoxCenter>
             <PeopleAltOutlined
@@ -197,66 +149,171 @@ const Room = () => {
               }}
               fontSize='large'
             />
-            <GeneralButton sx={{ml: 1}}>Download report</GeneralButton>
+            <GeneralButton sx={{ ml: 1 }}>Download report</GeneralButton>
           </FlexBoxCenter>
         </FlexBoxSpaceBetween>
       </Paper>
 
-      {currentCharChapt&&currentReflectionId ? (
-        <FlexBoxCenterColumnAlign sx={{ height: '100%', overflow: 'auto', background: (theme) => theme.palette.lapis[10] }}>
-          <Paper
-            sx={{
-              top: 210,
-              padding: '68px',
-              background: 'white',
-              maxWidth: '80%',
-            }}
+      {currentCharChapt && currentReflectionId ? (
+        <FlexBoxAlignColumn
+          sx={{
+            height: '100%',
+            overflow: 'auto',
+            background: (theme) => theme.palette.lapis[10],
+          }}
+        >
+          <Box sx={{ width: 'calc(80% + 64px)', padding: '24px 0' }}>
+            <Typography variant='h3' sx={{ textAlign: 'left' }}>
+              Class Code: {room?.code}
+            </Typography>
+          </Box>
+
+          {room?.reflectionIds.map((reflectionId) => {
+            const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
+            return (
+              <Paper
+                key={reflectionId}
+                sx={{
+                  top: 210,
+                  padding: '32px',
+                  background: 'white',
+                  width: '80%',
+                  borderRadius: '30px',
+                  mb: '48px',
+                }}
+              >
+                <Grid container sx={{ display: 'flex', height: '100%' }}>
+                  <Grid xs={12} sx={{ paddingBottom: '24px' }}>
+                    <FlexBoxAlign>
+                      <CharacterAvatar avatarContent={character} />
+                      <Typography sx={{ ml: 2, fontWeight: 700 }} variant='h4'>
+                        {character} / Chapter {chapterId}
+                      </Typography>
+                    </FlexBoxAlign>
+                  </Grid>
+                  <Grid
+                    container
+                    spacing={2}
+                    sx={{ gridAutoRows: '1fr', alignItems: 'stretch' }}
+                  >
+                    <Grid item xs={4}>
+                      <ChapterDetailsCard
+                        sx={{
+                          // backgroundColor: (theme) => theme.palette.midnight[100],
+                          background:
+                            'linear-gradient(180deg, #19A3AD 0%, #3DCAD3 100%)',
+                        }}
+                      >
+                        <GeneralProgressBar
+                          totalStudents={completionRateDenominator}
+                          completedStudents={
+                            completionRateNumerators[reflectionId]
+                          }
+                        />
+                        <Typography variant='h4' sx={{ fontWeight: 500 }}>
+                          {completionRateNumerators[reflectionId]}/
+                          {completionRateDenominator} students completed
+                        </Typography>
+                      </ChapterDetailsCard>
+                    </Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid container item xs={7} spacing={2}>
+                      <Grid item xs={6}>
+                        <ChapterDetailsCard
+                          sx={{
+                            backgroundColor: (theme) =>
+                              theme.palette.lapis.dark2,
+                            cursor: 'pointer',
+                          }}
+                          onClick={() =>
+                            navigate(
+                              `/room/${room.code}/reflectionId/${reflectionId}/reflections`
+                            )
+                          }
+                        >
+                          <Typography variant='h4'>View Reflections</Typography>
+                        </ChapterDetailsCard>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ChapterDetailsCard
+                          sx={{
+                            backgroundColor: (theme) => theme.palette.aqua[1],
+                            cursor: 'pointer',
+                          }}
+                          onClick={() =>
+                            navigate(
+                              `/room/${room.code}/reflectionId/${reflectionId}/gameChoices`
+                            )
+                          }
+                        >
+                          <Typography variant='h4' sx={{ textAlign: 'center' }}>
+                            Review Game Choices
+                          </Typography>
+                        </ChapterDetailsCard>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ChapterDetailsCard
+                          sx={{
+                            backgroundColor: (theme) => theme.palette.aqua[1],
+                          }}
+                        >
+                          <Typography
+                            variant='h4'
+                            sx={{ textAlign: 'center', cursor: 'pointer' }}
+                            onClick={() =>
+                              navigate(
+                                `/room/${room.code}/reflectionId/${reflectionId}/quizzes`
+                              )
+                            }
+                          >
+                            Review Mini Game
+                          </Typography>
+                        </ChapterDetailsCard>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid container xs={3} spacing={2}>
+                    <Grid item xs={12}></Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
+            );
+          })}
+
+          <Typography
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              navigate(
+                `/room/${room.id}/reflectionId/${currentReflectionId}/reflections`
+              )
+            }
           >
-            <Box>
-              <Typography>
-                {currentCharChapt.character} / Chapter{' '}
-                {currentCharChapt.chapter}
-              </Typography>
-              <Typography>
-                {completionRateNumerators[currentReflectionId]}/
-                {completionRateDenominator} students completed
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${currentReflectionId}/reflections`
-                  )
-                }
-              >
-                View Reflections
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${currentReflectionId}/gameChoices`
-                  )
-                }
-              >
-                Review Game Choices
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${currentReflectionId}/quizzes`
-                  )
-                }
-              >
-                Review Mini Game
-              </Typography>
-              <br />
-            </Box>
-          </Paper>
-        </FlexBoxCenterColumnAlign>
+            View Reflections
+          </Typography>
+          <Typography
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              navigate(
+                `/room/${room.id}/reflectionId/${currentReflectionId}/gameChoices`
+              )
+            }
+          >
+            Review Game Choices
+          </Typography>
+          <Typography
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              navigate(
+                `/room/${room.id}/reflectionId/${currentReflectionId}/quizzes`
+              )
+            }
+          >
+            Review Mini Game
+          </Typography>
+          <br />
+        </FlexBoxAlignColumn>
       ) : null}
-{/* 
+      {/* 
       <Box
         sx={{
           padding: '68px',
