@@ -42,6 +42,7 @@ const NewRoomModal = (props) => {
       date: moment(formData.date, 'YYYY-MM-DD').toDate(),
       createdAt: moment().toDate(),
       instructions: formData.instructions,
+      pinnedReflectionResponseIds: [],
     };
     return room;
   };
