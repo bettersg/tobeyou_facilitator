@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import {
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  PushPin,
+  PushPinOutlined,
+} from '@mui/icons-material';
 import { Modal, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { getDbRoomByCode } from '../models/roomModel';
+import {
+  getDbRoomByCode,
+  toggleDbRoomPinnedReflectionResponse,
+} from '../models/roomModel';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import {
   ModalArrowBox,
@@ -73,7 +81,7 @@ const ReflectionModal = (props) => {
       <ModalBox>
         <LeftArrowBox />
         <ModalContentBox>
-          <Typography>{reflection ? reflection.answer : null}</Typography>
+          <Typography>{reflection?.answer}</Typography>
         </ModalContentBox>
         <RightArrowBox />
       </ModalBox>
@@ -89,6 +97,8 @@ const Reflections = () => {
 
   const [reflectionResponses, setReflectionResponses] = useState(null);
   const [modalReflectionIndex, setModalReflectionIndex] = useState(null); // null means modal is inactive; an index means its reflection is displayed in the modal
+  const [pinnedReflectionResponseIds, setPinnedReflectionResponseIds] =
+    useState(null);
 
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -99,6 +109,7 @@ const Reflections = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
+    setPinnedReflectionResponseIds(dbRoom.pinnedReflectionResponseIds || []);
     const dbReflectionResponses = await getDbReflectionResponses(
       roomCode,
       reflectionId,
@@ -109,6 +120,22 @@ const Reflections = () => {
       (rr) => rr.answer.length > 5
     );
     setReflectionResponses(filteredDbReflectionResponses);
+  }
+
+  function isReflectionResponsePinned(reflectionResponse) {
+    return pinnedReflectionResponseIds.includes(reflectionResponse.id);
+  }
+
+  async function togglePinnedReflectionResponse(reflectionResponse) {
+    toggleDbRoomPinnedReflectionResponse(roomCode, reflectionResponse.id);
+    const newPinnedRrIds = pinnedReflectionResponseIds.includes(
+      reflectionResponse.id
+    )
+      ? pinnedReflectionResponseIds.filter(
+          (rrId) => rrId !== reflectionResponse.id
+        )
+      : [...pinnedReflectionResponseIds, reflectionResponse.id];
+    setPinnedReflectionResponseIds(newPinnedRrIds);
   }
 
   useEffect(() => getData(), []);
@@ -123,15 +150,34 @@ const Reflections = () => {
       </h4>
       <Masonry columns={3} spacing={2}>
         {reflectionResponses
-          ? reflectionResponses.map((reflectionResponse, index) => (
-              <ReflectionCard
-                variant='outlined'
-                onClick={() => setModalReflectionIndex(index)}
-                key={index}
-              >
-                {reflectionResponse.answer}
-              </ReflectionCard>
-            ))
+          ? reflectionResponses
+              .sort((x, y) => {
+                // Sort by pinned status, then by submitted time
+                const isPinned =
+                  isReflectionResponsePinned(x) - isReflectionResponsePinned(y);
+                if (isPinned !== 0) return -isPinned; // pinned reflections get a lower value
+                return x.submittedAt - y.submittedAt;
+              })
+              .map((reflectionResponse, index) => {
+                const toggleFunction = (e) => {
+                  e.stopPropagation();
+                  togglePinnedReflectionResponse(reflectionResponse);
+                };
+                return (
+                  <ReflectionCard
+                    variant='outlined'
+                    onClick={() => setModalReflectionIndex(index)}
+                    key={index}
+                  >
+                    {isReflectionResponsePinned(reflectionResponse) ? (
+                      <PushPin onClick={toggleFunction} />
+                    ) : (
+                      <PushPinOutlined onClick={toggleFunction} />
+                    )}
+                    {reflectionResponse.answer}
+                  </ReflectionCard>
+                );
+              })
           : null}
       </Masonry>
       <ReflectionModal

@@ -115,3 +115,26 @@ export const updateDbRoom = async (obj) => {
     throw new Error(`Error at updateDbRoom: ${err}`);
   }
 };
+
+/**
+ * Toggles the pinned status of a reflection in the room.
+ * @param {string} roomCode - room's code
+ * @param {string} reflectionResponseId - reflection response's ID. Note that this does NOT refer to `reflectionResponse.reflectionId`, which refers to a particular chapter instead.
+ */
+export const toggleDbRoomPinnedReflectionResponse = async (
+  roomCode,
+  reflectionResponseId
+) => {
+  try {
+    const room = await getDbRoomByCode(roomCode);
+    const pinnedRrIds = room.pinnedReflectionResponseIds || [];
+    const newPinnedRrIds = pinnedRrIds.includes(reflectionResponseId)
+      ? pinnedRrIds.filter((rrId) => rrId !== reflectionResponseId)
+      : [...pinnedRrIds, reflectionResponseId];
+    await firestore.collection('rooms').doc(room.id).update({
+      pinnedReflectionResponseIds: newPinnedRrIds,
+    });
+  } catch (err) {
+    throw new Error(`Error at toggleDbRoomPinnedReflectionResponse: ${err}`);
+  }
+};
