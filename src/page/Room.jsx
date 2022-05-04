@@ -34,6 +34,7 @@ import {
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
+import { RoomModal } from '../components/GeneralRoomModal/RoomModal';
 
 const Room = () => {
   let { roomCode } = useParams();
@@ -49,6 +50,9 @@ const Room = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentCharChapt, setCurrentCharChapt] = React.useState(null);
   const [currentReflectionId, setCurrentReflectionId] = React.useState(null);
+
+  const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] =
+    React.useState(false);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -240,12 +244,28 @@ const Room = () => {
                             backgroundColor: (theme) => theme.palette.aqua[1],
                             cursor: 'pointer',
                           }}
-                          onClick={() =>
-                            navigate(
-                              `/room/${room.code}/reflectionId/${reflectionId}/gameChoices`
-                            )
-                          }
+                          // onClick={() =>
+                          //   navigate(
+                          //     `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
+                          //   )
+                          // }
+                          onClick={() => {
+                            setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
+                            setCurrentReflectionId(reflectionId);
+                          }}
                         >
+                          <RoomModal
+                            isModalOpen={isGameChoicesModalOpen}
+                            setIsModalOpen={setIsGameChoicesModalOpen}
+                            label='Game choices'
+                            roomReflectionId={currentReflectionId}
+                            roomCode={room.code}
+                            type='gameChoices'
+                            // formData={newRoomFormData}
+                            // setFormData={setNewRoomFormData}
+                            // initialFormData={initialRoomFormData}
+                            // loadRooms={loadRooms}
+                          />
                           <Typography variant='h4' sx={{ textAlign: 'center' }}>
                             Review Game Choices
                           </Typography>
@@ -256,15 +276,15 @@ const Room = () => {
                           sx={{
                             backgroundColor: (theme) => theme.palette.aqua[1],
                           }}
+                          onClick={() =>
+                            navigate(
+                              `/room/${room.id}/reflectionId/${reflectionId}/quizzes`
+                            )
+                          }
                         >
                           <Typography
                             variant='h4'
                             sx={{ textAlign: 'center', cursor: 'pointer' }}
-                            onClick={() =>
-                              navigate(
-                                `/room/${room.code}/reflectionId/${reflectionId}/quizzes`
-                              )
-                            }
                           >
                             Review Mini Game
                           </Typography>

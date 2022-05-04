@@ -6,14 +6,47 @@ import { getDbRoomByCode } from '../models/roomModel';
 import { useEventListener } from '../utils';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Link,
+  Modal,
+  Step,
+  Stepper,
+  StepLabel,
+  TextField,
+  Typography,
+  Grid,
+  Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead,
+  Paper,
+} from '@mui/material';
+import {
+  ContentCopy,
+  MailOutline,
+  WhatsApp,
+  Check,
+  CheckCircleOutline,
+  Close,
+  ArrowForwardIos,
+} from '@mui/icons-material';
+import { FlexBoxAlign, FlexBoxCenterColumnAlign } from '../components/styled/general';
+import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
 
 const GameChoices = () => {
-  let { roomCode, reflectionId } = useParams();
+  let { roomCode, reflectionId, choiceIdx } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] = useState(0);
+  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] = useState(choiceIdx);
   const [allGlobalVariables, setAllGlobalVariables] = useState(null);
 
   const chapter = GLOBAL_VAR_MAP.flatMap(
@@ -69,23 +102,27 @@ const GameChoices = () => {
   );
 
   return (
-    <div onKeyDown={handleKeyDown}>
-      <h3>{gameChoice.name}</h3>
-      <p>{gameChoice.description}</p>
-      <ul>
-        {gameChoice.values.map((value) => {
-          const numUsersMadeChoice = userChoices?.filter(
-            (userChoice) => userChoice === value.value
-          ).length;
-          return (
-            <li key={value.value}>
-              {value.description} - {numUsersMadeChoice} made this choice
-            </li>
-          );
-        })}
-      </ul>
-      <p>Note: use left/right arrow keys to scroll through game choices</p>
-    </div>
+    <ChoicesScreen title={gameChoice.description}>
+
+    </ChoicesScreen>
+    // <FlexBoxCenterColumnAlign onKeyDown={handleKeyDown} sx={{height: "100%", width: "100%"}}>
+    //   <Typography variant="h3">{gameChoice.description}</Typography>
+    //   <Paper>
+    //     <ul>
+    //       {gameChoice.values.map((value) => {
+    //         const numUsersMadeChoice = userChoices?.filter(
+    //           (userChoice) => userChoice === value.value
+    //         ).length;
+    //         return (
+    //           <li key={value.value}>
+    //             {value.description} - {numUsersMadeChoice} made this choice
+    //           </li>
+    //         );
+    //       })}
+    //     </ul>
+    //   </Paper>
+    //   <p>Note: use left/right arrow keys to scroll through game choices</p>
+    // </FlexBoxCenterColumnAlign>
   );
 };
 

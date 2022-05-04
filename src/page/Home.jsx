@@ -162,7 +162,11 @@ const Home = () => {
         .filter((room) => !room.isDeleted);
       filteredRooms.sort((x, y) => x.date - y.date);
       return (
-        <Grid container spacing={2} sx={{maxHeight: "82vh", overflow: "auto"}}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ maxHeight: '82vh', overflow: 'auto' }}
+        >
           {filteredRooms.map((room) => (
             <Grid item key={room.id} xs={4}>
               <RoomCard
