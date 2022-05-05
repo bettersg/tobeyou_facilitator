@@ -13,6 +13,7 @@ import ProfileBuilder from './page/ProfileBuilder';
 import AuthLayout from './page/AuthLayout';
 import Login from './page/Login';
 import SignUp from './page/SignUp';
+import ForgetPassword from './page/ForgetPassword';
 import RequireAuth from './page/RequireAuth';
 
 import {
@@ -158,6 +159,7 @@ function App() {
               <Route element={<AuthLayout />}>
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<SignUp />} />
+                <Route path='/forget-password' element={<ForgetPassword />} />
               </Route>
             </Routes>
           </BrowserRouter>
