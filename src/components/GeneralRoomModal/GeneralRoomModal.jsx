@@ -315,8 +315,6 @@ const Step1 = ({
             color: (theme) => theme.palette.midnight[80],
           }}
         >
-          <Typography variant='h5'>Estimated assigned time: 0mins</Typography>
-
           <GeneralButton
             variant='contained'
             onClick={handleNextStep}
