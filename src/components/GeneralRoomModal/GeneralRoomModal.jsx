@@ -10,10 +10,8 @@ import {
   Step,
   Stepper,
   StepLabel,
-  TextField,
   Typography,
   Grid,
-  Alert,
 } from '@mui/material';
 import {
   ContentCopy,
@@ -37,9 +35,9 @@ import {
 } from '../styled/general';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
-import { CHARACTER_MAP } from '../../models/storyMap';
 import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
 import { getGameUrl } from '../../utils';
+import { CHARACTER_ORDERING, REFLECTION_ID_MAP } from '../../models/storyMap';
 
 function ModalStepIcon(props) {
   const { active, completed, className } = props;
@@ -253,8 +251,11 @@ const Step1 = ({
               borderBottom: (theme) => `1px solid ` + theme.palette.lapis[20],
             }}
           >
-            {Object.keys(CHARACTER_MAP).map((character) => {
-              const chapterMap = CHARACTER_MAP[character];
+            {CHARACTER_ORDERING.map((character) => {
+              const reflectionIds = Object.keys(REFLECTION_ID_MAP).filter(
+                (reflectionId) =>
+                  REFLECTION_ID_MAP[reflectionId].character === character
+              );
               return (
                 <FormGroup key={character}>
                   <Grid container>
@@ -276,8 +277,11 @@ const Step1 = ({
                       xs={10}
                       sx={{ display: 'flex', flexDirection: 'column' }}
                     >
-                      {Object.keys(chapterMap).map((reflectionId) => {
-                        const chapterName = chapterMap[reflectionId];
+                      {reflectionIds.map((reflectionId) => {
+                        const chapterId =
+                          REFLECTION_ID_MAP[reflectionId].chapterId;
+                        const chapterTitle =
+                          REFLECTION_ID_MAP[reflectionId].title;
                         return (
                           <FormControlLabel
                             key={reflectionId}
@@ -294,7 +298,7 @@ const Step1 = ({
                                 name={reflectionId}
                               />
                             }
-                            label={chapterName}
+                            label={`Chapter ${chapterId}: ${chapterTitle}`}
                           />
                         );
                       })}

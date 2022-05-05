@@ -63,11 +63,12 @@ const Room = () => {
       </h4>
       <h3>Class Code: {room?.code}</h3>
       {room?.reflectionIds.map((reflectionId) => {
-        const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
+        // TODO: ensure reflectionIds are sorted by character ordering then chapter ID (in storyMap.js)
+        const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
         return (
           <Box key={reflectionId}>
             <Typography>
-              {character} / Chapter {chapter}
+              {character} / Chapter {chapterId}
             </Typography>
             <Typography>
               {completionRateNumerators[reflectionId]}/
