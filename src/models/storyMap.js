@@ -1,29 +1,68 @@
-export const CHARACTER_MAP = {
-  Nadia: {
-    2: 'Chapter 1: An Unexpected Invitation (5 min)',
-    3: 'Chapter 2: The Date Crasher (6 min)',
-    4: 'Chapter 3: Fork in the Road (7 min)',
-  },
-  Aman: {
-    1: 'Chapter 1: Call of Duty (6 min)',
-    5: 'Chapter 2: Price of Admission (4 min)',
-    6: 'Chapter 3: The Show Must Go On (5 min)',
-  },
-  Ravi: {
-    7: 'Chapter 1: Home Truths (X min)',
-    8: 'Chapter 2: Coffee Shop Kannasamy (X min)',
-    9: 'Chapter 3: The Internship (X min)',
-  },
-};
+// Display order for characters
+export const CHARACTER_ORDERING = ['Nadia', 'Aman', 'Ravi'];
 
 export const REFLECTION_ID_MAP = {
-  1: { character: 'Aman', chapter: 1 },
-  2: { character: 'Nadia', chapter: 1 },
-  3: { character: 'Nadia', chapter: 2 },
-  4: { character: 'Nadia', chapter: 3 },
-  5: { character: 'Aman', chapter: 2 },
-  6: { character: 'Aman', chapter: 3 },
-  7: { character: 'Ravi', chapter: 1 },
-  8: { character: 'Ravi', chapter: 2 },
-  9: { character: 'Ravi', chapter: 3 },
+  1: {
+    // Aman 1
+    character: 'Aman',
+    characterId: 2,
+    chapterId: 1,
+    title: 'Call of Duty (6 min)',
+  },
+  2: {
+    // Nadia 1
+    character: 'Nadia',
+    characterId: 1,
+    chapterId: 1,
+    title: 'An Unexpected Invitation (5 min)',
+  },
+  3: {
+    // Nadia 2
+    character: 'Nadia',
+    characterId: 1,
+    chapterId: 2,
+    title: 'The Date Crasher (6 min)',
+  },
+  4: {
+    // Nadia 3
+    character: 'Nadia',
+    characterId: 1,
+    chapterId: 3,
+    title: 'Fork in the Road (7 min)',
+  },
+  5: {
+    // Aman 2
+    character: 'Aman',
+    characterId: 2,
+    chapterId: 2,
+    title: 'Price of Admission (4 min)',
+  },
+  6: {
+    // Aman 3
+    character: 'Aman',
+    characterId: 2,
+    chapterId: 3,
+    title: 'The Show Must Go On (5 min)',
+  },
+  7: {
+    // Ravi 1
+    character: 'Ravi',
+    characterId: 3,
+    chapterId: 1,
+    title: 'Home Truths (X min)',
+  },
+  8: {
+    // Ravi 2
+    character: 'Ravi',
+    characterId: 3,
+    chapterId: 2,
+    title: 'Coffee Shop Kannasamy (X min)',
+  },
+  9: {
+    // Ravi 3
+    character: 'Ravi',
+    characterId: 3,
+    chapterId: 3,
+    title: 'The Internship (X min)',
+  },
 };

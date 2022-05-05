@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { getDbSavedState } from '../models/savedStateModel';
 import { getDbRoomByCode } from '../models/roomModel';
 import { useEventListener } from '../utils';
-import REFLECTION_ID_MAP from '../models/reflectionIdMap';
+import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
 
 const GameChoices = () => {

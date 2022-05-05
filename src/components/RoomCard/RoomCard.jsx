@@ -4,28 +4,11 @@ import { useNavigate } from 'react-router';
 import {
   EditOutlined,
   QrCode,
-  FileDownloadOutlined,
   ArchiveOutlined,
   DeleteOutlineOutlined,
 } from '@mui/icons-material';
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
-  Typography,
-  AvatarGroup,
-} from '@mui/material';
-import {
-  FlexBoxSpaceBetween,
-  FlexBoxCenter,
-  FlexBoxCenterColumn,
-} from '../styled/general';
-import { REFLECTION_ID_MAP } from '../../models/storyMap';
-import { StyledRoomCardTag } from '../RoomCardTag/StyledRoomCardTag';
-import { palette } from '@mui/system';
-import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
+import { Card, Grid, Typography } from '@mui/material';
+import { FlexBoxSpaceBetween, FlexBoxCenter } from '../styled/general';
 import { CharacterAvatarGroup } from '../CharacterAvatarGroup/CharacterAvatarGroup';
 import { RoomCardTag } from '../RoomCardTag/RoomCardTag';
 
@@ -141,14 +124,6 @@ const RoomCard = (props) => {
         {/* right side */}
         <Grid item xs={5}>
           <CharacterAvatarGroup data={room.reflectionIds} type='roomCard' />
-          {/* {room.reflectionIds.map((reflectionId) => {
-              const { character, chapter } = REFLECTION_ID_MAP[reflectionId];
-              return (
-                <Typography key={reflectionId}>
-                  {character} {chapter}
-                </Typography>
-              );
-            })} */}
         </Grid>
       </Grid>
     </Card>
