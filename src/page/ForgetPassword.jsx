@@ -10,13 +10,12 @@ import {
 import { GeneralTextField } from '../components/GeneralTextField/GeneralTextField';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const { loginOnlyFacilitators } = useAuth();
+const ForgetPassword = () => {
+  const { loginOnlyFacilitators, resetPassword } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
   });
 
   const handleChange = (event) => {
@@ -26,15 +25,15 @@ const Login = () => {
     });
   };
 
-  const handleLogin = useCallback(
+  const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
       setIsLoading(true);
 
       const email = formData.email;
-      const password = formData.password;
       try {
-        await loginOnlyFacilitators(email, password);
+        await resetPassword(email);
+        alert('Check your inbox for further instructions!');
         navigate('/');
       } catch (error) {
         alert(error);
@@ -45,6 +44,7 @@ const Login = () => {
     [navigate, loginOnlyFacilitators, formData]
   );
 
+  // TODO: refactor to reduce duplication across login, sign-up, and forget password pages
   return (
     <LoginBackground>
       <LoginFormSection>
@@ -56,10 +56,10 @@ const Login = () => {
           align='center'
           style={{ marginBottom: '20px' }}
         >
-          Log in
+          Password Reset
         </Typography>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <Box
             style={{
               display: 'flex',
@@ -71,35 +71,22 @@ const Login = () => {
               name='email'
               variant='filled'
               label='Email:'
-              defaultValue='example@email.com'
+              placeholder='Your email here'
               onChange={handleChange}
               disabled={isLoading}
             />
-            <GeneralTextField
-              name='password'
-              label='Password:'
-              type='password'
-              variant='filled'
-              onChange={handleChange}
-              disabled={isLoading}
-            />
-            <Link to='/forget-password' style={{ textDecoration: 'unset' }}>
-              <Typography variant='subtitle1'>Forgot your password?</Typography>
-            </Link>
             <LoginButton
               type='submit'
               variant='contained'
               color='primary'
-              onClick={handleLogin}
+              onClick={handleSubmit}
               disabled={isLoading}
               style={{ marginTop: 10 }}
             >
-              Login
+              Submit
             </LoginButton>
-            <Link to='/signup' style={{ color: 'black' }}>
-              <Typography variant='subtitle2'>
-                Don&apos;t have an account? Sign up here.
-              </Typography>
+            <Link to='/login' style={{ color: 'black' }}>
+              <Typography variant='subtitle2'>Back to login</Typography>
             </Link>
           </Box>
         </form>
@@ -118,4 +105,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;
