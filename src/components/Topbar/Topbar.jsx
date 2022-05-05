@@ -11,14 +11,16 @@ export const Topbar = () => {
   const { currentUser, logout } = useAuth();
   return (
     <StyledTopbar>
-      <Box sx={{cursor: "pointer", marginLeft: "20px"}}>
-        <img src="/general/logo.png" width="60" onClick={() => navigate('/')} />
+      <Box sx={{ cursor: 'pointer', marginLeft: '20px' }}>
+        <img src='/general/logo.png' width='60' onClick={() => navigate('/')} />
       </Box>
       <FlexBoxCenter>
-        <NavbarText variant="body2">Play Game</NavbarText>
-        <NavbarText variant="body2">Lesson Plan</NavbarText>
-        <NavbarText onClick={logout}>{ currentUser.displayName }</NavbarText>
-        <Sidebar/>
+        <NavbarText href={'https://game.tobeyou.sg/'} variant='body2'>
+          Play Game
+        </NavbarText>
+        <NavbarText variant='body2'>Lesson Plan</NavbarText>
+        <NavbarText onClick={logout}>{currentUser.displayName}</NavbarText>
+        <Sidebar />
       </FlexBoxCenter>
     </StyledTopbar>
   );
