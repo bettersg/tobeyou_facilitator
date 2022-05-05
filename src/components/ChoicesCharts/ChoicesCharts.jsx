@@ -24,42 +24,98 @@ export const options = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-        display: false, 
-    //   position: 'top',
+      display: false,
+      //   position: 'top',
+    },
+  },
+  scales: {
+    y: {
+      grid: {
+        color: 'white',
+      },
+      ticks: {
+        stepSize: 1,
+        font: {
+          size: '18px',
+          weight: 700,
+          maxWidth: '50px',
+        },
+      },
+    },
+    x: {
+      ticks: {
+        font: {
+          size: '18px',
+          weight: 700,
+          maxWidth: '50px',
+        },
+      },
     },
   },
 };
 
-
 export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
-    function getGameChoicesDescription () {
-        let output = {description: [], numChoice: []}
+  function getGameChoicesDescription() {
+    let output = { description: [], numChoice: [] };
 
-        for (let i=0; i<gameChoiceValues.length; i++) {
-            output.description.push(gameChoiceValues[i].description)
-            const numUsersMadeChoice = userChoices?.filter(
-                (userChoice) => userChoice === gameChoiceValues[i].value
-            ).length;
-            output.numChoice.push(numUsersMadeChoice)
+    for (let i = 0; i < gameChoiceValues.length; i++) {
+      const maxCharacterCount = Math.round(1000 / gameChoiceValues.length / 16);
+      let gameChoiceValuesDescription = gameChoiceValues[i].description;
+      if (gameChoiceValuesDescription.length > maxCharacterCount) {
+        let descriptionSplit = [];
+        let end = maxCharacterCount;
+        let start = 0;
+        while (end < gameChoiceValuesDescription.length) {
+          let hasDash = false;
+          if (
+            gameChoiceValuesDescription[end - 1] !== ' ' &&
+            gameChoiceValuesDescription[end] !== ' ' &&
+            end < gameChoiceValuesDescription.length
+          ) {
+            hasDash = true;
+          }
+          descriptionSplit.push(
+            gameChoiceValuesDescription.slice(start, end) +
+              `${hasDash ? '-' : ''}`
+          );
+          start = end;
+          // end = temp + maxCharacterCount
+          end = Math.min(
+            start + maxCharacterCount,
+            gameChoiceValuesDescription.length
+          );
         }
-        return (output)
-    }
-    console.log(getGameChoicesDescription().description)
 
-    const labels = getGameChoicesDescription().description
-    // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    const data = {
-      labels,
-      datasets: [
-        {
-          label: 'Dataset 1',
-          data: getGameChoicesDescription().numChoice,
-          backgroundColor: '#3DCAD3',
-          borderRadius: 8
-        },
-        
-      ],
-    };
+        if (end >= gameChoiceValuesDescription.length) {
+          descriptionSplit.push(gameChoiceValuesDescription.slice(start, end));
+        }
+        output.description.push(descriptionSplit);
+      } else {
+        output.description.push(gameChoiceValuesDescription);
+      }
+
+      const numUsersMadeChoice = userChoices?.filter(
+        (userChoice) => userChoice === gameChoiceValues[i].value
+      ).length;
+      output.numChoice.push(numUsersMadeChoice);
+    }
+    return output;
+  }
+  console.log(getGameChoicesDescription().description);
+
+  const labels = getGameChoicesDescription().description;
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Number of Students',
+        data: getGameChoicesDescription().numChoice,
+        backgroundColor: '#FF8944',
+        borderRadius: 8,
+      },
+    ],
+  };
 
   return (
     <Bar
