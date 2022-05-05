@@ -64,6 +64,7 @@ export const ChoicesScreen = ({
           mb: 5,
           maxWidth: '80%',
           textAlign: 'center',
+          mt: "-100px", 
         }}
       >
         {title}
@@ -95,7 +96,6 @@ export const ChoicesScreen = ({
           fontSize='large'
         />
       </FlexBoxSpaceBetween>
-      {children}
     </ChoicesBackground>
   );
 };
