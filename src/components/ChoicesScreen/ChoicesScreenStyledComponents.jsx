@@ -14,4 +14,5 @@ export const ChoicesPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '20px',
   padding: '80px',
+  maxWidth: "80%", 
 }));

@@ -102,24 +102,11 @@ const GameChoices = () => {
   );
 
   return (
-    <ChoicesScreen title={gameChoice.description}>
-
+    <ChoicesScreen title={gameChoice.description} onKeyDown={handleKeyDown} onLeft={handleLeft} onRight={handleRight} gameChoiceValues={gameChoice.values} userChoices={userChoices}>
     </ChoicesScreen>
-    // <FlexBoxCenterColumnAlign onKeyDown={handleKeyDown} sx={{height: "100%", width: "100%"}}>
+    // <FlexBoxCenterColumnAlign  sx={{height: "100%", width: "100%"}}>
     //   <Typography variant="h3">{gameChoice.description}</Typography>
     //   <Paper>
-    //     <ul>
-    //       {gameChoice.values.map((value) => {
-    //         const numUsersMadeChoice = userChoices?.filter(
-    //           (userChoice) => userChoice === value.value
-    //         ).length;
-    //         return (
-    //           <li key={value.value}>
-    //             {value.description} - {numUsersMadeChoice} made this choice
-    //           </li>
-    //         );
-    //       })}
-    //     </ul>
     //   </Paper>
     //   <p>Note: use left/right arrow keys to scroll through game choices</p>
     // </FlexBoxCenterColumnAlign>
