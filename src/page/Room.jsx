@@ -104,7 +104,7 @@ const Room = () => {
   }, []);
 
   return (
-    <Box sx={{ height: '100%', overflow: 'auto', paddingTop: '76px' }}>
+    <Box sx={{ height: 'calc(80% + 90px)', overflow: 'auto', paddingTop: '76px', paddingBottom: "25px"}}>
       <Paper
         sx={{
           position: 'absolute',
@@ -177,7 +177,7 @@ const Room = () => {
                   background: 'white',
                   width: '80%',
                   borderRadius: '30px',
-                  mb: '48px',
+                  mb: '20px',
                 }}
               >
                 <Grid container sx={{ display: 'flex', height: '100%' }}>
