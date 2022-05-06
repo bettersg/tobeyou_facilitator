@@ -20,6 +20,7 @@ import {
   TableRow,
   TableHead,
   Paper,
+  
 } from '@mui/material';
 import {
   ContentCopy,
@@ -29,7 +30,7 @@ import {
   CheckCircleOutline,
   Close,
   ArrowForwardIos,
-  ChangeHistoryRounded,
+  ChangeHistoryRounded,ClearRounded, 
 } from '@mui/icons-material';
 import {
   FlexBoxAlign,
@@ -42,6 +43,7 @@ import {
 } from './ChoicesScreenStyledComponents';
 import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
 import { ChoicesCharts } from '../ChoicesCharts/ChoicesCharts';
+import { useNavigate, useParams } from 'react-router';
 
 export const ChoicesScreen = ({
   title,
@@ -54,8 +56,13 @@ export const ChoicesScreen = ({
   onRight,
   ...props
 }) => {
+  let { roomId, reflectionId, choiceIdx } = useParams();
+
   return (
     <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>
+        <Link href={`/room/${roomId}`}>
+            <ClearRounded fontSize="large" sx={{position: "absolute", top: 80, right: 50, color: "white"}} />
+        </Link>
       <Typography
         variant='h3'
         sx={{
