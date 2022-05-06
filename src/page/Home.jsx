@@ -215,6 +215,7 @@ const Home = () => {
                   ARCHIVED
                 </ToggleButton>
               </HomeToggleButtonGroup>
+              {/* todo: filter */}
               {/* <GeneralSelect
                   name="filter"
                   value={roomFilter.key}

@@ -6,41 +6,6 @@ import { getDbRoomByCode } from '../models/roomModel';
 import { useEventListener } from '../utils';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Link,
-  Modal,
-  Step,
-  Stepper,
-  StepLabel,
-  TextField,
-  Typography,
-  Grid,
-  Alert,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TableHead,
-  Paper,
-} from '@mui/material';
-import {
-  ContentCopy,
-  MailOutline,
-  WhatsApp,
-  Check,
-  CheckCircleOutline,
-  Close,
-  ArrowForwardIos,
-} from '@mui/icons-material';
-import {
-  FlexBoxAlign,
-  FlexBoxCenterColumnAlign,
-} from '../components/styled/general';
 import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
 
 const GameChoices = () => {
@@ -90,7 +55,6 @@ const GameChoices = () => {
   };
 
   const handleKeyDown = (event) => {
-    console.log(event)
     if (event.keyCode === 37) {
       handleLeft();
     } else if (event.keyCode === 39) {
@@ -115,12 +79,6 @@ const GameChoices = () => {
       gameChoiceValues={gameChoice.values}
       userChoices={userChoices}
     ></ChoicesScreen>
-    // <FlexBoxCenterColumnAlign  sx={{height: "100%", width: "100%"}}>
-    //   <Typography variant="h3">{gameChoice.description}</Typography>
-    //   <Paper>
-    //   </Paper>
-    //   <p>Note: use left/right arrow keys to scroll through game choices</p>
-    // </FlexBoxCenterColumnAlign>
   );
 };
 

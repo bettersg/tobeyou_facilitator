@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -46,7 +46,6 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
               `${hasDash ? '-' : ''}`
           );
           start = end;
-          // end = temp + maxCharacterCount
           end = Math.min(
             start + maxCharacterCount,
             gameChoiceValuesDescription.length
@@ -81,11 +80,9 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
     plugins: {
       legend: {
         display: false,
-        //   position: 'top',
       },
       ChartDataLabels,
       datalabels: {
-        // display: false,
         color: '#464E75',
 
         borderRadius: 4,
@@ -93,7 +90,6 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
           size: '24px',
           weight: 'bold',
         },
-        // formatter: Math.round ,
         formatter: function (value, ctx) {
           return value && userChoices
             ? Math.round((value / userChoices.length) * 100) +

@@ -37,9 +37,7 @@ export const LoginFormSection = styled(Box)(({isNadia, theme}) => ({
     flexDirection: "column", 
     alignItems: "center",
     overflow:"auto", 
-    // position: "absolute", 
-    // left: "38%", 
-    // top: "20%",  
+
     '&::-webkit-scrollbar': {
       display:"none"
     },

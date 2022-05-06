@@ -3,9 +3,6 @@ import {
   Box,
   Typography,
   Paper,
-  Button,
-  Menu,
-  MenuItem,
   Grid,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
@@ -17,18 +14,13 @@ import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBrea
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
-  FlexBoxCenterColumnAlign,
-  FlexBoxCenterColumn,
   FlexBoxAlign,
   FlexBoxAlignColumn,
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
 import {
-  KeyboardArrowDown,
   PeopleAltOutlined,
   EditOutlined,
-  Edit,
-  KeyboardArrowRight,
   QrCode,
 } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
@@ -47,20 +39,11 @@ const Room = () => {
     useState(null);
 
   // for menu
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentCharChapt, setCurrentCharChapt] = React.useState(null);
   const [currentReflectionId, setCurrentReflectionId] = React.useState(null);
 
   const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] =
     React.useState(false);
-
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   async function getRoom() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -197,7 +180,6 @@ const Room = () => {
                     <Grid item xs={4}>
                       <ChapterDetailsCard
                         sx={{
-                          // backgroundColor: (theme) => theme.palette.midnight[100],
                           background:
                             'linear-gradient(180deg, #19A3AD 0%, #3DCAD3 100%)',
                         }}
@@ -238,11 +220,6 @@ const Room = () => {
                             backgroundColor: (theme) => theme.palette.aqua[1],
                             cursor: 'pointer',
                           }}
-                          // onClick={() =>
-                          //   navigate(
-                          //     `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
-                          //   )
-                          // }
                           onClick={() => {
                             setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
                             setCurrentReflectionId(reflectionId);
@@ -255,10 +232,6 @@ const Room = () => {
                             roomReflectionId={currentReflectionId}
                             roomCode={room.code}
                             type='gameChoices'
-                            // formData={newRoomFormData}
-                            // setFormData={setNewRoomFormData}
-                            // initialFormData={initialRoomFormData}
-                            // loadRooms={loadRooms}
                           />
                           <Typography variant='h4' sx={{ textAlign: 'center' }}>
                             Review Game Choices
@@ -296,62 +269,6 @@ const Room = () => {
           })}
         </FlexBoxAlignColumn>
       ) : null}
-      {/* 
-      <Box
-        sx={{
-          padding: '68px',
-          paddingTop: '130px',
-          background: (theme) => theme.palette.lapis[10],
-          height: 'calc(100vh - 120px)',
-        }}
-      >
-        <h3>Class Code: {room?.code}</h3>
-        {room?.reflectionIds.map((reflectionId) => {
-          const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
-          return (
-            <Box key={reflectionId}>
-              <Typography>
-                {character} / Chapter {chapterId}
-              </Typography>
-              <Typography>
-                {completionRateNumerators[reflectionId]}/
-                {completionRateDenominator} students completed
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${reflectionId}/reflections`
-                  )
-                }
-              >
-                View Reflections
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${reflectionId}/gameChoices`
-                  )
-                }
-              >
-                Review Game Choices
-              </Typography>
-              <Typography
-                style={{ cursor: 'pointer' }}
-                onClick={() =>
-                  navigate(
-                    `/room/${room.id}/reflectionId/${reflectionId}/quizzes`
-                  )
-                }
-              >
-                Review Mini Game
-              </Typography>
-              <br />
-            </Box>
-          );
-        })}
-      </Box> */}
     </Box>
   );
 };

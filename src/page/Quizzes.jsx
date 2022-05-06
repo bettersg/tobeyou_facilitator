@@ -5,6 +5,7 @@ import { getDbRoomByCode } from '../models/roomModel';
 import { getDbQuizAnswers } from '../models/quizAnswerModel';
 import { MINI_GAME_MAP } from '../models/miniGameMap';
 import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
+import { useEventListener } from '../utils';
 
 const Quizzes = () => {
   let { roomCode, reflectionId, quizIdx } = useParams();
@@ -65,24 +66,6 @@ const Quizzes = () => {
     setMiniGameResults(results);
   }, [quizAnswers]);
 
-  function buildResultCard(question) {
-    return (
-      <div>
-        <p>{question.question}</p>
-        <ul>
-          {question.answers.map((answer, idx) => (
-            <li key={idx}>
-              {answer.title} [count = {answer.count}]{' '}
-              {answer.answer_id === question.correct_answer_id
-                ? '[correct]'
-                : null}
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
     if (
@@ -98,8 +81,6 @@ const Quizzes = () => {
 
   useEffect(() => getData(), []);
   useEffect(() => compileResults(), [quizAnswers]);
-  // {miniGameResults ? miniGameResults.map(buildResultCard) : null}
-  console.log(miniGameResults[currentMinigameIndex].explanation);
 
   const handleLeft = () => {
     setCurrentMinigameIndex(Math.max(0, currentMinigameIndex - 1));
@@ -112,13 +93,14 @@ const Quizzes = () => {
   };
 
   const handleKeyDown = (event) => {
-    console.log(event);
     if (event.keyCode === 37) {
       handleLeft();
     } else if (event.keyCode === 39) {
       handleRight();
     }
   };
+  useEventListener('keydown', handleKeyDown);
+
   return (
     <ChoicesScreen
       title={miniGameResults[currentMinigameIndex].question}

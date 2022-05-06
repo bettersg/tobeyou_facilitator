@@ -169,7 +169,6 @@ const ProfileBuilder = () => {
         <Typography variant='h4' sx={{ mb: 2 }}>
           {step.title}
         </Typography>
-        {/* <Typography>(Nadia picture)</Typography> */}
         {step.text.map((paragraph, i) => (
           <Typography key={i} sx={{ marginBottom: '8px' }}>
             {paragraph}

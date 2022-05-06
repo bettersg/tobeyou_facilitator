@@ -1,42 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Link,
-  Modal,
-  Step,
-  Stepper,
-  StepLabel,
-  TextField,
   Typography,
-  Grid,
-  Alert,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TableHead,
-  Paper,
 } from '@mui/material';
 import {
-  ContentCopy,
-  MailOutline,
-  WhatsApp,
-  Check,
-  CheckCircleOutline,
-  Close,
-  ArrowForwardIos,
   ChangeHistoryRounded,
   ClearRounded,
   InfoOutlined,
 } from '@mui/icons-material';
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import {
-  FlexBoxAlign,
-  FlexBoxCenterColumnAlign,
   FlexBoxSpaceBetween,
 } from '../../components/styled/general';
 import {
@@ -44,9 +17,8 @@ import {
   ChoicesPaper,
   InfoBox,
 } from './ChoicesScreenStyledComponents';
-import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
 import { ChoicesCharts } from '../GeneralCharts/ChoicesCharts';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { QuizCharts } from '../GeneralCharts/QuizCharts';
 import { GeneralTooltip } from '../GeneralTooltip/GeneralTooltip';
 
@@ -62,7 +34,7 @@ export const ChoicesScreen = ({
   tooltipTitle,
   ...props
 }) => {
-  let { roomCode, reflectionId, choiceIdx } = useParams();
+  let { roomCode } = useParams();
 
   return (
     <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>

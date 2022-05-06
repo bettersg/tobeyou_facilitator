@@ -1,54 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import QRCode from 'react-qr-code';
+import React from 'react';
 import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Link,
   Modal,
-  Step,
-  Stepper,
-  StepLabel,
-  TextField,
   Typography,
-  Grid,
-  Alert,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
   TableHead,
-  Paper,
 } from '@mui/material';
 import {
-  ContentCopy,
-  MailOutline,
-  WhatsApp,
-  Check,
-  CheckCircleOutline,
-  Close,
   ArrowForwardIos,
 } from '@mui/icons-material';
 import {
   ModalBox,
-  ModalRightSide,
-  ModalLeftSide,
-  ModalStepConnector,
-  StyledModalStepIcon,
-  ModalBoxContentWrapper,
 } from './StyledRoomModalComponents';
 import {
-  FlexBoxCenterColumn,
-  FlexBoxCenterColumnAlign,
   FlexBoxSpaceBetween,
-  FlexBoxSpaceEvenly,
 } from '../styled/general';
-import { GeneralButton } from '../GeneralButton/GeneralButton';
-import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
-import { CHARACTER_MAP } from '../../models/storyMap';
-import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
 import { useNavigate } from 'react-router';
 
 import GLOBAL_VAR_MAP from '../../models/globalVarMap';
@@ -123,16 +92,13 @@ export const RoomModal = (props) => {
                         />
                       </FlexBoxSpaceBetween>
                     </TableCell>
-                    {/* <TableCell align='right'>{row.fat}</TableCell>
-                    <TableCell align='right'>{row.carbs}</TableCell>
-                    <TableCell align='right'>{row.protein}</TableCell> */}
+
                   </TableRow>
                 ))}
               </TableBody>
             ) : null}
           </Table>
         </TableContainer>
-        {/* </Box> */}
       </ModalBox>
     </Modal>
   );
