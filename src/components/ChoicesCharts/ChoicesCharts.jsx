@@ -9,8 +9,10 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
+    ChartDataLabels,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -19,42 +21,8 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-      //   position: 'top',
-    },
-  },
-  scales: {
-    y: {
-      grid: {
-        color: 'white',
-      },
-      ticks: {
-        stepSize: 1,
-        font: {
-          size: '18px',
-          weight: 700,
-          maxWidth: '50px',
-        },
-      },
-    },
-    x: {
-      ticks: {
-        font: {
-          size: '18px',
-          weight: 700,
-          maxWidth: '50px',
-        },
-      },
-    },
-  },
-};
-
 export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
+    
   function getGameChoicesDescription() {
     let output = { description: [], numChoice: [] };
 
@@ -94,6 +62,7 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
         output.description.push(gameChoiceValuesDescription);
       }
 
+      console.log(userChoices)
       const numUsersMadeChoice = userChoices?.filter(
         (userChoice) => userChoice === gameChoiceValues[i].value
       ).length;
@@ -102,6 +71,71 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
     return output;
   }
   console.log(getGameChoicesDescription().description);
+
+  
+  const options = {
+    
+    responsive: true,
+    maintainAspectRatio: false,
+  
+    layout: {
+        padding: {
+            top: 50
+  
+        }
+    }, 
+    plugins: {
+      legend: {
+        display: false,
+        //   position: 'top',
+      },
+      ChartDataLabels,
+      datalabels: {
+        // display: false,
+        color: "#464E75",
+  
+            borderRadius: 4,
+            font: {
+                size: "24px",
+              weight: 'bold'
+            },
+            // formatter: Math.round ,
+            formatter: function(value, ctx) {
+                console.log(value)
+                console.log(ctx)
+                return value&&userChoices
+                  ? Math.round(value/userChoices.length * 100) + "% (" + (value) + `/` + userChoices.length + ")"
+                  : userChoices ? 0 + "% (0/" + userChoices.length + ")" : ""
+              },
+            anchor: "end", 
+            align: "top", 
+      }
+    },
+    scales: {
+      y: {
+        grid: {
+          color: 'white',
+        },
+        ticks: {
+          stepSize: 1,
+          font: {
+            size: '18px',
+            weight: 700,
+            maxWidth: '50px',
+          },
+        },
+      },
+      x: {
+        ticks: {
+          font: {
+            size: '18px',
+            weight: 700,
+            maxWidth: '50px',
+          },
+        },
+      },
+    },
+  };
 
   const labels = getGameChoicesDescription().description;
 
@@ -115,13 +149,17 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
         borderRadius: 8,
       },
     ],
+    datalabels: {
+        align: 'end',
+        anchor: 'start'
+      }
   };
 
   return (
     <Bar
       options={options}
       data={data}
-      style={{ height: '400px', width: '1000px' }}
+      style={{ height: '450px', width: '1000px' }}
     />
   );
 };
