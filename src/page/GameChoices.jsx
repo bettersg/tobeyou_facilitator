@@ -37,7 +37,10 @@ import {
   Close,
   ArrowForwardIos,
 } from '@mui/icons-material';
-import { FlexBoxAlign, FlexBoxCenterColumnAlign } from '../components/styled/general';
+import {
+  FlexBoxAlign,
+  FlexBoxCenterColumnAlign,
+} from '../components/styled/general';
 import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
 
 const GameChoices = () => {
@@ -46,7 +49,8 @@ const GameChoices = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] = useState(choiceIdx);
+  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] =
+    useState(choiceIdx);
   const [allGlobalVariables, setAllGlobalVariables] = useState(null);
 
   const chapter = GLOBAL_VAR_MAP.flatMap(
@@ -86,6 +90,7 @@ const GameChoices = () => {
   };
 
   const handleKeyDown = (event) => {
+    console.log(event)
     if (event.keyCode === 37) {
       handleLeft();
     } else if (event.keyCode === 39) {
@@ -102,8 +107,14 @@ const GameChoices = () => {
   );
 
   return (
-    <ChoicesScreen title={gameChoice.description} onKeyDown={handleKeyDown} onLeft={handleLeft} onRight={handleRight} gameChoiceValues={gameChoice.values} userChoices={userChoices}>
-    </ChoicesScreen>
+    <ChoicesScreen
+      title={gameChoice.description}
+      onKeyDown={handleKeyDown}
+      onLeft={handleLeft}
+      onRight={handleRight}
+      gameChoiceValues={gameChoice.values}
+      userChoices={userChoices}
+    ></ChoicesScreen>
     // <FlexBoxCenterColumnAlign  sx={{height: "100%", width: "100%"}}>
     //   <Typography variant="h3">{gameChoice.description}</Typography>
     //   <Paper>

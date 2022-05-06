@@ -8,8 +8,8 @@ import {
   NameLabel,
 } from '../components/styled/auth';
 import { FlexBox, FlexBoxCenterColumn } from '../components/styled/general';
-import {GeneralButton} from "../components/GeneralButton/GeneralButton"
-import {GeneralSelect} from "../components/GeneralSelect/GeneralSelect"
+import { GeneralButton } from '../components/GeneralButton/GeneralButton';
+import { GeneralSelect } from '../components/GeneralSelect/GeneralSelect';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbUser, updateDbUser } from '../models/userModel';
 import checkmark from './assets/checkmark.svg';
@@ -45,7 +45,10 @@ const ProfileBuilder = () => {
   };
 
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value.trim() });
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value.trim(),
+    });
   };
 
   const handleBack = () => {
@@ -140,7 +143,7 @@ const ProfileBuilder = () => {
     {
       isShowNadia: false,
       isFormReview: true,
-      title: "Review your profile", 
+      title: 'Review your profile',
       text: [
         "Ok, so here's what I've got for your details. If you want to change something, you can rebuild your profile. If you're ready, let's get started!",
       ],
@@ -150,21 +153,22 @@ const ProfileBuilder = () => {
   const step = steps[activeStep];
 
   const displayAge = () => {
-    for (let i = 0; i < ageOptions.length; i++){
-      console.log(ageOptions[i].value, ageOptions[i].label, "age", formData.age)
+    for (let i = 0; i < ageOptions.length; i++) {
       if (ageOptions[i].value === formData.age) {
-        return ageOptions[i].label
-      } 
+        return ageOptions[i].label;
+      }
     }
-  }
+  };
 
   return (
     <LoginBackground>
       {step.isShowNadia ? <NadiaPic /> : null}
       {step.isShowNadia ? <NameLabel>Nadia</NameLabel> : null}
-      
+
       <LoginFormSection isNadia={step.isShowNadia}>
-        <Typography variant="h4" sx={{mb:2}}>{step.title}</Typography>
+        <Typography variant='h4' sx={{ mb: 2 }}>
+          {step.title}
+        </Typography>
         {/* <Typography>(Nadia picture)</Typography> */}
         {step.text.map((paragraph, i) => (
           <Typography key={i} sx={{ marginBottom: '8px' }}>
@@ -180,14 +184,14 @@ const ProfileBuilder = () => {
             ))
           : null}
         {step.isForm ? (
-          <Box sx={{width:"100%"}}>
+          <Box sx={{ width: '100%' }}>
             <GeneralSelect
               name='age'
               value={formData.age}
               onChange={handleChange}
-              variant="filled"
+              variant='filled'
               fullWidth
-              label="How young are you?"
+              label='How young are you?'
             >
               {ageOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -199,9 +203,9 @@ const ProfileBuilder = () => {
               name='gender'
               value={formData.gender}
               onChange={handleChange}
-              variant="filled"
+              variant='filled'
               fullWidth
-              label="What gender do you identify as?"
+              label='What gender do you identify as?'
             >
               {genderOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -213,9 +217,9 @@ const ProfileBuilder = () => {
               name='race'
               value={formData.race}
               onChange={handleChange}
-              variant="filled"
+              variant='filled'
               fullWidth
-              label="What ethnicity or racial group do you identify as?"
+              label='What ethnicity or racial group do you identify as?'
             >
               {raceOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -227,9 +231,9 @@ const ProfileBuilder = () => {
               name='religion'
               value={formData.religion}
               onChange={handleChange}
-              variant="filled"
+              variant='filled'
               fullWidth
-              label="What is your religion?"
+              label='What is your religion?'
             >
               {religionOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -241,9 +245,9 @@ const ProfileBuilder = () => {
               name='housing'
               value={formData.housing}
               onChange={handleChange}
-              variant="filled"
+              variant='filled'
               fullWidth
-              label="What is your housing type?"
+              label='What is your housing type?'
             >
               {housingOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -254,16 +258,14 @@ const ProfileBuilder = () => {
           </Box>
         ) : null}
 
-
         {step.isFormReview ? (
-          <Box sx={{width: "100%"}}>
+          <Box sx={{ width: '100%' }}>
             {Object.keys(formData).map((key) => {
-              const age = displayAge()
-              console.log(age)
+              const age = displayAge();
               const value = formData[key];
               return (
-                <Typography key={key} sx={{textTransform:"capitalize"}}>
-                  {key}: {key==="age" ? age : value}
+                <Typography key={key} sx={{ textTransform: 'capitalize' }}>
+                  {key}: {key === 'age' ? age : value}
                 </Typography>
               );
             })}

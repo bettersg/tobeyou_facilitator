@@ -20,7 +20,6 @@ import {
   TableRow,
   TableHead,
   Paper,
-  
 } from '@mui/material';
 import {
   ContentCopy,
@@ -30,8 +29,11 @@ import {
   CheckCircleOutline,
   Close,
   ArrowForwardIos,
-  ChangeHistoryRounded,ClearRounded, 
+  ChangeHistoryRounded,
+  ClearRounded,
+  InfoOutlined,
 } from '@mui/icons-material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import {
   FlexBoxAlign,
   FlexBoxCenterColumnAlign,
@@ -40,13 +42,16 @@ import {
 import {
   ChoicesBackground,
   ChoicesPaper,
+  InfoBox,
 } from './ChoicesScreenStyledComponents';
 import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
-import { ChoicesCharts } from '../ChoicesCharts/ChoicesCharts';
+import { ChoicesCharts } from '../GeneralCharts/ChoicesCharts';
 import { useNavigate, useParams } from 'react-router';
+import { QuizCharts } from '../GeneralCharts/QuizCharts';
+import { GeneralTooltip } from '../GeneralTooltip/GeneralTooltip';
 
 export const ChoicesScreen = ({
-  title,
+  title = '',
   type = 'gameChoices',
   children,
   gameChoiceValues,
@@ -54,15 +59,19 @@ export const ChoicesScreen = ({
   onKeyDown,
   onLeft,
   onRight,
+  tooltipTitle,
   ...props
 }) => {
-  let { roomId, reflectionId, choiceIdx } = useParams();
+  let { roomCode, reflectionId, choiceIdx } = useParams();
 
   return (
     <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>
-        <Link href={`/room/${roomId}`}>
-            <ClearRounded fontSize="large" sx={{position: "absolute", top: 80, right: 50, color: "white"}} />
-        </Link>
+      <Link href={`/room/${roomCode}`}>
+        <ClearRounded
+          fontSize='large'
+          sx={{ position: 'absolute', top: 80, right: 50, color: 'white' }}
+        />
+      </Link>
       <Typography
         variant='h3'
         sx={{
@@ -71,7 +80,7 @@ export const ChoicesScreen = ({
           mb: 5,
           maxWidth: '80%',
           textAlign: 'center',
-          mt: "-100px", 
+          mt: '-100px',
         }}
       >
         {title}
@@ -88,10 +97,30 @@ export const ChoicesScreen = ({
         />
 
         <ChoicesPaper>
-          <ChoicesCharts
-            gameChoiceValues={gameChoiceValues}
-            userChoices={userChoices}
-          />
+          {tooltipTitle ? (
+            <GeneralTooltip title={tooltipTitle} arrow>
+              <InfoBox>
+                <InfoOutlined
+                  sx={{
+                    transform: 'rotate(10deg)',
+                  }}
+                />
+              </InfoBox>
+            </GeneralTooltip>
+          ) : null}
+          <Box mt={tooltipTitle ? '-80px' : ''}>
+            {type === 'gameChoices' ? (
+              <ChoicesCharts
+                gameChoiceValues={gameChoiceValues}
+                userChoices={userChoices}
+              />
+            ) : type === 'quizzes' ? (
+              <QuizCharts
+                gameChoiceValues={gameChoiceValues}
+                userChoices={userChoices}
+              />
+            ) : null}
+          </Box>
         </ChoicesPaper>
         <ChangeHistoryRounded
           sx={{

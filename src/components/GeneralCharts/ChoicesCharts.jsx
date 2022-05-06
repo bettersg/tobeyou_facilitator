@@ -12,7 +12,7 @@ import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
-    ChartDataLabels,
+  ChartDataLabels,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -22,7 +22,6 @@ ChartJS.register(
 );
 
 export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
-    
   function getGameChoicesDescription() {
     let output = { description: [], numChoice: [] };
 
@@ -62,7 +61,6 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
         output.description.push(gameChoiceValuesDescription);
       }
 
-      console.log(userChoices)
       const numUsersMadeChoice = userChoices?.filter(
         (userChoice) => userChoice === gameChoiceValues[i].value
       ).length;
@@ -70,20 +68,16 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
     }
     return output;
   }
-  console.log(getGameChoicesDescription().description);
 
-  
   const options = {
-    
     responsive: true,
     maintainAspectRatio: false,
-  
+
     layout: {
-        padding: {
-            top: 50
-  
-        }
-    }, 
+      padding: {
+        top: 50,
+      },
+    },
     plugins: {
       legend: {
         display: false,
@@ -92,24 +86,29 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
       ChartDataLabels,
       datalabels: {
         // display: false,
-        color: "#464E75",
-  
-            borderRadius: 4,
-            font: {
-                size: "24px",
-              weight: 'bold'
-            },
-            // formatter: Math.round ,
-            formatter: function(value, ctx) {
-                console.log(value)
-                console.log(ctx)
-                return value&&userChoices
-                  ? Math.round(value/userChoices.length * 100) + "% (" + (value) + `/` + userChoices.length + ")"
-                  : userChoices ? 0 + "% (0/" + userChoices.length + ")" : ""
-              },
-            anchor: "end", 
-            align: "top", 
-      }
+        color: '#464E75',
+
+        borderRadius: 4,
+        font: {
+          size: '24px',
+          weight: 'bold',
+        },
+        // formatter: Math.round ,
+        formatter: function (value, ctx) {
+          return value && userChoices
+            ? Math.round((value / userChoices.length) * 100) +
+                '% (' +
+                value +
+                `/` +
+                userChoices.length +
+                ')'
+            : userChoices
+            ? 0 + '% (0/' + userChoices.length + ')'
+            : '';
+        },
+        anchor: 'end',
+        align: 'top',
+      },
     },
     scales: {
       y: {
@@ -150,9 +149,9 @@ export const ChoicesCharts = ({ gameChoiceValues, userChoices }) => {
       },
     ],
     datalabels: {
-        align: 'end',
-        anchor: 'start'
-      }
+      align: 'end',
+      anchor: 'start',
+    },
   };
 
   return (

@@ -1,6 +1,9 @@
 import { styled } from '@mui/material/styles';
 import { Breadcrumbs, Link, Box, Paper } from '@mui/material';
-import { FlexBoxCenterColumnAlign } from '../../components/styled/general';
+import {
+  FlexBoxCenterColumnAlign,
+  FlexBoxAlign,
+} from '../../components/styled/general';
 
 export const ChoicesBackground = styled(FlexBoxCenterColumnAlign)(
   ({ theme, type }) => ({
@@ -20,4 +23,17 @@ export const ChoicesPaper = styled(Paper)(({ theme }) => ({
   borderRadius: '20px',
   padding: '80px',
   maxWidth: '80%',
+  maxHeight: '70%',
+  zIndex: 2,
+}));
+
+export const InfoBox = styled(FlexBoxAlign)(({ theme }) => ({
+  backgroundColor: theme.palette.aqua[40],
+  borderRadius: '20px 0 0 20px',
+  padding: '20px 15px',
+
+  position: 'relative',
+  top: -60,
+  left: -140,
+  width: '30px',
 }));

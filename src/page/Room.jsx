@@ -95,19 +95,13 @@ const Room = () => {
   }
 
   useEffect(() => {
-    console.log('room', room);
     setCurrentCharChapt(REFLECTION_ID_MAP[room?.reflectionIds[0]]);
     setCurrentReflectionId(room?.reflectionIds[0]);
-    console.log(room?.reflectionIds[0]);
-    console.log(currentCharChapt);
   }, [room]);
 
   useEffect(() => {
     getRoom();
   }, []);
-
-  console.log('room', room);
-  console.log(currentCharChapt);
 
   return (
     <Box sx={{ height: '100%', overflow: 'auto', paddingTop: '76px' }}>
@@ -275,10 +269,11 @@ const Room = () => {
                         <ChapterDetailsCard
                           sx={{
                             backgroundColor: (theme) => theme.palette.aqua[1],
+                            cursor: 'pointer',
                           }}
                           onClick={() =>
                             navigate(
-                              `/room/${room.id}/reflectionId/${reflectionId}/quizzes`
+                              `/room/${room.code}/reflectionId/${reflectionId}/quizzes/0`
                             )
                           }
                         >
@@ -299,38 +294,6 @@ const Room = () => {
               </Paper>
             );
           })}
-
-          <Typography
-            style={{ cursor: 'pointer' }}
-            onClick={() =>
-              navigate(
-                `/room/${room.id}/reflectionId/${currentReflectionId}/reflections`
-              )
-            }
-          >
-            View Reflections
-          </Typography>
-          <Typography
-            style={{ cursor: 'pointer' }}
-            onClick={() =>
-              navigate(
-                `/room/${room.id}/reflectionId/${currentReflectionId}/gameChoices`
-              )
-            }
-          >
-            Review Game Choices
-          </Typography>
-          <Typography
-            style={{ cursor: 'pointer' }}
-            onClick={() =>
-              navigate(
-                `/room/${room.id}/reflectionId/${currentReflectionId}/quizzes`
-              )
-            }
-          >
-            Review Mini Game
-          </Typography>
-          <br />
         </FlexBoxAlignColumn>
       ) : null}
       {/* 

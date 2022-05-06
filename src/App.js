@@ -66,6 +66,7 @@ const theme = createTheme({
       1: '#19A3AD',
       2: '#005B69',
       20: '#D8F4F6',
+      40: '#B1EAEE',
       100: '#3DCAD3',
     },
     lapis: {
@@ -150,11 +151,11 @@ function App() {
                       element={<GameChoices />}
                     />
                     <Route path='reflections' element={<Reflections />} />
-                    <Route path='quizzes' element={<Quizzes />} />
                     <Route
                       path='engagementLevels'
                       element={<EngagementLevels />}
                     />
+                    <Route path='quizzes/:quizIdx' element={<Quizzes />} />
                   </Route>
                 </Route>
               </Route>

@@ -4,9 +4,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { getDbRoomByCode } from '../models/roomModel';
 import { getDbQuizAnswers } from '../models/quizAnswerModel';
 import { MINI_GAME_MAP } from '../models/miniGameMap';
+import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
 
 const Quizzes = () => {
-  let { roomCode, reflectionId } = useParams();
+  let { roomCode, reflectionId, quizIdx } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Quizzes = () => {
     (game) => game.game_id === reflectionId
   ).questions;
   const [miniGameResults, setMiniGameResults] = useState(miniGameQuestions);
+  const [currentMinigameIndex, setCurrentMinigameIndex] = useState(quizIdx);
 
   // Returns the count of answers as an object, indexed by questionId then answerId
   function getAnswerCounts(answers) {
@@ -96,9 +98,37 @@ const Quizzes = () => {
 
   useEffect(() => getData(), []);
   useEffect(() => compileResults(), [quizAnswers]);
+  // {miniGameResults ? miniGameResults.map(buildResultCard) : null}
+  console.log(miniGameResults[currentMinigameIndex].explanation);
 
+  const handleLeft = () => {
+    setCurrentMinigameIndex(Math.max(0, currentMinigameIndex - 1));
+  };
+
+  const handleRight = () => {
+    setCurrentMinigameIndex(
+      Math.min(miniGameResults.length - 1, currentMinigameIndex + 1)
+    );
+  };
+
+  const handleKeyDown = (event) => {
+    console.log(event);
+    if (event.keyCode === 37) {
+      handleLeft();
+    } else if (event.keyCode === 39) {
+      handleRight();
+    }
+  };
   return (
-    <div>{miniGameResults ? miniGameResults.map(buildResultCard) : null}</div>
+    <ChoicesScreen
+      title={miniGameResults[currentMinigameIndex].question}
+      type='quizzes'
+      onKeyDown={handleKeyDown}
+      onLeft={handleLeft}
+      onRight={handleRight}
+      gameChoiceValues={miniGameResults[currentMinigameIndex].answers}
+      tooltipTitle={miniGameResults[currentMinigameIndex].explanation}
+    ></ChoicesScreen>
   );
 };
 
