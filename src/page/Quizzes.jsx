@@ -8,7 +8,7 @@ import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
 import { useEventListener } from '../utils';
 
 const Quizzes = () => {
-  let { roomCode, reflectionId, quizIdx } = useParams();
+  let { roomCode, reflectionId } = useParams();
   reflectionId = parseInt(reflectionId);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Quizzes = () => {
     (game) => game.game_id === reflectionId
   ).questions;
   const [miniGameResults, setMiniGameResults] = useState(miniGameQuestions);
-  const [currentMinigameIndex, setCurrentMinigameIndex] = useState(quizIdx);
+  const [currentMinigameIndex, setCurrentMinigameIndex] = useState(0);
 
   // Returns the count of answers as an object, indexed by questionId then answerId
   function getAnswerCounts(answers) {

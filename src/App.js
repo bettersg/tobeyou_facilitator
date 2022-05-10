@@ -60,7 +60,7 @@ const theme = createTheme({
       60: '#747A98',
       80: '#464E75',
       100: '#172153',
-      dark1: '#072435', 
+      dark1: '#072435',
     },
     aqua: {
       1: '#19A3AD',
@@ -155,7 +155,7 @@ function App() {
                       path='engagementLevels'
                       element={<EngagementLevels />}
                     />
-                    <Route path='quizzes/:quizIdx' element={<Quizzes />} />
+                    <Route path='quizzes' element={<Quizzes />} />
                   </Route>
                 </Route>
               </Route>
