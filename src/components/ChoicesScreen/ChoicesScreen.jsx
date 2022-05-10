@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Link, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 import {
   ChangeHistoryRounded,
   ClearRounded,
@@ -32,7 +33,7 @@ export const ChoicesScreen = ({
 
   return (
     <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>
-      <Link href={`/room/${roomCode}`}>
+      <Link to={`/room/${roomCode}`}>
         <ClearRounded
           fontSize='large'
           sx={{ position: 'absolute', top: 80, right: 50, color: 'white' }}

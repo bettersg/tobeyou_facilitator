@@ -10,10 +10,14 @@ export const GeneralBreadcrumbs = ({ breadcrumbItems }) => {
       aria-label='breadcrumb'
     >
       {breadcrumbItems.map((item, idx) => {
-        return (
-          <StyledBreadcrumbLinks key={idx} href={item.link}>
+        return item.link ? (
+          <StyledBreadcrumbLinks key={idx} to={item.link}>
             <Typography variant='h4'>{item.label}</Typography>
           </StyledBreadcrumbLinks>
+        ) : (
+          <Typography variant='h4' sx={{ color: 'black' }}>
+            {item.label}
+          </Typography>
         );
       })}
     </StyledBreadcrumbs>

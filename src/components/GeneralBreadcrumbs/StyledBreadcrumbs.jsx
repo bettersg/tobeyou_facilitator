@@ -1,11 +1,10 @@
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Breadcrumbs, Link } from '@mui/material';
+import { Breadcrumbs } from '@mui/material';
 
-export const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
-    
-}));
+export const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({}));
 
 export const StyledBreadcrumbLinks = styled(Link)(({ theme }) => ({
-    color: "black", 
-    textDecoration: "none", 
+  color: 'black',
+  textDecoration: 'none',
 }));
