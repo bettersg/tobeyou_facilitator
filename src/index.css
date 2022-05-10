@@ -11,11 +11,12 @@ body {
   font-family: 'Inter', Roboto;    
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scrollbar-width: thin;
-  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  overflow-y: hidden;
+  /* scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG); */
 }
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   width: 10px;
 }
 body::-webkit-scrollbar-track {
@@ -25,7 +26,7 @@ body::-webkit-scrollbar-thumb {
   background-color: var(--thumbBG) ;
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
-}
+} */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -60,9 +60,13 @@ const theme = createTheme({
       60: '#747A98',
       80: '#464E75',
       100: '#172153',
+      dark1: '#072435', 
     },
     aqua: {
       1: '#19A3AD',
+      2: '#005B69',
+      20: '#D8F4F6',
+      40: '#B1EAEE',
       100: '#3DCAD3',
     },
     lapis: {
@@ -70,7 +74,9 @@ const theme = createTheme({
       10: '#F0F1FC',
       20: '#E2E2F8',
       40: '#C4C6F1',
+      80: '#898DE4',
       100: '#6C70DD',
+      dark2: '#26248F',
     },
     chicky: {
       100: '#FFE55E',
@@ -82,6 +88,9 @@ const theme = createTheme({
       dark1: '#8DC000',
       dark2: '#4B7C24',
       20: '#F5FBDE',
+    },
+    tangerine: {
+      80: '#FF8944',
     },
   },
   typography: {
@@ -137,13 +146,16 @@ function App() {
                 <Route path='/room/:roomCode/'>
                   <Route path='' element={<Room />} />
                   <Route path='reflectionId/:reflectionId'>
-                    <Route path='gameChoices' element={<GameChoices />} />
+                    <Route
+                      path='gameChoices/:choiceIdx'
+                      element={<GameChoices />}
+                    />
                     <Route path='reflections' element={<Reflections />} />
-                    <Route path='quizzes' element={<Quizzes />} />
                     <Route
                       path='engagementLevels'
                       element={<EngagementLevels />}
                     />
+                    <Route path='quizzes/:quizIdx' element={<Quizzes />} />
                   </Route>
                 </Route>
               </Route>

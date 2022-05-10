@@ -3,9 +3,9 @@ import { StyledButton } from "./StyledButton";
 import PropTypes from 'prop-types';
 
 
-export const GeneralButton = ({children, variant, onClick, ...props}) => {
+export const GeneralButton = ({children, variant, onClick, customcolor, ...props}) => {
     return (
-        <StyledButton variant={variant} onClick={onClick} {...props}>
+        <StyledButton variant={variant} onClick={onClick} customcolor={customcolor} {...props}>
             {children}
         </StyledButton>
     )

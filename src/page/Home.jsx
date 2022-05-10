@@ -162,7 +162,11 @@ const Home = () => {
         .filter((room) => !room.isDeleted);
       filteredRooms.sort((x, y) => x.date - y.date);
       return (
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ maxHeight: '82vh', overflow: 'auto' }}
+        >
           {filteredRooms.map((room) => (
             <Grid item key={room.id} xs={4}>
               <RoomCard
@@ -211,6 +215,7 @@ const Home = () => {
                   ARCHIVED
                 </ToggleButton>
               </HomeToggleButtonGroup>
+              {/* todo: filter */}
               {/* <GeneralSelect
                   name="filter"
                   value={roomFilter.key}
@@ -232,7 +237,7 @@ const Home = () => {
       <Box
         sx={{
           padding: '68px',
-          paddingTop: '140px',
+          paddingTop: '130px',
           background: (theme) => theme.palette.lapis[10],
           height: 'calc(100vh - 120px)',
         }}

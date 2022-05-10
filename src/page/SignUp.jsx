@@ -82,14 +82,6 @@ const SignUp = () => {
               onChange={handleChange}
               disabled={isLoading}
             />
-            {/* <TextField
-              name='username'
-              label='Username'
-              type='text'
-              variant='filled'
-              onChange={handleChange}
-              disabled={isLoading}
-            /> */}
             <Typography variant="h6">Organisation:</Typography>
             <LoginTextfield
               name='organisation'
