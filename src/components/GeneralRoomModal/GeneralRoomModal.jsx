@@ -36,6 +36,7 @@ import {
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { CharacterAvatar } from '../CharacterAvatar/CharacterAvatar';
+import { useSnackbar } from '../../contexts/SnackbarContext';
 import { getGameUrl } from '../../utils';
 import { CHARACTER_ORDERING, REFLECTION_ID_MAP } from '../../models/storyMap';
 
@@ -428,6 +429,7 @@ const GeneralRoomModal = (props) => {
     loadRooms,
   } = props;
 
+  const { setSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createdOrEditedRoom, setCreatedOrEditedRoom] = useState(null);
   const [activeStep, setActiveStep] = useState(0); // note that we start from activeStep 0, not 1
@@ -444,7 +446,12 @@ const GeneralRoomModal = (props) => {
         setFormData(initialFormData);
         setActiveStep(0);
       } catch (error) {
-        alert(error); // TODO: error handling: how to deal with errors?
+        // TODO: error handling: how to deal with errors?
+        setSnackbar({
+          message: error.message,
+          open: true,
+          type: 'error',
+        });
       } finally {
         setIsSubmitting(false);
       }

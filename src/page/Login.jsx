@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Box, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { useSnackbar } from '../contexts/SnackbarContext';
 import {
   LoginButton,
   LoginFormSection,
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   const { loginOnlyFacilitators } = useAuth();
+  const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,7 +39,11 @@ const Login = () => {
         await loginOnlyFacilitators(email, password);
         navigate('/');
       } catch (error) {
-        alert(error);
+        setSnackbar({
+          message: error.message,
+          open: true,
+          type: 'error',
+        });
       } finally {
         setIsLoading(false);
       }

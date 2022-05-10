@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Box, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { useSnackbar } from '../contexts/SnackbarContext';
 import {
   LoginButton,
   LoginFormSection,
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 
 const ForgetPassword = () => {
   const { loginOnlyFacilitators, resetPassword } = useAuth();
+  const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,10 +35,18 @@ const ForgetPassword = () => {
       const email = formData.email;
       try {
         await resetPassword(email);
-        alert('Check your inbox for further instructions!');
         navigate('/');
+        setSnackbar({
+          message: 'Success! Check your inbox for further instructions.',
+          open: true,
+          type: 'success',
+        });
       } catch (error) {
-        alert(error);
+        setSnackbar({
+          message: error.message,
+          open: true,
+          type: 'error',
+        });
       } finally {
         setIsLoading(false);
       }

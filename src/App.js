@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/AuthContext';
+import { SnackbarProvider } from './contexts/SnackbarContext';
 import DashboardLayout from './page/DashboardLayout';
 import Home from './page/Home';
 import Room from './page/Room';
@@ -132,49 +133,51 @@ function App() {
     <ThemeProvider theme={theme}>
       <StyledEngineProvider injectFirst>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path='/'
-                element={
-                  <RequireAuth>
-                    <DashboardLayout />
-                  </RequireAuth>
-                }
-              >
-                <Route exact path='/' element={<Home />} />
-                <Route path='/room/:roomCode/'>
-                  <Route path='' element={<Room />} />
-                  <Route path='reflectionId/:reflectionId'>
-                    <Route
-                      path='gameChoices/:choiceIdx'
-                      element={<GameChoices />}
-                    />
-                    <Route path='reflections' element={<Reflections />} />
-                    <Route
-                      path='engagementLevels'
-                      element={<EngagementLevels />}
-                    />
-                    <Route path='quizzes' element={<Quizzes />} />
+          <SnackbarProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route
+                  path='/'
+                  element={
+                    <RequireAuth>
+                      <DashboardLayout />
+                    </RequireAuth>
+                  }
+                >
+                  <Route exact path='/' element={<Home />} />
+                  <Route path='/room/:roomCode/'>
+                    <Route path='' element={<Room />} />
+                    <Route path='reflectionId/:reflectionId'>
+                      <Route
+                        path='gameChoices/:choiceIdx'
+                        element={<GameChoices />}
+                      />
+                      <Route path='reflections' element={<Reflections />} />
+                      <Route
+                        path='engagementLevels'
+                        element={<EngagementLevels />}
+                      />
+                      <Route path='quizzes' element={<Quizzes />} />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
-              <Route
-                element={
-                  <RequireAuth>
-                    <Outlet />
-                  </RequireAuth>
-                }
-              >
-                <Route path='/profilebuilder' element={<ProfileBuilder />} />
-              </Route>
-              <Route element={<AuthLayout />}>
-                <Route path='/login' element={<Login />} />
-                <Route path='/signup' element={<SignUp />} />
-                <Route path='/forget-password' element={<ForgetPassword />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+                <Route
+                  element={
+                    <RequireAuth>
+                      <Outlet />
+                    </RequireAuth>
+                  }
+                >
+                  <Route path='/profilebuilder' element={<ProfileBuilder />} />
+                </Route>
+                <Route element={<AuthLayout />}>
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/signup' element={<SignUp />} />
+                  <Route path='/forget-password' element={<ForgetPassword />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </SnackbarProvider>
         </AuthProvider>
       </StyledEngineProvider>
     </ThemeProvider>
