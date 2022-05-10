@@ -19,7 +19,6 @@ import {
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
 import { HomeToggleButtonGroup } from '../components/HomeToggleButtonGroup/HomeToggleButtonGroup';
-import { GeneralSelect } from '../components/GeneralSelect/GeneralSelect';
 
 const formDataTemplate = {
   name: '',
@@ -215,20 +214,6 @@ const Home = () => {
                   ARCHIVED
                 </ToggleButton>
               </HomeToggleButtonGroup>
-              {/* todo: filter */}
-              {/* <GeneralSelect
-                  name="filter"
-                  value={roomFilter.key}
-                  onChange={handleChange}
-                  variant="filled"
-                  label={null}
-                >
-                  {Object.keys(filterOptions).map((filterValue, idx) => {
-                    return (
-                      <MenuItem key={filterValue} value={filterValue}>{filterOptions[filterValue]}</MenuItem>
-                    )
-                  })}
-                </GeneralSelect> */}
             </FlexBoxCenter>
           </Box>
           <AddClassButton />

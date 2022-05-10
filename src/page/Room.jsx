@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  Grid,
-} from '@mui/material';
+import { Box, Typography, Paper, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
@@ -18,18 +13,14 @@ import {
   FlexBoxAlignColumn,
 } from '../components/styled/general';
 import { GeneralButton } from '../components/GeneralButton/GeneralButton';
-import {
-  PeopleAltOutlined,
-  EditOutlined,
-  QrCode,
-} from '@mui/icons-material';
+import { PeopleAltOutlined, EditOutlined, QrCode } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
 import { RoomModal } from '../components/GeneralRoomModal/RoomModal';
 
 const Room = () => {
-  let { roomCode } = useParams();
+  const { roomCode } = useParams();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -87,7 +78,14 @@ const Room = () => {
   }, []);
 
   return (
-    <Box sx={{ height: 'calc(80% + 90px)', overflow: 'auto', paddingTop: '76px', paddingBottom: "25px"}}>
+    <Box
+      sx={{
+        height: 'calc(80% + 90px)',
+        overflow: 'auto',
+        paddingTop: '76px',
+        paddingBottom: '25px',
+      }}
+    >
       <Paper
         sx={{
           position: 'absolute',
@@ -230,7 +228,7 @@ const Room = () => {
                             setIsModalOpen={setIsGameChoicesModalOpen}
                             label='Game choices'
                             roomReflectionId={currentReflectionId}
-                            roomCode={room.code}
+                            roomCode={roomCode}
                             type='gameChoices'
                           />
                           <Typography variant='h4' sx={{ textAlign: 'center' }}>
@@ -246,7 +244,7 @@ const Room = () => {
                           }}
                           onClick={() =>
                             navigate(
-                              `/room/${room.code}/reflectionId/${reflectionId}/quizzes/0`
+                              `/room/${room.code}/reflectionId/${reflectionId}/quizzes`
                             )
                           }
                         >

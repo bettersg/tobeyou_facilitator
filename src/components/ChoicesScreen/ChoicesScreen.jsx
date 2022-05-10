@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  Box,
-  Link,
-  Typography,
-} from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import {
   ChangeHistoryRounded,
   ClearRounded,
   InfoOutlined,
 } from '@mui/icons-material';
-import {
-  FlexBoxSpaceBetween,
-} from '../../components/styled/general';
+import { FlexBoxSpaceBetween } from '../../components/styled/general';
 import {
   ChoicesBackground,
   ChoicesPaper,
@@ -34,7 +28,7 @@ export const ChoicesScreen = ({
   tooltipTitle,
   ...props
 }) => {
-  let { roomCode } = useParams();
+  const { roomCode } = useParams();
 
   return (
     <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>
