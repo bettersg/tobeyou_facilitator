@@ -5,7 +5,6 @@ import {
   LinearScale,
   BarElement,
   Title,
-  Tooltip,
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -17,7 +16,6 @@ ChartJS.register(
   LinearScale,
   BarElement,
   Title,
-  Tooltip,
   Legend
 );
 
@@ -72,6 +70,7 @@ export const QuizCharts = ({ gameChoiceValues, userChoices }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    events: [],
 
     layout: {
       padding: {
