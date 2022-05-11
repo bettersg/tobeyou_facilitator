@@ -12,8 +12,7 @@ import {
   FlexBoxAlign,
   FlexBoxAlignColumn,
 } from '../components/styled/general';
-import { GeneralButton } from '../components/GeneralButton/GeneralButton';
-import { PeopleAltOutlined, EditOutlined, QrCode } from '@mui/icons-material';
+import { PeopleAltOutlined, QrCode } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
@@ -30,11 +29,10 @@ const Room = () => {
     useState(null);
 
   // for menu
-  const [currentCharChapt, setCurrentCharChapt] = React.useState(null);
-  const [currentReflectionId, setCurrentReflectionId] = React.useState(null);
+  const [currentCharChapt, setCurrentCharChapt] = useState(null);
+  const [currentReflectionId, setCurrentReflectionId] = useState(null);
 
-  const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] =
-    React.useState(false);
+  const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] = useState(false);
 
   async function getRoom() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -114,13 +112,6 @@ const Room = () => {
               }}
               fontSize='large'
             />
-            <EditOutlined
-              sx={{
-                color: (theme) => theme.palette.lapis[100],
-                marginRight: 1,
-              }}
-              fontSize='large'
-            />
             <QrCode
               sx={{
                 color: (theme) => theme.palette.lapis[100],
@@ -128,7 +119,6 @@ const Room = () => {
               }}
               fontSize='large'
             />
-            <GeneralButton sx={{ ml: 1 }}>Download report</GeneralButton>
           </FlexBoxCenter>
         </FlexBoxSpaceBetween>
       </Paper>
