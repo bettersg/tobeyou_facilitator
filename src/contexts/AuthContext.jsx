@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { auth } from '../firebase';
-import { getDbUser } from '../models/userModel';
 
 const AuthContext = React.createContext(null);
 
@@ -17,31 +16,12 @@ export const AuthProvider = ({ children }) => {
     return await auth.createUserWithEmailAndPassword(email, password);
   };
 
-  const login = async (email, password) => {
-    return await auth.signInWithEmailAndPassword(email, password);
-  };
-
-  /**
-   * Logs in the user only if they have already been registered as a facilitator.
-   */
-  const loginOnlyFacilitators = async (email, password) => {
+  const loginEmail = async (email, password) => {
     setIsLoggingInFacilitator(true);
     const userCredential = await auth.signInWithEmailAndPassword(
       email,
       password
     );
-
-    // Check if the user is a facilitator, and sign them out if they're not
-    // We must first sign in the user to check this, because of our firestore auth rules
-    const userId = userCredential.user.uid;
-    const user = await getDbUser(userId);
-    if (!user.isFacilitator) {
-      await auth.signOut();
-      throw new Error(
-        'The user exists, but is not registered as a facilitator yet.'
-      );
-    }
-
     setIsLoggingInFacilitator(false);
     return userCredential;
   };
@@ -76,10 +56,9 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    isLoggingInFacilitator,
+    // isLoggingInFacilitator,
     signUp,
-    login,
-    loginOnlyFacilitators,
+    loginEmail,
     logout,
     resetPassword,
     deleteUser,

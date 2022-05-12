@@ -12,7 +12,7 @@ import { GeneralTextField } from '../components/GeneralTextField/GeneralTextFiel
 import { Link } from 'react-router-dom';
 
 const ForgetPassword = () => {
-  const { loginOnlyFacilitators, resetPassword } = useAuth();
+  const { resetPassword } = useAuth();
   const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +51,7 @@ const ForgetPassword = () => {
         setIsLoading(false);
       }
     },
-    [navigate, loginOnlyFacilitators, formData]
+    [navigate, formData]
   );
 
   // TODO: refactor to reduce duplication across login, sign-up, and forget password pages
