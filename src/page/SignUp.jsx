@@ -13,7 +13,7 @@ import {
 } from '../components/styled/auth';
 
 const SignUp = () => {
-  const { signUp, login } = useAuth();
+  const { signUp, loginEmail } = useAuth();
   const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,6 @@ const SignUp = () => {
     email: '',
     password: '',
     // username: '',
-    organisation: '',
   });
 
   const handleChange = (event) => {
@@ -40,26 +39,23 @@ const SignUp = () => {
       const email = formData.email;
       const password = formData.password;
       // const username = formData.username;
-      const organisation = formData.organisation;
 
       try {
         // Try to sign up, if user does not exist
         const userCredential = await signUp(email, password);
         await createDbUserIfNotExists(
           userCredential.user.uid,
-          userCredential.user.email,
-          organisation
+          userCredential.user.email
         );
         navigate('/profilebuilder');
       } catch (error) {
         if (error.code === 'auth/email-already-in-use') {
           try {
             // Try to sign in, if user exists
-            const userCredential = await login(email, password);
+            const userCredential = await loginEmail(email, password);
             await createDbUserIfNotExists(
               userCredential.user.uid,
-              userCredential.user.email,
-              organisation
+              userCredential.user.email
             );
             navigate('/profilebuilder');
             // TODO: what if the user exists, and is already a facilitator? Should throw an error, right?
@@ -81,7 +77,7 @@ const SignUp = () => {
         setIsLoading(false);
       }
     },
-    [navigate, signUp, login, formData]
+    [navigate, signUp, loginEmail, formData]
   );
 
   return (
@@ -118,15 +114,6 @@ const SignUp = () => {
               name='password'
               label='Password'
               type='password'
-              variant='filled'
-              onChange={handleChange}
-              disabled={isLoading}
-            />
-            <Typography variant='h6'>Organisation:</Typography>
-            <LoginTextfield
-              name='organisation'
-              label='Organisation'
-              type='text'
               variant='filled'
               onChange={handleChange}
               disabled={isLoading}

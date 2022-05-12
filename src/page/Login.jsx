@@ -10,9 +10,10 @@ import {
 } from '../components/styled/auth';
 import { GeneralTextField } from '../components/GeneralTextField/GeneralTextField';
 import { Link } from 'react-router-dom';
+import { getDbUser } from '../models/userModel';
 
 const Login = () => {
-  const { loginOnlyFacilitators } = useAuth();
+  const { loginEmail } = useAuth();
   const { setSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +37,13 @@ const Login = () => {
       const email = formData.email;
       const password = formData.password;
       try {
-        await loginOnlyFacilitators(email, password);
-        navigate('/');
+        const userCredential = await loginEmail(email, password);
+        const dbUser = await getDbUser(userCredential.user.uid);
+        if (dbUser.isFacilitator) {
+          navigate('/');
+        } else {
+          navigate('/profilebuilder');
+        }
       } catch (error) {
         setSnackbar({
           message: error.message,
@@ -48,7 +54,7 @@ const Login = () => {
         setIsLoading(false);
       }
     },
-    [navigate, loginOnlyFacilitators, formData]
+    [navigate, loginEmail, formData]
   );
 
   return (
