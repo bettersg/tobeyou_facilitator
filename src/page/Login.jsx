@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { Box, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useSnackbar } from '../contexts/SnackbarContext';
@@ -9,8 +11,13 @@ import {
   LoginBackground,
 } from '../components/styled/auth';
 import { GeneralTextField } from '../components/GeneralTextField/GeneralTextField';
-import { Link } from 'react-router-dom';
-import { getDbUser } from '../models/userModel';
+import { createDbUserIfNotExists, getDbUser } from '../models/userModel';
+
+import {
+  auth,
+  googleAuthProviderId,
+  facebookAuthProviderId,
+} from '../firebase';
 
 const Login = () => {
   const { loginEmail } = useAuth();
@@ -22,6 +29,29 @@ const Login = () => {
     password: '',
   });
 
+  const firebaseUIConfig = {
+    signInFlow: 'redirect',
+    signInOptions: [googleAuthProviderId, facebookAuthProviderId],
+    callbacks: {
+      signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+        const userId = authResult.user.uid;
+        const email = authResult.user.email;
+        handleAfterLogin(userId, email);
+        return false;
+      },
+    },
+  };
+
+  const handleAfterLogin = async (userId, email) => {
+    await createDbUserIfNotExists(userId, email);
+    const dbUser = await getDbUser(userId);
+    if (dbUser.isFacilitator) {
+      navigate('/');
+    } else {
+      navigate('/profilebuilder');
+    }
+  };
+
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -29,7 +59,7 @@ const Login = () => {
     });
   };
 
-  const handleLogin = useCallback(
+  const handleLoginEmail = useCallback(
     async (event) => {
       event.preventDefault();
       setIsLoading(true);
@@ -38,12 +68,8 @@ const Login = () => {
       const password = formData.password;
       try {
         const userCredential = await loginEmail(email, password);
-        const dbUser = await getDbUser(userCredential.user.uid);
-        if (dbUser.isFacilitator) {
-          navigate('/');
-        } else {
-          navigate('/profilebuilder');
-        }
+        const userId = userCredential.user.id;
+        await handleAfterLogin(userId, email);
       } catch (error) {
         setSnackbar({
           message: error.message,
@@ -71,7 +97,9 @@ const Login = () => {
           Log in
         </Typography>
 
-        <form onSubmit={handleLogin}>
+        <StyledFirebaseAuth uiConfig={firebaseUIConfig} firebaseAuth={auth} />
+
+        <form onSubmit={handleLoginEmail}>
           <Box
             style={{
               display: 'flex',
@@ -102,7 +130,7 @@ const Login = () => {
               type='submit'
               variant='contained'
               color='primary'
-              onClick={handleLogin}
+              onClick={handleLoginEmail}
               disabled={isLoading}
               style={{ marginTop: 10 }}
             >
