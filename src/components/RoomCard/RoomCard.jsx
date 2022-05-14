@@ -6,6 +6,7 @@ import {
   QrCode,
   ArchiveOutlined,
   DeleteOutlineOutlined,
+  PeopleOutlined,
 } from '@mui/icons-material';
 import { Card, Grid, Typography } from '@mui/material';
 import { FlexBoxSpaceBetween, FlexBoxCenter } from '../styled/general';
@@ -16,6 +17,7 @@ const RoomCard = (props) => {
   const {
     room,
     handleSoftDelete,
+    handleAddCoFacilitator,
     handleQrModal,
     toggleIsActive,
     handleEdit,
@@ -55,6 +57,16 @@ const RoomCard = (props) => {
               onClick={(e) => {
                 e.stopPropagation();
                 handleSoftDelete();
+              }}
+            />
+            <PeopleOutlined
+              sx={{
+                color: (theme) => theme.palette.lapis[100],
+                marginLeft: '4px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddCoFacilitator();
               }}
             />
             <EditOutlined
