@@ -68,7 +68,7 @@ const Login = () => {
       const password = formData.password;
       try {
         const userCredential = await loginEmail(email, password);
-        const userId = userCredential.user.id;
+        const userId = userCredential.user.uid;
         await handleAfterLogin(userId, email);
       } catch (error) {
         setSnackbar({
