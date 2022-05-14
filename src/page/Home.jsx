@@ -12,6 +12,7 @@ import RoomCard from '../components/RoomCard/RoomCard';
 import NewRoomModal from '../components/GeneralRoomModal/NewRoomModal';
 import EditRoomModal from '../components/GeneralRoomModal/EditRoomModal';
 import QrModal from '../components/GeneralRoomModal/QrModal';
+import CoFacilitatorModal from '../components/GeneralRoomModal/CoFacilitatorModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
@@ -44,11 +45,9 @@ const Home = () => {
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [qrModalRoom, setQrModalRoom] = useState(null);
 
-  // const [roomFilter, setRoomFilter] = useState({none: "Filter"})
-
-  // const handleChange = (event) => {
-  //   setRoomFilter({ [event.target.value]: filterOptions[event.target.value] });
-  // };
+  const [isCoFacilitatorModalOpen, setIsCoFacilitatorModalOpen] =
+    useState(false);
+  const [coFacilitatorModalRoom, setCoFacilitatorModalRoom] = useState(false);
 
   async function handleSoftDeleteRoom(id) {
     const isConfirm = confirm('Are you sure you want to delete this room?');
@@ -80,6 +79,12 @@ const Home = () => {
     const room = rooms.find((room) => room.id === id);
     setQrModalRoom(room);
     setIsQrModalOpen(true);
+  }
+
+  async function handleAddCoFacilitator(id) {
+    const room = rooms.find((room) => room.id === id);
+    setCoFacilitatorModalRoom(room);
+    setIsCoFacilitatorModalOpen(true);
   }
 
   async function toggleIsActiveRoom(id) {
@@ -172,6 +177,7 @@ const Home = () => {
                 room={room}
                 toggleIsActive={() => toggleIsActiveRoom(room.id)}
                 handleSoftDelete={() => handleSoftDeleteRoom(room.id)}
+                handleAddCoFacilitator={() => handleAddCoFacilitator(room.id)}
                 handleQrModal={() => handleQrModal(room.id)}
                 roomStatus={room.isActive}
                 handleEdit={() => handleEditRoom(room.id)}
@@ -250,6 +256,12 @@ const Home = () => {
           isModalOpen={isQrModalOpen}
           setIsModalOpen={setIsQrModalOpen}
           room={qrModalRoom}
+        />
+        <CoFacilitatorModal
+          isModalOpen={isCoFacilitatorModalOpen}
+          setIsModalOpen={setIsCoFacilitatorModalOpen}
+          room={coFacilitatorModalRoom}
+          loadRooms={loadRooms}
         />
       </Box>
     </Box>

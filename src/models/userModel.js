@@ -48,7 +48,7 @@ export const getDbUserFromEmail = async (email) => {
     .where('email', '==', email)
     .get();
   if (snapshot.docs.length === 0) {
-    throw new Error(`No user exists for the email '${email}'`);
+    return null;
   }
   const userDoc = snapshot.docs[0];
   const userData = { id: userDoc.id, ...userDoc.data() };
