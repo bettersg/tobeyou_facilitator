@@ -43,7 +43,7 @@ const Home = () => {
     useState(formDataTemplate);
 
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
-  const [qrModalRoom, setQrModalRoom] = useState(null);
+  const [qrModalRoomCode, setQrModalRoomCode] = useState(null);
 
   const [isCoFacilitatorModalOpen, setIsCoFacilitatorModalOpen] =
     useState(false);
@@ -77,7 +77,7 @@ const Home = () => {
 
   async function handleQrModal(id) {
     const room = rooms.find((room) => room.id === id);
-    setQrModalRoom(room);
+    setQrModalRoomCode(room.code);
     setIsQrModalOpen(true);
   }
 
@@ -255,7 +255,7 @@ const Home = () => {
         <QrModal
           isModalOpen={isQrModalOpen}
           setIsModalOpen={setIsQrModalOpen}
-          room={qrModalRoom}
+          roomCode={qrModalRoomCode}
         />
         <CoFacilitatorModal
           isModalOpen={isCoFacilitatorModalOpen}

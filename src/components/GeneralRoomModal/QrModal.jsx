@@ -5,11 +5,11 @@ import { getGameUrl } from '../../utils';
 import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
 
 const QrModal = (props) => {
-  const { isModalOpen, setIsModalOpen, room } = props;
+  const { isModalOpen, setIsModalOpen, roomCode } = props;
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  const gameUrl = getGameUrl(room?.code);
+  const gameUrl = getGameUrl(roomCode);
 
   return (
     <Modal

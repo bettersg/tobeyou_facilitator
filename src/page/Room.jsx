@@ -17,9 +17,12 @@ import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
 import { RoomModal } from '../components/GeneralRoomModal/RoomModal';
+import QrModal from '../components/GeneralRoomModal/QrModal';
 
 const ClassesBar = (props) => {
   const { room, roomCode, currentCharChapt } = props;
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+
   return (
     <Paper
       sx={{
@@ -49,8 +52,15 @@ const ClassesBar = (props) => {
             sx={{
               color: (theme) => theme.palette.lapis[100],
               marginRight: 1,
+              cursor: 'pointer',
             }}
+            onClick={() => setIsQrModalOpen(true)}
             fontSize='large'
+          />
+          <QrModal
+            isModalOpen={isQrModalOpen}
+            setIsModalOpen={setIsQrModalOpen}
+            roomCode={roomCode}
           />
         </FlexBoxCenter>
       </FlexBoxSpaceBetween>
