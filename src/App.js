@@ -66,6 +66,7 @@ const theme = createTheme({
     aqua: {
       1: '#19A3AD',
       2: '#005B69',
+      10: '#ECFAFB',
       20: '#D8F4F6',
       40: '#B1EAEE',
       100: '#3DCAD3',

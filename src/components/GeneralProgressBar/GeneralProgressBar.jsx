@@ -1,32 +1,37 @@
-import { Box } from '@mui/material';
 import React from 'react';
+import { Box, Typography } from '@mui/material';
 import { FlexBoxAlign } from '../styled/general';
 
-export const GeneralProgressBar = ({
-  completedStudents,
-  totalStudents,
-  hasPercentage,
-}) => {
+export const GeneralProgressBar = ({ completedStudents, totalStudents }) => {
   const percentage = Math.round((completedStudents / totalStudents) * 100);
   return (
     <FlexBoxAlign
       sx={{
-        borderRadius: '40px',
-        background: '#005B6966',
+        borderRadius: '12px',
+        background: (theme) => theme.palette.aqua[10],
         width: '100%',
-        height: '46px',
-        margin: '24px 0',
+        height: '40px',
+        margin: '16px 0',
       }}
     >
       <Box
         sx={{
-          borderRadius: '40px',
-          background: (theme) => theme.palette.aqua[20],
+          borderRadius: '12px 0 0 12px',
+          background: (theme) => theme.palette.aqua[100],
           width: `${percentage}%`,
-          height: '46px',
-          margin: '24px 0',
+          height: '40px',
+          margin: '16px 0',
         }}
-      ></Box>
+      />
+      <Typography
+        sx={{
+          fontWeight: 700,
+          fontSize: '24px',
+          color: (theme) => theme.palette.midnight.dark1,
+        }}
+      >
+        {isNaN(percentage) ? null : `${percentage}%`}
+      </Typography>
     </FlexBoxAlign>
   );
 };

@@ -9,7 +9,7 @@ import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBrea
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
-  FlexBoxAlign,
+  FlexBoxCenterColumnAlign,
   FlexBoxAlignColumn,
 } from '../components/styled/general';
 import { QrCode } from '@mui/icons-material';
@@ -87,7 +87,7 @@ const ChapterCard = (props) => {
       key={reflectionId}
       sx={{
         top: 210,
-        padding: '32px',
+        padding: '40px 32px',
         background: 'white',
         width: '80%',
         borderRadius: '30px',
@@ -95,106 +95,126 @@ const ChapterCard = (props) => {
       }}
     >
       <Grid container sx={{ display: 'flex', height: '100%' }}>
-        <Grid xs={12} sx={{ paddingBottom: '24px' }}>
-          <FlexBoxAlign>
-            <CharacterAvatar avatarContent={character} />
-            <Typography sx={{ ml: 2, fontWeight: 700 }} variant='h4'>
-              {character} / Chapter {chapterId}
-            </Typography>
-          </FlexBoxAlign>
-        </Grid>
-
         <Grid
           container
-          spacing={2}
+          spacing={3}
           sx={{ gridAutoRows: '1fr', alignItems: 'stretch' }}
         >
-          <Grid item xs={4}>
+          <Grid
+            item
+            xs={1.5}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <CharacterAvatar avatarContent={character} />
+            <Typography sx={{ fontWeight: 900, mt: 1 }} variant='h3'>
+              {character}
+            </Typography>
+            <Typography sx={{ fontWeight: 700 }} variant='h4'>
+              Chapter {chapterId}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={3}>
             <ChapterDetailsCard
               sx={{
-                background: 'linear-gradient(180deg, #19A3AD 0%, #3DCAD3 100%)',
+                backgroundColor: (theme) => theme.palette.midnight[100],
+                cursor: 'pointer',
               }}
             >
+              <Typography variant='h4' sx={{ fontWeight: 600 }}>
+                Completion Rate
+              </Typography>
               <GeneralProgressBar
                 totalStudents={completionRateDenominator}
                 completedStudents={completionRateNumerator}
               />
-              <Typography variant='h4' sx={{ fontWeight: 500 }}>
+              <Typography
+                variant='h4'
+                sx={{
+                  fontSize: 16,
+                  fontWeight: 400,
+                  textDecoration: 'underline',
+                }}
+              >
                 {completionRateNumerator}/{completionRateDenominator} students
                 completed
               </Typography>
             </ChapterDetailsCard>
           </Grid>
 
-          <Grid item xs={1}></Grid>
-
-          <Grid container item xs={7} spacing={2}>
-            <Grid item xs={6}>
-              <ChapterDetailsCard
-                sx={{
-                  backgroundColor: (theme) => theme.palette.lapis.dark2,
-                  cursor: 'pointer',
-                }}
-                onClick={() =>
-                  navigate(
-                    `/room/${roomCode}/reflectionId/${reflectionId}/reflections`
-                  )
-                }
-              >
-                <Typography variant='h4'>View Reflections</Typography>
-              </ChapterDetailsCard>
-            </Grid>
-
-            <Grid item xs={3}>
-              <ChapterDetailsCard
-                sx={{
-                  backgroundColor: (theme) => theme.palette.aqua[1],
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
-                  setCurrentReflectionId(reflectionId);
-                }}
-              >
-                <RoomModal
-                  isModalOpen={isGameChoicesModalOpen}
-                  setIsModalOpen={setIsGameChoicesModalOpen}
-                  label='Game choices'
-                  roomReflectionId={currentReflectionId}
-                  roomCode={roomCode}
-                  type='gameChoices'
-                />
-                <Typography variant='h4' sx={{ textAlign: 'center' }}>
-                  Review Game Choices
-                </Typography>
-              </ChapterDetailsCard>
-            </Grid>
-
-            <Grid item xs={3}>
-              <ChapterDetailsCard
-                sx={{
-                  backgroundColor: (theme) => theme.palette.aqua[1],
-                  cursor: 'pointer',
-                }}
-                onClick={() =>
-                  navigate(
-                    `/room/${roomCode}/reflectionId/${reflectionId}/quizzes`
-                  )
-                }
-              >
-                <Typography
-                  variant='h4'
-                  sx={{ textAlign: 'center', cursor: 'pointer' }}
-                >
-                  Review Mini Game
-                </Typography>
-              </ChapterDetailsCard>
-            </Grid>
+          <Grid item xs={3.5}>
+            <ChapterDetailsCard
+              sx={{
+                backgroundColor: (theme) => theme.palette.lapis.dark2,
+                backgroundImage: 'url(/general/characters.png)',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'bottom 0 right 0',
+                cursor: 'pointer',
+              }}
+              onClick={() =>
+                navigate(
+                  `/room/${roomCode}/reflectionId/${reflectionId}/reflections`
+                )
+              }
+            >
+              <Typography variant='h4'>View Reflections</Typography>
+            </ChapterDetailsCard>
           </Grid>
-        </Grid>
 
-        <Grid container xs={3} spacing={2}>
-          <Grid item xs={12}></Grid>
+          <Grid item xs={2}>
+            <ChapterDetailsCard
+              sx={{
+                backgroundColor: (theme) => theme.palette.tangerine[80],
+                backgroundImage: 'url(/general/background.png)',
+                backgroundSize: 'cover',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
+                setCurrentReflectionId(reflectionId);
+              }}
+            >
+              <RoomModal
+                isModalOpen={isGameChoicesModalOpen}
+                setIsModalOpen={setIsGameChoicesModalOpen}
+                label='Game choices'
+                roomReflectionId={currentReflectionId}
+                roomCode={roomCode}
+                type='gameChoices'
+              />
+              <Typography variant='h4' sx={{ textAlign: 'center' }}>
+                Review Game Choices
+              </Typography>
+            </ChapterDetailsCard>
+          </Grid>
+
+          <Grid item xs={2}>
+            <ChapterDetailsCard
+              sx={{
+                backgroundColor: (theme) => theme.palette.aqua[100],
+                backgroundImage: 'url(/general/background.png)',
+                backgroundSize: 'cover',
+                cursor: 'pointer',
+              }}
+              onClick={() =>
+                navigate(
+                  `/room/${roomCode}/reflectionId/${reflectionId}/quizzes`
+                )
+              }
+            >
+              <Typography
+                variant='h4'
+                sx={{ textAlign: 'center', cursor: 'pointer' }}
+              >
+                Review Mini Game
+              </Typography>
+            </ChapterDetailsCard>
+          </Grid>
         </Grid>
       </Grid>
     </Paper>
