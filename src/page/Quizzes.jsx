@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbRoomByCode } from '../models/roomModel';
 import { getDbQuizAnswers } from '../models/quizAnswerModel';
 import { MINI_GAME_MAP } from '../models/miniGameMap';
-import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
-import { useEventListener } from '../utils';
+import ChartScreen from '../components/ChartScreen/ChartScreen';
 
 const Quizzes = () => {
   let { roomCode, reflectionId } = useParams();
@@ -13,58 +12,48 @@ const Quizzes = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [quizAnswers, setQuizAnswers] = useState(null);
   const miniGameQuestions = MINI_GAME_MAP.find(
     (game) => game.game_id === reflectionId
   ).questions;
-  const [miniGameResults, setMiniGameResults] = useState(miniGameQuestions);
-  const [currentMinigameIndex, setCurrentMinigameIndex] = useState(0);
+
+  const [chartDatas, setChartDatas] = useState(null);
 
   // Returns the count of answers as an object, indexed by questionId then answerId
   function getAnswerCounts(answers) {
-    const answerCounts = {};
+    const counts = {};
     for (const answer of answers) {
-      const { questionId, answerId } = answer;
-      if (answerCounts[questionId] === undefined) {
-        answerCounts[questionId] = {};
+      let { questionId, answerId } = answer;
+      if (counts[questionId] === undefined) {
+        counts[questionId] = {};
       }
-      if (answerCounts[questionId][answerId] === undefined) {
-        answerCounts[questionId][answerId] = 1;
+      if (counts[questionId][answerId] === undefined) {
+        counts[questionId][answerId] = 1;
       } else {
-        answerCounts[questionId][answerId] += 1;
+        counts[questionId][answerId] += 1;
       }
     }
-    return answerCounts;
+    return counts;
   }
 
-  // Returns a copy of the mini game questions, but with additional answer counts
-  function getMiniGameResults(answerCounts) {
-    const results = JSON.parse(JSON.stringify(miniGameQuestions));
-    for (let result of results) {
-      for (let answer of result.answers) {
-        answer.count = 0;
-      }
-    }
-    for (let questionId in answerCounts) {
-      for (let answerId in answerCounts[questionId]) {
-        questionId = parseInt(questionId);
-        answerId = parseInt(answerId);
-        const result = results.find((x) => x.question_id === questionId);
-        const count = answerCounts[questionId][answerId];
-        result.answers.find((answer) => answer.answer_id === answerId).count +=
-          count;
-      }
-    }
-    return results;
-  }
-
-  const compileResults = useCallback(() => {
-    if (quizAnswers === null) return;
-    const answers = quizAnswers.map((x) => x.answers).flat();
+  function parseChartDatas(quizAnswers) {
+    const answers = quizAnswers.flatMap((x) => x.answers);
     const answerCounts = getAnswerCounts(answers);
-    const results = getMiniGameResults(answerCounts);
-    setMiniGameResults(results);
-  }, [quizAnswers]);
+    const chartDatas = miniGameQuestions.map((miniGameQuestion) => {
+      const answerCountsForQuestion =
+        answerCounts[miniGameQuestion.question_id] || {};
+      const data = miniGameQuestion.answers.map((answer) => {
+        return answerCountsForQuestion[answer.answer_id] || 0;
+      });
+      return {
+        title: miniGameQuestion.question,
+        labels: miniGameQuestion.answers.map((answer) => answer.title),
+        data: data,
+        tooltip: miniGameQuestion.explanation,
+        correct_answer_id: miniGameQuestion.correct_answer_id,
+      };
+    });
+    return chartDatas;
+  }
 
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -76,41 +65,14 @@ const Quizzes = () => {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
     const dbQuizAnswers = await getDbQuizAnswers(roomCode, reflectionId); // reflectionId serves as the gameId
-    setQuizAnswers(dbQuizAnswers);
+    const parsedChartDatas = parseChartDatas(dbQuizAnswers);
+    setChartDatas(parsedChartDatas);
   }
 
   useEffect(() => getData(), []);
-  useEffect(() => compileResults(), [quizAnswers]);
-
-  const handleLeft = () => {
-    setCurrentMinigameIndex(Math.max(0, currentMinigameIndex - 1));
-  };
-
-  const handleRight = () => {
-    setCurrentMinigameIndex(
-      Math.min(miniGameResults.length - 1, currentMinigameIndex + 1)
-    );
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.keyCode === 37) {
-      handleLeft();
-    } else if (event.keyCode === 39) {
-      handleRight();
-    }
-  };
-  useEventListener('keydown', handleKeyDown);
 
   return (
-    <ChoicesScreen
-      title={miniGameResults[currentMinigameIndex].question}
-      type='quizzes'
-      onKeyDown={handleKeyDown}
-      onLeft={handleLeft}
-      onRight={handleRight}
-      gameChoiceValues={miniGameResults[currentMinigameIndex].answers}
-      tooltipTitle={miniGameResults[currentMinigameIndex].explanation}
-    ></ChoicesScreen>
+    <ChartScreen type='quizzes' chartDatas={chartDatas} initialIndex={0} />
   );
 };
 

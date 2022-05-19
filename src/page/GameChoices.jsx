@@ -3,10 +3,9 @@ import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbSavedState } from '../models/savedStateModel';
 import { getDbRoomByCode } from '../models/roomModel';
-import { useEventListener } from '../utils';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
-import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
+import ChartScreen from '../components/ChartScreen/ChartScreen';
 
 const GameChoices = () => {
   let { roomCode, reflectionId, choiceIdx } = useParams();
@@ -14,14 +13,35 @@ const GameChoices = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] =
-    useState(choiceIdx);
-  const [allGlobalVariables, setAllGlobalVariables] = useState(null);
+  const [chartDatas, setChartDatas] = useState(null);
 
   const chapter = GLOBAL_VAR_MAP.flatMap(
     (character) => character.chapters
   ).find((chapter) => chapter.reflectionId === reflectionId);
   const gameChoices = chapter.variables;
+
+  function getCountsForGameChoice(gameChoice, allGlobalVariables) {
+    const name = gameChoice.name;
+    const data = allGlobalVariables
+      .filter((globalVariables) => Object.keys(globalVariables).includes(name))
+      .map((globalVariables) => globalVariables[name]);
+    const values = gameChoice.values.map((value) => value.value);
+    const counts = values.map((value) => {
+      return data.filter((dataValue) => dataValue === value).length;
+    });
+    return counts;
+  }
+
+  function parseChartDatas(allGlobalVariables) {
+    const chartDatas = gameChoices.map((gameChoice) => {
+      return {
+        title: gameChoice.description,
+        labels: gameChoice.values.map((value) => value.description),
+        data: getCountsForGameChoice(gameChoice, allGlobalVariables),
+      };
+    });
+    return chartDatas;
+  }
 
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -41,44 +61,18 @@ const GameChoices = () => {
     const dbAllGlobalVariables = dbSavedStates.map(
       (dbSavedState) => dbSavedState.globalVariables
     );
-    setAllGlobalVariables(dbAllGlobalVariables);
+    const parsedChartDatas = parseChartDatas(dbAllGlobalVariables);
+    setChartDatas(parsedChartDatas);
   }
 
-  const handleLeft = () => {
-    setCurrentGameChoiceIndex(Math.max(0, currentGameChoiceIndex - 1));
-  };
-
-  const handleRight = () => {
-    setCurrentGameChoiceIndex(
-      Math.min(gameChoices.length - 1, currentGameChoiceIndex + 1)
-    );
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.keyCode === 37) {
-      handleLeft();
-    } else if (event.keyCode === 39) {
-      handleRight();
-    }
-  };
-
   useEffect(() => getData(), []);
-  useEventListener('keydown', handleKeyDown);
-
-  const gameChoice = gameChoices[currentGameChoiceIndex];
-  const userChoices = allGlobalVariables?.map(
-    (globalVariables) => globalVariables[gameChoice.name]
-  );
 
   return (
-    <ChoicesScreen
-      title={gameChoice.description}
-      onKeyDown={handleKeyDown}
-      onLeft={handleLeft}
-      onRight={handleRight}
-      gameChoiceValues={gameChoice.values}
-      userChoices={userChoices}
-    ></ChoicesScreen>
+    <ChartScreen
+      type='gameChoices'
+      chartDatas={chartDatas}
+      initialIndex={choiceIdx}
+    />
   );
 };
 

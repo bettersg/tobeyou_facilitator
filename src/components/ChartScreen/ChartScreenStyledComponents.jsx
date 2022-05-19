@@ -1,11 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { Paper } from '@mui/material';
-import {
-  FlexBoxCenterColumnAlign,
-  FlexBoxAlign,
-} from '../../components/styled/general';
+import { FlexBoxCenterColumnAlign, FlexBoxAlign } from '../styled/general';
 
-export const ChoicesBackground = styled(FlexBoxCenterColumnAlign)(
+export const ChartBackground = styled(FlexBoxCenterColumnAlign)(
   ({ theme, type }) => ({
     backgroundImage: 'url(/choices_screen/background.png)',
     backgroundColor:
@@ -18,7 +15,7 @@ export const ChoicesBackground = styled(FlexBoxCenterColumnAlign)(
   })
 );
 
-export const ChoicesPaper = styled(Paper)(({ theme }) => ({
+export const ChartPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '20px',
   padding: '80px',
@@ -31,7 +28,6 @@ export const InfoBox = styled(FlexBoxAlign)(({ theme }) => ({
   backgroundColor: theme.palette.aqua[40],
   borderRadius: '20px 0 0 20px',
   padding: '20px 15px',
-
   position: 'relative',
   top: -60,
   left: -140,
