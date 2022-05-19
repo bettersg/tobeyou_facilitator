@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbSavedState } from '../models/savedStateModel';
 import { getDbRoomByCode } from '../models/roomModel';
-import { useEventListener } from '../utils';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
 import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
@@ -14,8 +13,6 @@ const GameChoices = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [currentGameChoiceIndex, setCurrentGameChoiceIndex] =
-    useState(choiceIdx);
   const [allGlobalVariables, setAllGlobalVariables] = useState(null);
 
   const chapter = GLOBAL_VAR_MAP.flatMap(
@@ -44,41 +41,15 @@ const GameChoices = () => {
     setAllGlobalVariables(dbAllGlobalVariables);
   }
 
-  const handleLeft = () => {
-    setCurrentGameChoiceIndex(Math.max(0, currentGameChoiceIndex - 1));
-  };
-
-  const handleRight = () => {
-    setCurrentGameChoiceIndex(
-      Math.min(gameChoices.length - 1, currentGameChoiceIndex + 1)
-    );
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.keyCode === 37) {
-      handleLeft();
-    } else if (event.keyCode === 39) {
-      handleRight();
-    }
-  };
-
   useEffect(() => getData(), []);
-  useEventListener('keydown', handleKeyDown);
-
-  const gameChoice = gameChoices[currentGameChoiceIndex];
-  const userChoices = allGlobalVariables?.map(
-    (globalVariables) => globalVariables[gameChoice.name]
-  );
 
   return (
     <ChoicesScreen
-      title={gameChoice.description}
-      onKeyDown={handleKeyDown}
-      onLeft={handleLeft}
-      onRight={handleRight}
-      gameChoiceValues={gameChoice.values}
-      userChoices={userChoices}
-    ></ChoicesScreen>
+      type='gameChoices'
+      options={gameChoices}
+      data={allGlobalVariables}
+      initialIndex={choiceIdx}
+    />
   );
 };
 

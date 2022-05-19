@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbRoomByCode } from '../models/roomModel';
 import { getDbQuizAnswers } from '../models/quizAnswerModel';
 import { MINI_GAME_MAP } from '../models/miniGameMap';
 import { ChoicesScreen } from '../components/ChoicesScreen/ChoicesScreen';
-import { useEventListener } from '../utils';
 
 const Quizzes = () => {
   let { roomCode, reflectionId } = useParams();
@@ -13,12 +12,10 @@ const Quizzes = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  const [quizAnswers, setQuizAnswers] = useState(null);
   const miniGameQuestions = MINI_GAME_MAP.find(
     (game) => game.game_id === reflectionId
   ).questions;
   const [miniGameResults, setMiniGameResults] = useState(miniGameQuestions);
-  const [currentMinigameIndex, setCurrentMinigameIndex] = useState(0);
 
   // Returns the count of answers as an object, indexed by questionId then answerId
   function getAnswerCounts(answers) {
@@ -58,14 +55,6 @@ const Quizzes = () => {
     return results;
   }
 
-  const compileResults = useCallback(() => {
-    if (quizAnswers === null) return;
-    const answers = quizAnswers.map((x) => x.answers).flat();
-    const answerCounts = getAnswerCounts(answers);
-    const results = getMiniGameResults(answerCounts);
-    setMiniGameResults(results);
-  }, [quizAnswers]);
-
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
     if (
@@ -76,41 +65,16 @@ const Quizzes = () => {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
     const dbQuizAnswers = await getDbQuizAnswers(roomCode, reflectionId); // reflectionId serves as the gameId
-    setQuizAnswers(dbQuizAnswers);
+    const answers = dbQuizAnswers.flatMap((x) => x.answers);
+    const answerCounts = getAnswerCounts(answers);
+    const results = getMiniGameResults(answerCounts);
+    setMiniGameResults(results);
   }
 
   useEffect(() => getData(), []);
-  useEffect(() => compileResults(), [quizAnswers]);
-
-  const handleLeft = () => {
-    setCurrentMinigameIndex(Math.max(0, currentMinigameIndex - 1));
-  };
-
-  const handleRight = () => {
-    setCurrentMinigameIndex(
-      Math.min(miniGameResults.length - 1, currentMinigameIndex + 1)
-    );
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.keyCode === 37) {
-      handleLeft();
-    } else if (event.keyCode === 39) {
-      handleRight();
-    }
-  };
-  useEventListener('keydown', handleKeyDown);
 
   return (
-    <ChoicesScreen
-      title={miniGameResults[currentMinigameIndex].question}
-      type='quizzes'
-      onKeyDown={handleKeyDown}
-      onLeft={handleLeft}
-      onRight={handleRight}
-      gameChoiceValues={miniGameResults[currentMinigameIndex].answers}
-      tooltipTitle={miniGameResults[currentMinigameIndex].explanation}
-    ></ChoicesScreen>
+    <ChoicesScreen type='quizzes' options={miniGameResults} initialIndex={0} />
   );
 };
 

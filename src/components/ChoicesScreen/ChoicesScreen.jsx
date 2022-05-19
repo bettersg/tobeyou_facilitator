@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import {
@@ -13,26 +14,56 @@ import {
   InfoBox,
 } from './ChoicesScreenStyledComponents';
 import { ChoicesCharts } from '../GeneralCharts/ChoicesCharts';
-import { useParams } from 'react-router';
 import { QuizCharts } from '../GeneralCharts/QuizCharts';
 import { GeneralTooltip } from '../GeneralTooltip/GeneralTooltip';
+import { useEventListener } from '../../utils';
 
 export const ChoicesScreen = ({
-  title = '',
-  type = 'gameChoices',
+  type, // 'gameChoices' or 'quizzes'
   children,
-  gameChoiceValues,
-  userChoices,
-  onKeyDown,
-  onLeft,
-  onRight,
-  tooltipTitle,
+  initialIndex,
+  data,
+  options,
   ...props
 }) => {
   const { roomCode } = useParams();
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  let userChoices, gameChoiceValues, title, tooltipTitle;
+  if (type === 'gameChoices') {
+    const gameChoice = options[currentIndex];
+    userChoices = data?.map(
+      (globalVariables) => globalVariables[gameChoice.name]
+    );
+    title = gameChoice.description;
+    gameChoiceValues = gameChoice.values;
+  } else if (type === 'quizzes') {
+    const miniGameResult = options[currentIndex];
+    title = miniGameResult.question;
+    gameChoiceValues = miniGameResult.answers;
+    tooltipTitle = miniGameResult.explanation;
+  }
+
+  const handleLeft = () => {
+    setCurrentIndex(Math.max(0, currentIndex - 1));
+  };
+
+  const handleRight = () => {
+    setCurrentIndex(Math.min(options.length - 1, currentIndex + 1));
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 37) {
+      handleLeft();
+    } else if (event.keyCode === 39) {
+      handleRight();
+    }
+  };
+
+  useEventListener('keydown', handleKeyDown);
 
   return (
-    <ChoicesBackground type={type} onKeyDown={onKeyDown} {...props}>
+    <ChoicesBackground type={type} onKeyDown={handleKeyDown} {...props}>
       <Link to={`/room/${roomCode}`}>
         <ClearRounded
           fontSize='large'
@@ -59,10 +90,9 @@ export const ChoicesScreen = ({
             transform: 'rotate(270deg)',
             '&:hover': { cursor: 'pointer' },
           }}
-          onClick={onLeft}
+          onClick={handleLeft}
           fontSize='large'
         />
-
         <ChoicesPaper>
           {tooltipTitle ? (
             <GeneralTooltip title={tooltipTitle} arrow>
@@ -82,10 +112,7 @@ export const ChoicesScreen = ({
                 userChoices={userChoices}
               />
             ) : type === 'quizzes' ? (
-              <QuizCharts
-                gameChoiceValues={gameChoiceValues}
-                userChoices={userChoices}
-              />
+              <QuizCharts gameChoiceValues={gameChoiceValues} />
             ) : null}
           </Box>
         </ChoicesPaper>
@@ -95,7 +122,7 @@ export const ChoicesScreen = ({
             transform: 'rotate(90deg)',
             '&:hover': { cursor: 'pointer' },
           }}
-          onClick={onRight}
+          onClick={handleRight}
           fontSize='large'
         />
       </FlexBoxSpaceBetween>

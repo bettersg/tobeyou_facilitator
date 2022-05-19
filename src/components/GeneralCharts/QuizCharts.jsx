@@ -19,7 +19,7 @@ ChartJS.register(
   Legend
 );
 
-export const QuizCharts = ({ gameChoiceValues, userChoices }) => {
+export const QuizCharts = ({ gameChoiceValues }) => {
   function getGameChoicesDescription() {
     let output = { description: [], numChoice: [], totalCount: 0 };
     let totalResponses = 0;
