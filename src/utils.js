@@ -40,36 +40,28 @@ export function useEventListener(eventName, handler, element = window) {
 }
 
 export function breakIntoLines(labels) {
-  const result = [];
-  for (let label of labels) {
-    const maxCharacterCount = Math.round(1000 / labels.length / 16);
-    if (label.length > maxCharacterCount) {
-      let descriptionSplit = [];
-      let end = maxCharacterCount;
-      let start = 0;
-      while (end < label.length) {
-        let hasDash = false;
-        if (
-          label[end - 1] !== ' ' &&
-          label[end] !== ' ' &&
-          end < label.length
-        ) {
-          hasDash = true;
-        }
-        descriptionSplit.push(
-          label.slice(start, end) + `${hasDash ? '-' : ''}`
-        );
-        start = end;
-        end = Math.min(start + maxCharacterCount, label.length);
-      }
-
-      if (end >= label.length) {
-        descriptionSplit.push(label.slice(start, end));
-      }
-      result.push(descriptionSplit);
-    } else {
-      result.push(label);
+  const maxCharCount = Math.round(1000 / labels.length / 16);
+  const result = labels.map((label) => {
+    if (label.length <= maxCharCount) {
+      return label;
     }
-  }
+    let descriptionSplit = [];
+    let end = maxCharCount;
+    let start = 0;
+    while (end < label.length) {
+      let hasDash = false;
+      if (label[end - 1] !== ' ' && label[end] !== ' ' && end < label.length) {
+        hasDash = true;
+      }
+      descriptionSplit.push(label.slice(start, end) + `${hasDash ? '-' : ''}`);
+      start = end;
+      end = start + maxCharCount;
+    }
+    if (end > start) {
+      descriptionSplit.push(label.slice(start, end));
+    }
+    return descriptionSplit;
+  });
+
   return result;
 }
