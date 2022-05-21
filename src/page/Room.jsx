@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import { getDbRoomByCode } from '../models/roomModel';
+import { getDbUser } from '../models/userModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
 import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBreadcrumbs';
@@ -72,6 +73,7 @@ const ChapterCard = (props) => {
     roomCode,
     completionRateNumerator,
     completionRateDenominator,
+    handleCompletionRate,
     handleReviewGameChoices,
   } = props;
   const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
@@ -119,6 +121,7 @@ const ChapterCard = (props) => {
                 backgroundColor: (theme) => theme.palette.midnight[100],
                 cursor: 'pointer',
               }}
+              onClick={handleCompletionRate}
             >
               <Typography variant='h4' sx={{ fontWeight: 600 }}>
                 Completion Rate
@@ -211,12 +214,21 @@ const Room = () => {
   const navigate = useNavigate();
 
   const [room, setRoom] = useState(null);
-  const [completionRateNumerators, setCompletionRateNumerators] = useState({});
-  const [completionRateDenominator, setCompletionRateDenominator] =
-    useState(null);
 
-  // For table modals: game choices
+  // For completion rate
+  // - Numerator IDs: IDs of participants in the room who've completed the given reflection, indexed by reflection ID
+  // - Denominator IDs: IDs of all participants in the room
+  const [completionRateNumeratorIds, setCompletionRateNumeratorIds] = useState(
+    {}
+  );
+  const [completionRateDenominatorIds, setCompletionRateDenominatorIds] =
+    useState(null);
+  const [participantsIdToEmailMap, setParticipantsIdToEmailMap] = useState({});
+
+  // For table modals (completion rate and game choices)
   const [selectedReflectionId, setSelectedReflectionId] = useState(1);
+  const [isCompletionRateModalOpen, setIsCompletionRateModalOpen] =
+    useState(false);
   const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] = useState(false);
 
   async function getRoom() {
@@ -226,13 +238,16 @@ const Room = () => {
     }
     setRoom(dbRoom);
 
-    // Get completion rate statistics (numerator and denominator)
+    // Set table modal options
+    setSelectedReflectionId(dbRoom.reflectionIds[0]);
+
+    // Get completion rate statistics (numerator and denominator IDs)
     const allReflectionResponses = await getDbReflectionResponses(
       roomCode,
       null,
       true
     );
-    const numerators = {};
+    const numeratorIds = {};
     for (const reflectionId of dbRoom.reflectionIds) {
       const reflectionResponses = allReflectionResponses.filter(
         (rr) => rr.reflectionId === reflectionId
@@ -241,27 +256,34 @@ const Room = () => {
       const userIdsInRoomWithReflection = userIdsWithReflection.filter(
         (userId) => dbRoom.participantIds.includes(userId)
       );
-      const numUniqueUserIdsInRoomWithReflection = [
+      const uniqueUserIdsInRoomWithReflection = [
         ...new Set(userIdsInRoomWithReflection),
-      ].length;
-      numerators[reflectionId] = numUniqueUserIdsInRoomWithReflection;
+      ];
+      numeratorIds[reflectionId] = uniqueUserIdsInRoomWithReflection;
     }
-    setCompletionRateNumerators(numerators);
-    const denominator = dbRoom.participantIds.length;
-    setCompletionRateDenominator(denominator);
+    setCompletionRateNumeratorIds(numeratorIds);
+    setCompletionRateDenominatorIds(dbRoom.participantIds);
 
-    // Set table modal options
-    setSelectedReflectionId(dbRoom.reflectionIds[0]);
+    // Get participant emails for completion rate - have to perform N+1 query unfortunately
+    const participants = await Promise.all(
+      dbRoom.participantIds.map((participantId) => getDbUser(participantId))
+    );
+    const participantsIdToEmailMap = {};
+    for (let participant of participants) {
+      participantsIdToEmailMap[participant.id] = participant.email;
+    }
+    setParticipantsIdToEmailMap(participantsIdToEmailMap);
   }
 
   useEffect(() => getRoom(), []);
 
-  const chapter = GLOBAL_VAR_MAP.flatMap(
+  const gameChoices = GLOBAL_VAR_MAP.flatMap(
     (character) => character.chapters
-  ).find((chapter) => chapter.reflectionId === selectedReflectionId);
-  const gameChoices = chapter.variables;
+  ).find((chapter) => chapter.reflectionId === selectedReflectionId).variables;
 
-  const rows = gameChoices.map((gameChoice) => {
+  // Data for game choices modal
+  const gameChoicesModalHeaders = ['Character', 'Description'];
+  const gameChoicesModalRows = gameChoices.map((gameChoice) => {
     let characterName = gameChoice.name.split('_')[0];
     characterName =
       characterName.charAt(0).toUpperCase() + characterName.slice(1);
@@ -271,11 +293,23 @@ const Room = () => {
     }
     return [characterName, description];
   });
-
-  const links = gameChoices.map(
+  const gameChoicesModalLinks = gameChoices.map(
     (_, choiceIdx) =>
       `/room/${roomCode}/reflectionId/${selectedReflectionId}/gameChoices/${choiceIdx}`
   );
+
+  // Data for completion rate modal
+  const completionRateModalHeaders = ['Email', 'Completed?'];
+  const completionRateModalRows =
+    completionRateDenominatorIds?.map((participantId) => {
+      const participantEmail = participantsIdToEmailMap[participantId];
+      const completed = completionRateNumeratorIds[
+        selectedReflectionId
+      ].includes(participantId)
+        ? 'Y'
+        : 'N';
+      return [participantEmail, completed];
+    }) || [];
 
   return (
     <Box
@@ -297,8 +331,12 @@ const Room = () => {
       >
         <Box sx={{ padding: '12px' }} />
         {room?.reflectionIds.map((reflectionId) => {
+          const handleCompletionRate = () => {
+            setIsCompletionRateModalOpen((isOpen) => !isOpen);
+            setSelectedReflectionId(reflectionId);
+          };
           const handleReviewGameChoices = () => {
-            setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
+            setIsGameChoicesModalOpen((isOpen) => !isOpen);
             setSelectedReflectionId(reflectionId);
           };
           return (
@@ -306,8 +344,11 @@ const Room = () => {
               key={reflectionId}
               reflectionId={reflectionId}
               roomCode={roomCode}
-              completionRateNumerator={completionRateNumerators[reflectionId]}
-              completionRateDenominator={completionRateDenominator}
+              completionRateNumerator={
+                completionRateNumeratorIds[reflectionId]?.length
+              }
+              completionRateDenominator={completionRateDenominatorIds?.length}
+              handleCompletionRate={handleCompletionRate}
               handleReviewGameChoices={handleReviewGameChoices}
             />
           );
@@ -315,12 +356,20 @@ const Room = () => {
       </FlexBoxAlignColumn>
 
       <TableModal
+        label={`Completion rate (${completionRateNumeratorIds[selectedReflectionId]?.length}/${completionRateDenominatorIds?.length} completed)`}
+        isModalOpen={isCompletionRateModalOpen}
+        setIsModalOpen={setIsCompletionRateModalOpen}
+        headers={completionRateModalHeaders}
+        rows={completionRateModalRows}
+      />
+
+      <TableModal
+        label='Game choices'
         isModalOpen={isGameChoicesModalOpen}
         setIsModalOpen={setIsGameChoicesModalOpen}
-        label='Game choices'
-        headers={['Character', 'Description']}
-        rows={rows}
-        links={links}
+        headers={gameChoicesModalHeaders}
+        rows={gameChoicesModalRows}
+        links={gameChoicesModalLinks}
       />
     </Box>
   );
