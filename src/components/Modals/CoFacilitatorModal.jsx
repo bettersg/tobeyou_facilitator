@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Typography } from '@mui/material';
-import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
-import { GeneralButton } from '../../components/GeneralButton/GeneralButton';
-import { GeneralTextField } from '../../components/GeneralTextField/GeneralTextField';
+import { ModalBox } from './StyledRoomModalComponents';
+import { GeneralButton } from '../GeneralButton/GeneralButton';
+import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
 import { getDbUser, getDbUserFromEmail } from '../../models/userModel';
 import { updateDbRoom } from '../../models/roomModel';
 import { useSnackbar } from '../../contexts/SnackbarContext';
@@ -32,7 +32,6 @@ const CoFacilitatorModal = (props) => {
     const email = formData.email;
     try {
       const coFacilitator = await getDbUserFromEmail(email);
-      console.log(coFacilitator);
       if (coFacilitator === null) {
         // TODO: send email instead of throwing an error
         throw new Error(`No facilitator with the email '${email}' exists.`);

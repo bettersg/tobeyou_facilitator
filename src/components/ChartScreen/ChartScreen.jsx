@@ -58,7 +58,8 @@ const Chart = ({ chartData, barColor }) => {
         },
         formatter: function (value, ctx) {
           if (!chartData) return '';
-          const percentage = Math.round((value * 100) / chartData.totalCount);
+          const percentage =
+            Math.round((value * 100) / chartData.totalCount) || 0;
           return `${percentage}% (${value}/${chartData.totalCount})`;
         },
         anchor: 'end',

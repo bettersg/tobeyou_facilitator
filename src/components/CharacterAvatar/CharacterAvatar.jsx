@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvatarGroup, Avatar, Badge } from '@mui/material';
+import { Avatar, Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -10,7 +10,13 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export const CharacterAvatar = ({ avatarContent, badgeContent, numExcess }) => {
+export const CharacterAvatar = ({
+  avatarContent,
+  badgeContent,
+  numExcess,
+  isLarge,
+}) => {
+  const size = isLarge ? 100 : 56;
   return (
     // for avatar with chapter number on the bottom right
     badgeContent ? (
@@ -22,15 +28,15 @@ export const CharacterAvatar = ({ avatarContent, badgeContent, numExcess }) => {
         <Avatar
           alt={avatarContent}
           src={`/avatar/${avatarContent.toLowerCase()}.png`}
-          sx={{ width: 56, height: 56 }}
+          sx={{ width: size, height: size }}
         />
       </StyledBadge>
     ) : // for grouped avatar for Room Card in Dashboard when there is more than 4 avatars selected
     numExcess ? (
       <Avatar
         sx={{
-          width: 56,
-          height: 56,
+          width: size,
+          height: size,
           color: (theme) => theme.palette.midnight[60],
           fontWeight: 600,
         }}
@@ -38,9 +44,9 @@ export const CharacterAvatar = ({ avatarContent, badgeContent, numExcess }) => {
         {numExcess}
       </Avatar>
     ) : (
-      // for avatar in room page
+      // for avatar in edit/new room modal and room page
       <Avatar
-        sx={{ width: 100, height: 100, padding: '4px' }}
+        sx={{ width: size, height: size, padding: '4px' }}
         alt={avatarContent}
         src={`/avatar/${avatarContent.toLowerCase()}.png`}
       />
