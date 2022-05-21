@@ -9,10 +9,10 @@ import {
 } from '../models/roomModel';
 import { getDbUser } from '../models/userModel';
 import RoomCard from '../components/RoomCard/RoomCard';
-import NewRoomModal from '../components/GeneralRoomModal/NewRoomModal';
-import EditRoomModal from '../components/GeneralRoomModal/EditRoomModal';
-import QrModal from '../components/GeneralRoomModal/QrModal';
-import CoFacilitatorModal from '../components/GeneralRoomModal/CoFacilitatorModal';
+import NewRoomModal from '../components/Modals/NewRoomModal';
+import EditRoomModal from '../components/Modals/EditRoomModal';
+import QrModal from '../components/Modals/QrModal';
+import CoFacilitatorModal from '../components/Modals/CoFacilitatorModal';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,

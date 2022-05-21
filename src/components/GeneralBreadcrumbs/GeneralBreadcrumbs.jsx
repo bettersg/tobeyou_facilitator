@@ -15,7 +15,7 @@ export const GeneralBreadcrumbs = ({ breadcrumbItems }) => {
             <Typography variant='h4'>{item.label}</Typography>
           </StyledBreadcrumbLinks>
         ) : (
-          <Typography variant='h4' sx={{ color: 'black' }}>
+          <Typography key={idx} variant='h4' sx={{ color: 'black' }}>
             {item.label}
           </Typography>
         );

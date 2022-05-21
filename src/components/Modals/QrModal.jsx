@@ -2,7 +2,7 @@ import React from 'react';
 import QRCode from 'react-qr-code';
 import { Link, Modal, Typography } from '@mui/material';
 import { getGameUrl } from '../../utils';
-import { ModalBox } from '../GeneralRoomModal/StyledRoomModalComponents';
+import { ModalBox } from '../Modals/StyledRoomModalComponents';
 
 const QrModal = (props) => {
   const { isModalOpen, setIsModalOpen, roomCode } = props;

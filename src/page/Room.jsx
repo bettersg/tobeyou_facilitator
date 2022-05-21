@@ -5,22 +5,22 @@ import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import { getDbRoomByCode } from '../models/roomModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
+import GLOBAL_VAR_MAP from '../models/globalVarMap';
 import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBreadcrumbs';
 import {
   FlexBoxSpaceBetween,
   FlexBoxCenter,
-  FlexBoxCenterColumnAlign,
   FlexBoxAlignColumn,
 } from '../components/styled/general';
 import { QrCode } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
-import { RoomModal } from '../components/GeneralRoomModal/RoomModal';
-import QrModal from '../components/GeneralRoomModal/QrModal';
+import TableModal from '../components/Modals/TableModal';
+import QrModal from '../components/Modals/QrModal';
 
 const ClassesBar = (props) => {
-  const { room, roomCode, currentCharChapt } = props;
+  const { room, roomCode } = props;
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
 
   return (
@@ -35,14 +35,12 @@ const ClassesBar = (props) => {
     >
       <FlexBoxSpaceBetween>
         <FlexBoxCenter>
-          {currentCharChapt ? (
-            <GeneralBreadcrumbs
-              breadcrumbItems={[
-                { label: 'Your Classes', link: '/' },
-                { label: room?.name },
-              ]}
-            />
-          ) : null}
+          <GeneralBreadcrumbs
+            breadcrumbItems={[
+              { label: 'Your Classes', link: '/' },
+              { label: room?.name },
+            ]}
+          />
         </FlexBoxCenter>
         <FlexBoxCenter>
           <Typography variant='h4' sx={{ pr: '18px' }}>
@@ -74,10 +72,7 @@ const ChapterCard = (props) => {
     roomCode,
     completionRateNumerator,
     completionRateDenominator,
-    isGameChoicesModalOpen,
-    setIsGameChoicesModalOpen,
-    currentReflectionId,
-    setCurrentReflectionId,
+    handleReviewGameChoices,
   } = props;
   const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
   const navigate = useNavigate();
@@ -109,7 +104,7 @@ const ChapterCard = (props) => {
               alignItems: 'center',
             }}
           >
-            <CharacterAvatar avatarContent={character} />
+            <CharacterAvatar avatarContent={character} isLarge={true} />
             <Typography sx={{ fontWeight: 900, mt: 1 }} variant='h3'>
               {character}
             </Typography>
@@ -174,19 +169,8 @@ const ChapterCard = (props) => {
                 backgroundSize: 'cover',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
-                setCurrentReflectionId(reflectionId);
-              }}
+              onClick={handleReviewGameChoices}
             >
-              <RoomModal
-                isModalOpen={isGameChoicesModalOpen}
-                setIsModalOpen={setIsGameChoicesModalOpen}
-                label='Game choices'
-                roomReflectionId={currentReflectionId}
-                roomCode={roomCode}
-                type='gameChoices'
-              />
               <Typography variant='h4' sx={{ textAlign: 'center' }}>
                 Review Game Choices
               </Typography>
@@ -231,10 +215,8 @@ const Room = () => {
   const [completionRateDenominator, setCompletionRateDenominator] =
     useState(null);
 
-  // for menu
-  const [currentCharChapt, setCurrentCharChapt] = useState(null);
-  const [currentReflectionId, setCurrentReflectionId] = useState(null);
-
+  // For table modals: game choices
+  const [selectedReflectionId, setSelectedReflectionId] = useState(1);
   const [isGameChoicesModalOpen, setIsGameChoicesModalOpen] = useState(false);
 
   async function getRoom() {
@@ -267,16 +249,33 @@ const Room = () => {
     setCompletionRateNumerators(numerators);
     const denominator = dbRoom.participantIds.length;
     setCompletionRateDenominator(denominator);
+
+    // Set table modal options
+    setSelectedReflectionId(dbRoom.reflectionIds[0]);
   }
 
-  useEffect(() => {
-    setCurrentCharChapt(REFLECTION_ID_MAP[room?.reflectionIds[0]]);
-    setCurrentReflectionId(room?.reflectionIds[0]);
-  }, [room]);
+  useEffect(() => getRoom(), []);
 
-  useEffect(() => {
-    getRoom();
-  }, []);
+  const chapter = GLOBAL_VAR_MAP.flatMap(
+    (character) => character.chapters
+  ).find((chapter) => chapter.reflectionId === selectedReflectionId);
+  const gameChoices = chapter.variables;
+
+  const rows = gameChoices.map((gameChoice) => {
+    let characterName = gameChoice.name.split('_')[0];
+    characterName =
+      characterName.charAt(0).toUpperCase() + characterName.slice(1);
+    let description = gameChoice.description.slice(0, 55);
+    if (gameChoice.description.length > 55) {
+      description += '...';
+    }
+    return [characterName, description];
+  });
+
+  const links = gameChoices.map(
+    (_, choiceIdx) =>
+      `/room/${roomCode}/reflectionId/${selectedReflectionId}/gameChoices/${choiceIdx}`
+  );
 
   return (
     <Box
@@ -287,38 +286,42 @@ const Room = () => {
         paddingBottom: '25px',
       }}
     >
-      <ClassesBar
-        room={room}
-        roomCode={roomCode}
-        currentCharChapt={currentCharChapt}
-      />
+      <ClassesBar room={room} roomCode={roomCode} />
 
-      {currentCharChapt && currentReflectionId ? (
-        <FlexBoxAlignColumn
-          sx={{
-            height: '100%',
-            overflow: 'auto',
-            background: (theme) => theme.palette.lapis[10],
-          }}
-        >
-          <Box sx={{ padding: '12px' }}></Box>
-          {room?.reflectionIds.map((reflectionId) => {
-            return (
-              <ChapterCard
-                key={reflectionId}
-                reflectionId={reflectionId}
-                roomCode={roomCode}
-                completionRateNumerator={completionRateNumerators[reflectionId]}
-                completionRateDenominator={completionRateDenominator}
-                isGameChoicesModalOpen={isGameChoicesModalOpen}
-                setIsGameChoicesModalOpen={setIsGameChoicesModalOpen}
-                currentReflectionId={currentReflectionId}
-                setCurrentReflectionId={setCurrentReflectionId}
-              />
-            );
-          })}
-        </FlexBoxAlignColumn>
-      ) : null}
+      <FlexBoxAlignColumn
+        sx={{
+          height: '100%',
+          overflow: 'auto',
+          background: (theme) => theme.palette.lapis[10],
+        }}
+      >
+        <Box sx={{ padding: '12px' }} />
+        {room?.reflectionIds.map((reflectionId) => {
+          const handleReviewGameChoices = () => {
+            setIsGameChoicesModalOpen(!isGameChoicesModalOpen);
+            setSelectedReflectionId(reflectionId);
+          };
+          return (
+            <ChapterCard
+              key={reflectionId}
+              reflectionId={reflectionId}
+              roomCode={roomCode}
+              completionRateNumerator={completionRateNumerators[reflectionId]}
+              completionRateDenominator={completionRateDenominator}
+              handleReviewGameChoices={handleReviewGameChoices}
+            />
+          );
+        })}
+      </FlexBoxAlignColumn>
+
+      <TableModal
+        isModalOpen={isGameChoicesModalOpen}
+        setIsModalOpen={setIsGameChoicesModalOpen}
+        label='Game choices'
+        headers={['Character', 'Description']}
+        rows={rows}
+        links={links}
+      />
     </Box>
   );
 };

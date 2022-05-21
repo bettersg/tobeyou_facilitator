@@ -1,5 +1,4 @@
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
 import StepConnector, {
   stepConnectorClasses,
 } from '@mui/material/StepConnector';
