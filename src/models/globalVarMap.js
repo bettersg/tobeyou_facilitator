@@ -843,15 +843,17 @@ const GLOBAL_VAR_MAP = [
         endings: [
           {
             endingId: 1,
+            name: 'chapter_1_ending',
             title: 'Ravi moves into the university dorm',
             inkVar: 'chapter_1_ending_1',
           },
           {
             endingId: 2,
+            name: 'chapter_1_ending',
             title: 'Ravi is still looking for a place to stay',
             inkVar: 'chapter_1_ending_2',
           },
-        ],         
+        ],
         variables: [
           {
             name: 'ravi_1_agent',
@@ -869,7 +871,7 @@ const GLOBAL_VAR_MAP = [
           },
           {
             name: 'ravi_1_dormhousing',
-            description: "Ravi chooses dorm housing",
+            description: 'Ravi chooses dorm housing',
             values: [
               {
                 value: 0,
@@ -883,7 +885,7 @@ const GLOBAL_VAR_MAP = [
           },
           {
             name: 'ravi_1_emailuniversity',
-            description: "Ravi emails the university",
+            description: 'Ravi emails the university',
             values: [
               {
                 value: 0,
@@ -923,7 +925,8 @@ const GLOBAL_VAR_MAP = [
           },
           {
             name: 'ravi_1_notlikeotherindians',
-            description: 'Ravi tells the property agent he is not like other indians',
+            description:
+              'Ravi tells the property agent he is not like other indians',
             values: [
               {
                 value: 0,
@@ -964,10 +967,12 @@ const GLOBAL_VAR_MAP = [
         endings: [
           {
             endingId: 1,
+            name: 'chapter_2_ending',
             title: 'Ravi calls Val',
           },
           {
             endingId: 2,
+            name: 'chapter_2_ending',
             title: 'Ravi does not call val',
           },
         ],
@@ -988,7 +993,7 @@ const GLOBAL_VAR_MAP = [
           },
           {
             name: 'ravi_2_modernart',
-            description: "Ravi score in the Art game ",
+            description: 'Ravi score in the Art game ',
             values: [
               {
                 value: 0,
@@ -1023,10 +1028,12 @@ const GLOBAL_VAR_MAP = [
         endings: [
           {
             endingId: 1,
+            name: 'chapter_3_ending',
             title: 'Ravi resigns the internship',
           },
           {
             endingId: 2,
+            name: 'chapter_3_ending',
             title: 'Ravi asks for better workplace conditions',
           },
         ],
@@ -1103,21 +1110,21 @@ const GLOBAL_VAR_MAP = [
           },
           {
             name: 'ravi_3_internshipchoicetomum',
-            description: 'Ravi tells his mother what he intends to do about his job ',
+            description:
+              'Ravi tells his mother what he intends to do about his job ',
             values: [
               {
-                value: "stay",
+                value: 'stay',
                 description: 'Stay',
               },
               {
-                value: "quit",
+                value: 'quit',
                 description: 'Quit',
               },
             ],
           },
         ],
       },
-      
     ],
   },
   {
@@ -1154,10 +1161,8 @@ const GLOBAL_VAR_MAP = [
     playable: false,
   },
 ];
- 
 
 export default GLOBAL_VAR_MAP;
-
 
 // NADIA
 // chapter_id: 1
