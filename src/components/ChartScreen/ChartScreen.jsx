@@ -145,6 +145,24 @@ const ChartScreen = ({
     chartData.totalCount = chartData.data.reduce((val, acc) => val + acc, 0);
   }
 
+  const leftArrowStyle = {
+    color: 'white',
+    transform: 'rotate(270deg)',
+    '&:hover': { cursor: 'pointer' },
+  };
+  const rightArrowStyle = {
+    color: 'white',
+    transform: 'rotate(90deg)',
+    '&:hover': { cursor: 'pointer' },
+  };
+
+  if (currentIndex === 0) {
+    leftArrowStyle.visibility = 'hidden';
+  }
+  if (currentIndex === chartDatas?.length - 1) {
+    rightArrowStyle.visibility = 'hidden';
+  }
+
   return (
     <ChartBackground type={type} onKeyDown={handleKeyDown}>
       <Link to={`/room/${roomCode}`}>
@@ -168,11 +186,7 @@ const ChartScreen = ({
       </Typography>
       <FlexBoxSpaceBetween sx={{ width: '90%' }}>
         <ChangeHistoryRounded
-          sx={{
-            color: 'white',
-            transform: 'rotate(270deg)',
-            '&:hover': { cursor: 'pointer' },
-          }}
+          sx={leftArrowStyle}
           onClick={handleLeft}
           fontSize='large'
         />
@@ -196,11 +210,7 @@ const ChartScreen = ({
           </Box>
         </ChartPaper>
         <ChangeHistoryRounded
-          sx={{
-            color: 'white',
-            transform: 'rotate(90deg)',
-            '&:hover': { cursor: 'pointer' },
-          }}
+          sx={rightArrowStyle}
           onClick={handleRight}
           fontSize='large'
         />
