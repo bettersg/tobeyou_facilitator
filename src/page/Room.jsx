@@ -283,20 +283,23 @@ const Room = () => {
 
   // Data for game choices modal
   const gameChoicesModalHeaders = ['Character', 'Description'];
+  let characterName = gameChoices[0].name.split('_')[0];
+  characterName =
+    characterName.charAt(0).toUpperCase() + characterName.slice(1);
   const gameChoicesModalRows = gameChoices.map((gameChoice) => {
-    let characterName = gameChoice.name.split('_')[0];
-    characterName =
-      characterName.charAt(0).toUpperCase() + characterName.slice(1);
     let description = gameChoice.description.slice(0, 55);
     if (gameChoice.description.length > 55) {
       description += '...';
     }
     return [characterName, description];
   });
-  const gameChoicesModalLinks = gameChoices.map(
-    (_, choiceIdx) =>
-      `/room/${roomCode}/reflectionId/${selectedReflectionId}/gameChoices/${choiceIdx}`
-  );
+  gameChoicesModalRows.push([characterName, 'Chapter ending']);
+  const gameChoicesModalLinks = [];
+  for (let i = 0; i < gameChoices.length + 1; i++) {
+    gameChoicesModalLinks.push(
+      `/room/${roomCode}/reflectionId/${selectedReflectionId}/gameChoices/${i}`
+    );
+  }
 
   // Data for completion rate modal
   const completionRateModalHeaders = ['Email', 'Completed?'];

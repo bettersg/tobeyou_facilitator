@@ -19,13 +19,14 @@ const GameChoices = () => {
     (character) => character.chapters
   ).find((chapter) => chapter.reflectionId === reflectionId);
   const gameChoices = chapter.variables;
+  const gameEndings = chapter.endings;
 
-  function getCountsForGameChoice(gameChoice, allGlobalVariables) {
-    const name = gameChoice.name;
+  function getCountsForVariables(variableName, values, allGlobalVariables) {
     const data = allGlobalVariables
-      .filter((globalVariables) => Object.keys(globalVariables).includes(name))
-      .map((globalVariables) => globalVariables[name]);
-    const values = gameChoice.values.map((value) => value.value);
+      .filter((globalVariables) =>
+        Object.keys(globalVariables).includes(variableName)
+      )
+      .map((globalVariables) => globalVariables[variableName]);
     const counts = values.map((value) => {
       return data.filter((dataValue) => dataValue === value).length;
     });
@@ -33,13 +34,27 @@ const GameChoices = () => {
   }
 
   function parseChartDatas(allGlobalVariables) {
-    const chartDatas = gameChoices.map((gameChoice) => {
+    const gameChoicesDatas = gameChoices.map((gameChoice) => {
       return {
         title: gameChoice.description,
         labels: gameChoice.values.map((value) => value.description),
-        data: getCountsForGameChoice(gameChoice, allGlobalVariables),
+        data: getCountsForVariables(
+          gameChoice.name,
+          gameChoice.values.map((value) => value.value),
+          allGlobalVariables
+        ),
       };
     });
+    const gameEndingData = {
+      title: 'Chapter ending',
+      labels: gameEndings.map((ending) => ending.title),
+      data: getCountsForVariables(
+        gameEndings[0].name,
+        gameEndings.map((ending) => ending.endingId),
+        allGlobalVariables
+      ),
+    };
+    const chartDatas = [...gameChoicesDatas, gameEndingData];
     return chartDatas;
   }
 
