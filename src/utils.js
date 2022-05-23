@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { send } from '@emailjs/browser';
 
 export const getGameUrl = (code) => {
   return `https://game.tobeyou.sg/room/${code}`;
@@ -64,4 +65,19 @@ export function breakIntoLines(labels) {
   });
 
   return result;
+}
+
+export function sendFacilitatorEmail(roomCode, toEmail, message) {
+  const templateParams = {
+    room_code: roomCode,
+    to_email: toEmail,
+    message: message,
+  };
+
+  send(
+    'service_q3gnqrp',
+    'template_6oavgta',
+    templateParams,
+    'user_kmfKhjRSSwoovXNarQivp'
+  );
 }
