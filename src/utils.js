@@ -42,9 +42,6 @@ export function useEventListener(eventName, handler, element = window) {
 export function breakIntoLines(labels) {
   const maxCharCount = Math.round(1000 / labels.length / 16);
   const result = labels.map((label) => {
-    if (label.length <= maxCharCount) {
-      return label;
-    }
     let descriptionSplit = [];
     let end = maxCharCount;
     let start = 0;

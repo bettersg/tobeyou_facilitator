@@ -58,9 +58,8 @@ const Chart = ({ chartData, barColor }) => {
         },
         formatter: function (value, ctx) {
           if (!chartData) return '';
-          const percentage =
-            Math.round((value * 100) / chartData.totalCount) || 0;
-          return `${percentage}% (${value}/${chartData.totalCount})`;
+          const percentage = Math.round((value * 100) / totalCount) || 0;
+          return `${percentage}% (${value}/${totalCount})`;
         },
         anchor: 'end',
         align: 'top',
@@ -82,6 +81,7 @@ const Chart = ({ chartData, barColor }) => {
       },
       x: {
         ticks: {
+          padding: 10,
           font: {
             size: '18px',
             weight: 700,
@@ -92,8 +92,14 @@ const Chart = ({ chartData, barColor }) => {
     },
   };
 
+  const brokenLabels = chartData ? breakIntoLines(chartData.labels) : [];
+  const imageLabels = chartData?.labels?.map((_) => ['', '']); // Hack: we leave 2 blank lines worth of space for images
+  const totalCount = chartData
+    ? chartData.data.reduce((val, acc) => val + acc, 0)
+    : 0;
+
   const data = {
-    labels: chartData?.brokenLabels,
+    labels: chartData?.isImage ? imageLabels : brokenLabels,
     datasets: [
       {
         data: chartData?.data,
@@ -103,10 +109,59 @@ const Chart = ({ chartData, barColor }) => {
     ],
   };
 
+  function drawImages(ctx, xAxis, yAxis) {
+    const imageUrls = chartData?.imageUrls;
+    xAxis.ticks.forEach((_, index) => {
+      const x = xAxis.getPixelForTick(index);
+      const image = new Image(50, 50);
+      image.src = `/minigames/${imageUrls[index]}`;
+      ctx.drawImage(
+        image,
+        x - image.width / 2,
+        yAxis.bottom + 14,
+        image.width,
+        image.height
+      );
+    });
+  }
+
+  function drawCorrectLabel(ctx, xAxis, yAxis) {
+    const maxNumLines = chartData?.isImage
+      ? 2 // Hack: leave 2 blank lines for image
+      : Math.max(...xAxis.ticks.map((tick) => tick.label.length));
+    xAxis.ticks.forEach((_, index) => {
+      if (index !== chartData.correctAnswerIdx) return;
+      const x = xAxis.getPixelForTick(index);
+      ctx.lineWidth = 4;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#3DCAD3';
+      const width = 200;
+      const height = maxNumLines * 22 + 14;
+      ctx.strokeRect(x - width / 2, yAxis.bottom + 10, width, height);
+    });
+  }
+
+  const plugin = {
+    afterDraw: (chart) => {
+      const ctx = chart.ctx;
+      const xAxis = chart.scales.x;
+      const yAxis = chart.scales.y;
+      if (!xAxis) return;
+      if (chartData?.isImage) {
+        drawImages(ctx, xAxis, yAxis);
+      }
+      if (chartData?.correctAnswerIdx !== undefined) {
+        drawCorrectLabel(ctx, xAxis, yAxis);
+      }
+    },
+  };
+
   return (
     <Bar
+      redraw
       options={options}
       data={data}
+      plugins={[plugin]}
       style={{ height: '450px', width: '1000px' }}
     />
   );
@@ -140,10 +195,6 @@ const ChartScreen = ({
   useEventListener('keydown', handleKeyDown);
 
   const chartData = chartDatas ? chartDatas[currentIndex] : null;
-  if (chartData) {
-    chartData.brokenLabels = breakIntoLines(chartData.labels);
-    chartData.totalCount = chartData.data.reduce((val, acc) => val + acc, 0);
-  }
 
   const leftArrowStyle = {
     color: 'white',
@@ -202,7 +253,7 @@ const ChartScreen = ({
               </InfoBox>
             </GeneralTooltip>
           ) : null}
-          <Box mt={chartDatas?.tooltip ? '-80px' : ''}>
+          <Box mt={chartData?.tooltip ? '-80px' : ''}>
             <Chart
               chartData={chartData}
               barColor={type === 'gameChoices' ? '#FF8944' : '#3DCAD3'}
