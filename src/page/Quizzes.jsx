@@ -49,7 +49,13 @@ const Quizzes = () => {
         labels: miniGameQuestion.answers.map((answer) => answer.title),
         data: data,
         tooltip: miniGameQuestion.explanation,
-        correct_answer_id: miniGameQuestion.correct_answer_id,
+        correctAnswerIdx: miniGameQuestion.answers
+          .map((answer) => answer.answer_id)
+          .findIndex(
+            (answerId) => answerId === miniGameQuestion.correct_answer_id
+          ),
+        isImage: miniGameQuestion.type === 'image',
+        imageUrls: miniGameQuestion.answers.map((answer) => answer?.imageUrl),
       };
     });
     return chartDatas;

@@ -43,6 +43,7 @@ const GameChoices = () => {
           gameChoice.values.map((value) => value.value),
           allGlobalVariables
         ),
+        isImage: false,
       };
     });
     const gameEndingData = {
