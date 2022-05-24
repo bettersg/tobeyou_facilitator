@@ -106,6 +106,6 @@ export const SortButton = styled(IconButton)(({ theme }) => ({
     backgroundColor: theme.palette.lapis[100],
     color: 'white',
   },
-  margin: 2,
+  margin: 4,
   padding: '6px 14px',
 }));

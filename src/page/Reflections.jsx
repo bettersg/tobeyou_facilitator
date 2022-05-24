@@ -8,7 +8,7 @@ import {
   PushPin,
   PushPinOutlined,
 } from '@mui/icons-material';
-import { Modal, Typography, Box } from '@mui/material';
+import { Modal, Typography, Box, Menu, MenuItem } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getDbRoomByCode,
@@ -36,6 +36,15 @@ import MenuButtonwithIcon from '../components/MenuButtonwithIcon/MenuButtonwithI
 const ReflectionModal = (props) => {
   const { reflectionResponses, modalReflectionIndex, setModalReflectionIndex } =
     props;
+
+  // const [modalReflectionResponses, setModalReflectionResponses] = useState(null);
+
+  // const checkModalResponses = () => {
+  //   setModalReflectionResponses(displayedReflectionResponses)
+  // }
+
+  // useEffect(checkModalResponses(), displayedReflectionResponses)
+
   const reflection =
     modalReflectionIndex !== null
       ? reflectionResponses[modalReflectionIndex]
@@ -112,7 +121,10 @@ const Reflections = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
+  const [currentView, setCurrentView] = useState(null);
   const [reflectionResponses, setReflectionResponses] = useState(null);
+  const [displayedReflectionResponses, setDisplayedReflectionResponses] =
+    useState(null);
   const [modalReflectionIndex, setModalReflectionIndex] = useState(null); // null means modal is inactive; an index means its reflection is displayed in the modal
   const [pinnedReflectionResponseIds, setPinnedReflectionResponseIds] =
     useState(null);
@@ -128,6 +140,27 @@ const Reflections = () => {
       title: 'Unpinned',
     },
   ];
+
+  const handleRequest = (filter) => {
+    console.log('filter', filter);
+    setCurrentView(filter);
+    if (filter == 'All') {
+      setDisplayedReflectionResponses(reflectionResponses);
+      // setDisplayedReflectionResponses(reflectionResponses)
+    } else if (filter == 'Pinned') {
+      setDisplayedReflectionResponses(
+        reflectionResponses.filter((rr) =>
+          pinnedReflectionResponseIds.includes(rr.id)
+        )
+      );
+    } else if (filter == 'Unpinned') {
+      setDisplayedReflectionResponses(
+        reflectionResponses.filter(
+          (rr) => !pinnedReflectionResponseIds.includes(rr.id)
+        )
+      );
+    }
+  };
 
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -168,6 +201,7 @@ const Reflections = () => {
   }
 
   useEffect(() => getData(), []);
+  useEffect(() => handleRequest(currentView), [pinnedReflectionResponseIds]);
 
   return (
     <Background>
@@ -189,6 +223,7 @@ const Reflections = () => {
             ButtonText='Filter'
             Icon={<KeyboardArrowDown />}
             Items={filterMenuItems}
+            handleRequest={handleRequest}
           />
           <SortButton>
             <Sort />
@@ -196,47 +231,47 @@ const Reflections = () => {
         </Box>
       </TopSection>
       <Masonry columns={3} spacing={3}>
-        {reflectionResponses
-          ? reflectionResponses
-              .sort((x, y) => {
-                // Sort by pinned status, then by submitted time
-                const isPinned =
-                  isReflectionResponsePinned(x) - isReflectionResponsePinned(y);
-                if (isPinned !== 0) return -isPinned; // pinned reflections get a lower value
-                return x.submittedAt - y.submittedAt;
-              })
-              .map((reflectionResponse, index) => {
-                const toggleFunction = (e) => {
-                  e.stopPropagation();
-                  togglePinnedReflectionResponse(reflectionResponse);
-                };
-                return (
-                  <ReflectionCard
-                    variant='outlined'
-                    onClick={() => setModalReflectionIndex(index)}
-                    key={index}
-                  >
-                    <CardContentBox>
-                      {reflectionResponse.answer}
-                      {isReflectionResponsePinned(reflectionResponse) ? (
-                        <PushPin
-                          sx={{ transform: 'rotate(45deg)' }}
-                          onClick={toggleFunction}
-                        />
-                      ) : (
-                        <PushPinOutlined
-                          sx={{ transform: 'rotate(45deg)' }}
-                          onClick={toggleFunction}
-                        />
-                      )}
-                    </CardContentBox>
-                  </ReflectionCard>
-                );
-              })
-          : null}
+        {(displayedReflectionResponses ?? reflectionResponses ?? [])
+          .sort((x, y) => {
+            // Sort by pinned status, then by submitted time
+            const isPinned =
+              isReflectionResponsePinned(x) - isReflectionResponsePinned(y);
+            if (isPinned !== 0) return -isPinned; // pinned reflections get a lower value
+            return x.submittedAt - y.submittedAt;
+          })
+          .map((reflectionResponse, index) => {
+            const toggleFunction = (e) => {
+              e.stopPropagation();
+              togglePinnedReflectionResponse(reflectionResponse);
+            };
+            return (
+              <ReflectionCard
+                variant='outlined'
+                onClick={() => setModalReflectionIndex(index)}
+                key={index}
+              >
+                <CardContentBox>
+                  {reflectionResponse.answer}
+                  {isReflectionResponsePinned(reflectionResponse) ? (
+                    <PushPin
+                      sx={{ transform: 'rotate(45deg)' }}
+                      onClick={toggleFunction}
+                    />
+                  ) : (
+                    <PushPinOutlined
+                      sx={{ transform: 'rotate(45deg)' }}
+                      onClick={toggleFunction}
+                    />
+                  )}
+                </CardContentBox>
+              </ReflectionCard>
+            );
+          })}
       </Masonry>
       <ReflectionModal
-        reflectionResponses={reflectionResponses}
+        reflectionResponses={
+          displayedReflectionResponses ?? reflectionResponses
+        }
         modalReflectionIndex={modalReflectionIndex}
         setModalReflectionIndex={setModalReflectionIndex}
       />

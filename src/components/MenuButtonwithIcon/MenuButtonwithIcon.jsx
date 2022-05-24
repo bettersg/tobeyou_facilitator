@@ -15,7 +15,7 @@ const MenuButton = styled(Button)(({ theme }) => ({
   padding: '6px 14px',
 }));
 
-const MenuButtonwithIcon = ({ ButtonText, Icon, Items }) => {
+const MenuButtonwithIcon = ({ ButtonText, Icon, Items, handleRequest }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -42,7 +42,16 @@ const MenuButtonwithIcon = ({ ButtonText, Icon, Items }) => {
         onClose={handleClose}
       >
         {Items.map((item) => (
-          <MenuItem onClick={handleClose} key={item.title} value={item.title}>
+          //   <MenuItem onClick={handleClose} key={item.title} value={item.title}>
+          //     {item.title}
+          //   </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleRequest(item.title);
+            }}
+            key={item.title}
+            value={item.title}
+          >
             {item.title}
           </MenuItem>
         ))}
