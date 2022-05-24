@@ -2,15 +2,11 @@ import { styled } from '@mui/material/styles';
 import { Box, Card } from '@mui/material';
 
 export const Background = styled(Box)(({ theme, type }) => ({
-  backgroundImage: 'url(/general/reflections_background.png)',
-  // backgroundColor:
-  //   type === 'gameChoices'
-  //     ? theme.palette.tangerine[80]
-  //     : theme.palette.aqua[100],
+  backgroundImage: 'url(/general/reflections_background.jpg)',
   backgroundSize: 'cover',
+  overflowY: 'auto',
   color: 'white',
-  height: '100%',
-  width: '100%',
+  height: 'calc(100% - 70px)', // to allow scroll to reach the bottom of the page
   padding: '36px 44px 0px',
 }));
 

@@ -163,7 +163,7 @@ const Reflections = () => {
         Do you have any reflections or similar stories to share after playing
         this chapter?
       </Description>
-      <Masonry columns={3} spacing={2}>
+      <Masonry columns={3} spacing={3}>
         {reflectionResponses
           ? reflectionResponses
               .sort((x, y) => {
