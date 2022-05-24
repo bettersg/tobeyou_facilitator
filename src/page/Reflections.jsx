@@ -31,6 +31,7 @@ import {
   SortButton,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
+import MenuButtonwithIcon from '../components/MenuButtonwithIcon/MenuButtonwithIcon';
 
 const ReflectionModal = (props) => {
   const { reflectionResponses, modalReflectionIndex, setModalReflectionIndex } =
@@ -116,6 +117,18 @@ const Reflections = () => {
   const [pinnedReflectionResponseIds, setPinnedReflectionResponseIds] =
     useState(null);
 
+  const filterMenuItems = [
+    {
+      title: 'All',
+    },
+    {
+      title: 'Pinned',
+    },
+    {
+      title: 'Unpinned',
+    },
+  ];
+
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
     if (
@@ -172,7 +185,11 @@ const Reflections = () => {
           </Description>
         </Box>
         <Box>
-          <FilterButton endIcon={<KeyboardArrowDown />}>Filter</FilterButton>
+          <MenuButtonwithIcon
+            ButtonText='Filter'
+            Icon={<KeyboardArrowDown />}
+            Items={filterMenuItems}
+          />
           <SortButton>
             <Sort />
           </SortButton>
