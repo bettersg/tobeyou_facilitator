@@ -22,6 +22,7 @@ import {
   CardContentBox,
   ModalInnerBox,
   Background,
+  Header,
   Description,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
@@ -157,12 +158,10 @@ const Reflections = () => {
         sx={{ cursor: 'pointer' }}
         onClick={() => navigate(-1)}
       />
+      <Header>REFLECTIONS</Header>
       <Description>
-        <h2>REFLECTIONS</h2>
-        <h4>
-          Do you have any reflections or similar stories to share after playing
-          this chapter?
-        </h4>
+        Do you have any reflections or similar stories to share after playing
+        this chapter?
       </Description>
       <Masonry columns={3} spacing={2}>
         {reflectionResponses

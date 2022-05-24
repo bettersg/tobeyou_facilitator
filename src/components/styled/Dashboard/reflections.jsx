@@ -30,7 +30,18 @@ export const CardContentBox = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
+export const Header = styled(Box)(({ theme }) => ({
+  fontSize: '27px',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  marginTop: 28,
+  marginBottom: 16,
+}));
+
 export const Description = styled(Box)(({ theme }) => ({
+  fontSize: '18px',
+  fontStyle: 'normal',
+  fontWeight: 700,
   marginBottom: 36,
 }));
 
