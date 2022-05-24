@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
-import { Box, Card } from '@mui/material';
+import { Box, Card, Button, IconButton } from '@mui/material';
+import { FlexBoxSpaceBetween } from '../general';
 
 export const Background = styled(Box)(({ theme, type }) => ({
   backgroundImage: 'url(/general/reflections_background.jpg)',
@@ -9,6 +10,10 @@ export const Background = styled(Box)(({ theme, type }) => ({
   height: 'calc(100% - 70px)', // to allow scroll to reach the bottom of the page
   padding: '36px 44px 0px',
 }));
+
+export const TopSection = styled(FlexBoxSpaceBetween)(
+  ({ theme, type }) => ({})
+);
 
 export const ReflectionCard = styled(Card)(({ theme }) => ({
   borderRadius: 10,
@@ -78,4 +83,29 @@ export const ModalArrowBox = styled(Box)(({ theme }) => ({
 export const ModalContentBox = styled(Box)(({ theme }) => ({
   flex: 1,
   padding: 10,
+}));
+
+export const FilterButton = styled(Button)(({ theme }) => ({
+  borderRadius: '100px',
+  backgroundColor: 'white',
+  fontStyle: 'normal',
+  fontWeight: 700,
+  '&:hover': {
+    backgroundColor: theme.palette.lapis[100],
+    color: 'white',
+  },
+  margin: 2,
+  padding: '6px 14px',
+}));
+
+export const SortButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '100px',
+  backgroundColor: 'white',
+  color: theme.palette.lapis[100],
+  '&:hover': {
+    backgroundColor: theme.palette.lapis[100],
+    color: 'white',
+  },
+  margin: 2,
+  padding: '6px 14px',
 }));

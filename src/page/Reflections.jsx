@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router';
 import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
+  KeyboardArrowDown,
+  Sort,
   PushPin,
   PushPinOutlined,
 } from '@mui/icons-material';
-import { Modal, Typography } from '@mui/material';
+import { Modal, Typography, Box } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getDbRoomByCode,
@@ -22,8 +24,11 @@ import {
   CardContentBox,
   ModalInnerBox,
   Background,
+  TopSection,
   Header,
   Description,
+  FilterButton,
+  SortButton,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
 
@@ -153,16 +158,26 @@ const Reflections = () => {
 
   return (
     <Background>
-      <KeyboardArrowLeft
-        fontSize='large'
-        sx={{ cursor: 'pointer' }}
-        onClick={() => navigate(-1)}
-      />
-      <Header>REFLECTIONS</Header>
-      <Description>
-        Do you have any reflections or similar stories to share after playing
-        this chapter?
-      </Description>
+      <TopSection>
+        <Box>
+          <KeyboardArrowLeft
+            fontSize='large'
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate(-1)}
+          />
+          <Header>REFLECTIONS</Header>
+          <Description>
+            Do you have any reflections or similar stories to share after
+            playing this chapter?
+          </Description>
+        </Box>
+        <Box>
+          <FilterButton endIcon={<KeyboardArrowDown />}>Filter</FilterButton>
+          <SortButton>
+            <Sort />
+          </SortButton>
+        </Box>
+      </TopSection>
       <Masonry columns={3} spacing={3}>
         {reflectionResponses
           ? reflectionResponses
