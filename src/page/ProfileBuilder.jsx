@@ -54,6 +54,13 @@ const ProfileBuilder = () => {
     });
   };
 
+  const handleTextInput = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -258,7 +265,7 @@ const ProfileBuilder = () => {
             <GeneralTextField // TODO: change appearance of this text field
               name='organisation'
               value={formData.organisation}
-              onChange={handleChange}
+              onChange={handleTextInput}
               label="What is your organisation's name?"
               placeholder=''
             />

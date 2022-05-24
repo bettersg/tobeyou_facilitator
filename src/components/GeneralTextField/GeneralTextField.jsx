@@ -21,7 +21,6 @@ export const GeneralTextField = ({
       <Typography variant='h6'>{label}</Typography>
 
       <StyledTextfield
-        select
         multiline={multiline}
         value={value}
         name={name}
