@@ -16,8 +16,13 @@ import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import {
   ModalArrowBox,
   ModalContentBox,
+  ModalImage,
   ModalBox,
   ReflectionCard,
+  CardContentBox,
+  ModalInnerBox,
+  Background,
+  Description,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
 
@@ -79,11 +84,16 @@ const ReflectionModal = (props) => {
       onKeyDown={handleKeyDown}
     >
       <ModalBox>
-        <LeftArrowBox />
-        <ModalContentBox>
-          <Typography>{reflection?.answer}</Typography>
-        </ModalContentBox>
-        <RightArrowBox />
+        <ModalInnerBox>
+          <LeftArrowBox />
+          <ModalContentBox>
+            <Typography>{reflection?.answer}</Typography>
+          </ModalContentBox>
+          <RightArrowBox />
+        </ModalInnerBox>
+        <ModalImage>
+          <img width='303px' src='/avatar/nadia_avatar_group.svg' />
+        </ModalImage>
       </ModalBox>
     </Modal>
   );
@@ -141,13 +151,19 @@ const Reflections = () => {
   useEffect(() => getData(), []);
 
   return (
-    <div>
-      <KeyboardArrowLeft onClick={() => navigate(-1)} />
-      <h2>REFLECTIONS</h2>
-      <h4>
-        Do you have any reflections or similar stories to share after playing
-        this chapter?
-      </h4>
+    <Background>
+      <KeyboardArrowLeft
+        fontSize='large'
+        sx={{ cursor: 'pointer' }}
+        onClick={() => navigate(-1)}
+      />
+      <Description>
+        <h2>REFLECTIONS</h2>
+        <h4>
+          Do you have any reflections or similar stories to share after playing
+          this chapter?
+        </h4>
+      </Description>
       <Masonry columns={3} spacing={2}>
         {reflectionResponses
           ? reflectionResponses
@@ -169,12 +185,20 @@ const Reflections = () => {
                     onClick={() => setModalReflectionIndex(index)}
                     key={index}
                   >
-                    {isReflectionResponsePinned(reflectionResponse) ? (
-                      <PushPin onClick={toggleFunction} />
-                    ) : (
-                      <PushPinOutlined onClick={toggleFunction} />
-                    )}
-                    {reflectionResponse.answer}
+                    <CardContentBox>
+                      {reflectionResponse.answer}
+                      {isReflectionResponsePinned(reflectionResponse) ? (
+                        <PushPin
+                          sx={{ transform: 'rotate(45deg)' }}
+                          onClick={toggleFunction}
+                        />
+                      ) : (
+                        <PushPinOutlined
+                          sx={{ transform: 'rotate(45deg)' }}
+                          onClick={toggleFunction}
+                        />
+                      )}
+                    </CardContentBox>
                   </ReflectionCard>
                 );
               })
@@ -185,7 +209,7 @@ const Reflections = () => {
         modalReflectionIndex={modalReflectionIndex}
         setModalReflectionIndex={setModalReflectionIndex}
       />
-    </div>
+    </Background>
   );
 };
 
