@@ -184,7 +184,7 @@ const ProfileBuilder = () => {
             ))
           : null}
         {step.isForm ? (
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ marginTop: '24px', width: '100%' }}>
             <GeneralSelect
               name='age'
               value={formData.age}
