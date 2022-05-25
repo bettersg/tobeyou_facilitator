@@ -225,9 +225,6 @@ const Reflections = () => {
             Items={filterMenuItems}
             handleRequest={handleRequest}
           />
-          <SortButton>
-            <Sort />
-          </SortButton>
         </Box>
       </TopSection>
       <Masonry columns={3} spacing={3}>
