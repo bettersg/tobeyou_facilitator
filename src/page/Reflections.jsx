@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router';
 import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
+  KeyboardArrowDown,
+  Sort,
   PushPin,
   PushPinOutlined,
 } from '@mui/icons-material';
-import { Modal, Typography } from '@mui/material';
+import { Modal, Typography, Box, Menu, MenuItem } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getDbRoomByCode,
@@ -16,14 +18,33 @@ import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import {
   ModalArrowBox,
   ModalContentBox,
+  ModalImage,
   ModalBox,
   ReflectionCard,
+  CardContentBox,
+  ModalInnerBox,
+  Background,
+  TopSection,
+  Header,
+  Description,
+  FilterButton,
+  SortButton,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
+import MenuButtonwithIcon from '../components/MenuButtonwithIcon/MenuButtonwithIcon';
 
 const ReflectionModal = (props) => {
   const { reflectionResponses, modalReflectionIndex, setModalReflectionIndex } =
     props;
+
+  // const [modalReflectionResponses, setModalReflectionResponses] = useState(null);
+
+  // const checkModalResponses = () => {
+  //   setModalReflectionResponses(displayedReflectionResponses)
+  // }
+
+  // useEffect(checkModalResponses(), displayedReflectionResponses)
+
   const reflection =
     modalReflectionIndex !== null
       ? reflectionResponses[modalReflectionIndex]
@@ -79,11 +100,16 @@ const ReflectionModal = (props) => {
       onKeyDown={handleKeyDown}
     >
       <ModalBox>
-        <LeftArrowBox />
-        <ModalContentBox>
-          <Typography>{reflection?.answer}</Typography>
-        </ModalContentBox>
-        <RightArrowBox />
+        <ModalInnerBox>
+          <LeftArrowBox />
+          <ModalContentBox>
+            <Typography>{reflection?.answer}</Typography>
+          </ModalContentBox>
+          <RightArrowBox />
+        </ModalInnerBox>
+        <ModalImage>
+          <img width='303px' src='/avatar/nadia_avatar_group.svg' />
+        </ModalImage>
       </ModalBox>
     </Modal>
   );
@@ -95,10 +121,46 @@ const Reflections = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
+  const [currentView, setCurrentView] = useState(null);
   const [reflectionResponses, setReflectionResponses] = useState(null);
+  const [displayedReflectionResponses, setDisplayedReflectionResponses] =
+    useState(null);
   const [modalReflectionIndex, setModalReflectionIndex] = useState(null); // null means modal is inactive; an index means its reflection is displayed in the modal
   const [pinnedReflectionResponseIds, setPinnedReflectionResponseIds] =
     useState(null);
+
+  const filterMenuItems = [
+    {
+      title: 'All',
+    },
+    {
+      title: 'Pinned',
+    },
+    {
+      title: 'Unpinned',
+    },
+  ];
+
+  const handleRequest = (filter) => {
+    console.log('filter', filter);
+    setCurrentView(filter);
+    if (filter == 'All') {
+      setDisplayedReflectionResponses(reflectionResponses);
+      // setDisplayedReflectionResponses(reflectionResponses)
+    } else if (filter == 'Pinned') {
+      setDisplayedReflectionResponses(
+        reflectionResponses.filter((rr) =>
+          pinnedReflectionResponseIds.includes(rr.id)
+        )
+      );
+    } else if (filter == 'Unpinned') {
+      setDisplayedReflectionResponses(
+        reflectionResponses.filter(
+          (rr) => !pinnedReflectionResponseIds.includes(rr.id)
+        )
+      );
+    }
+  };
 
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
@@ -139,53 +201,78 @@ const Reflections = () => {
   }
 
   useEffect(() => getData(), []);
+  useEffect(() => handleRequest(currentView), [pinnedReflectionResponseIds]);
 
   return (
-    <div>
-      <KeyboardArrowLeft onClick={() => navigate(-1)} />
-      <h2>REFLECTIONS</h2>
-      <h4>
-        Do you have any reflections or similar stories to share after playing
-        this chapter?
-      </h4>
-      <Masonry columns={3} spacing={2}>
-        {reflectionResponses
-          ? reflectionResponses
-              .sort((x, y) => {
-                // Sort by pinned status, then by submitted time
-                const isPinned =
-                  isReflectionResponsePinned(x) - isReflectionResponsePinned(y);
-                if (isPinned !== 0) return -isPinned; // pinned reflections get a lower value
-                return x.submittedAt - y.submittedAt;
-              })
-              .map((reflectionResponse, index) => {
-                const toggleFunction = (e) => {
-                  e.stopPropagation();
-                  togglePinnedReflectionResponse(reflectionResponse);
-                };
-                return (
-                  <ReflectionCard
-                    variant='outlined'
-                    onClick={() => setModalReflectionIndex(index)}
-                    key={index}
-                  >
-                    {isReflectionResponsePinned(reflectionResponse) ? (
-                      <PushPin onClick={toggleFunction} />
-                    ) : (
-                      <PushPinOutlined onClick={toggleFunction} />
-                    )}
-                    {reflectionResponse.answer}
-                  </ReflectionCard>
-                );
-              })
-          : null}
+    <Background>
+      <TopSection>
+        <Box>
+          <KeyboardArrowLeft
+            fontSize='large'
+            sx={{ cursor: 'pointer' }}
+            onClick={() => navigate(-1)}
+          />
+          <Header>REFLECTIONS</Header>
+          <Description>
+            Do you have any reflections or similar stories to share after
+            playing this chapter?
+          </Description>
+        </Box>
+        <Box>
+          <MenuButtonwithIcon
+            ButtonText='Filter'
+            Icon={<KeyboardArrowDown />}
+            Items={filterMenuItems}
+            handleRequest={handleRequest}
+          />
+        </Box>
+      </TopSection>
+      <Masonry columns={3} spacing={3}>
+        {(displayedReflectionResponses ?? reflectionResponses ?? [])
+          .sort((x, y) => {
+            // Sort by pinned status, then by submitted time
+            const isPinned =
+              isReflectionResponsePinned(x) - isReflectionResponsePinned(y);
+            if (isPinned !== 0) return -isPinned; // pinned reflections get a lower value
+            return x.submittedAt - y.submittedAt;
+          })
+          .map((reflectionResponse, index) => {
+            const toggleFunction = (e) => {
+              e.stopPropagation();
+              togglePinnedReflectionResponse(reflectionResponse);
+            };
+            return (
+              <ReflectionCard
+                variant='outlined'
+                onClick={() => setModalReflectionIndex(index)}
+                key={index}
+              >
+                <CardContentBox>
+                  {reflectionResponse.answer}
+                  {isReflectionResponsePinned(reflectionResponse) ? (
+                    <PushPin
+                      sx={{ transform: 'rotate(45deg)' }}
+                      onClick={toggleFunction}
+                    />
+                  ) : (
+                    <PushPinOutlined
+                      sx={{ transform: 'rotate(45deg)' }}
+                      onClick={toggleFunction}
+                    />
+                  )}
+                </CardContentBox>
+              </ReflectionCard>
+            );
+          })}
       </Masonry>
       <ReflectionModal
-        reflectionResponses={reflectionResponses}
+        reflectionResponses={
+          displayedReflectionResponses ?? reflectionResponses
+        }
         modalReflectionIndex={modalReflectionIndex}
         setModalReflectionIndex={setModalReflectionIndex}
       />
-    </div>
+    </Background>
   );
 };
 
