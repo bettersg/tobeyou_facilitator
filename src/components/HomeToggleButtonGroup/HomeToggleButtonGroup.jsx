@@ -8,7 +8,7 @@ export const HomeToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     borderRadius: '50px',
     padding: '4px 12px',
     color: theme.palette.lapis[100],
-    fontWeight: "700", 
+    fontWeight: '700',
     '&:not(:first-of-type)': {
       borderRadius: '50px',
       backgroundColor: theme.palette.lapis[10],

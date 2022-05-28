@@ -7,7 +7,7 @@ const DashboardLayout = () => {
   return (
     <Box>
       <Topbar />
-      <Box sx={{paddingTop: "50px", height: "100vh"}}>
+      <Box sx={{ paddingTop: '50px', height: '100vh' }}>
         <Outlet />
       </Box>
     </Box>
