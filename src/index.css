@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 html {
-  font-family: 'Inter', Roboto;    
-  height: 100vh; 
+  font-family: 'Inter', Roboto;
+  height: 100vh;
   --scrollbarBG: #e2e2f800;
-  --thumbBG: #E2E2F8;
+  --thumbBG: #e2e2f8;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', Roboto;    
+  font-family: 'Inter', Roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-y: hidden;

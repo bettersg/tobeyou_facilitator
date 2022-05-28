@@ -4,11 +4,10 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
   KeyboardArrowDown,
-  Sort,
   PushPin,
   PushPinOutlined,
 } from '@mui/icons-material';
-import { Modal, Typography, Box, Menu, MenuItem } from '@mui/material';
+import { Modal, Typography, Box } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getDbRoomByCode,
@@ -27,8 +26,6 @@ import {
   TopSection,
   Header,
   Description,
-  FilterButton,
-  SortButton,
 } from '../components/styled/Dashboard/reflections';
 import { Masonry } from '@mui/lab';
 import MenuButtonwithIcon from '../components/MenuButtonwithIcon/MenuButtonwithIcon';
@@ -142,18 +139,17 @@ const Reflections = () => {
   ];
 
   const handleRequest = (filter) => {
-    console.log('filter', filter);
     setCurrentView(filter);
-    if (filter == 'All') {
+    if (filter === 'All') {
       setDisplayedReflectionResponses(reflectionResponses);
       // setDisplayedReflectionResponses(reflectionResponses)
-    } else if (filter == 'Pinned') {
+    } else if (filter === 'Pinned') {
       setDisplayedReflectionResponses(
         reflectionResponses.filter((rr) =>
           pinnedReflectionResponseIds.includes(rr.id)
         )
       );
-    } else if (filter == 'Unpinned') {
+    } else if (filter === 'Unpinned') {
       setDisplayedReflectionResponses(
         reflectionResponses.filter(
           (rr) => !pinnedReflectionResponseIds.includes(rr.id)

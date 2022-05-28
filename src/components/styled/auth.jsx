@@ -27,24 +27,24 @@ export const LoginButton = styled(Button)(({ theme }) => ({
   width: 250,
 }));
 
-export const LoginFormSection = styled(Box)(({isNadia, theme}) => ({
-    maxHeight: "70%", 
-    background: "#FFFFFF", 
-    padding: "40px 50px 20px 50px", 
-    width: "380px", 
-    borderRadius: "15px",
-    display: "flex", 
-    flexDirection: "column", 
-    alignItems: "center",
-    overflow:"auto", 
+export const LoginFormSection = styled(Box)(({ isNadia, theme }) => ({
+  maxHeight: '70%',
+  background: '#FFFFFF',
+  padding: '40px 50px 20px 50px',
+  width: '380px',
+  borderRadius: '15px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  overflow: 'auto',
 
-    '&::-webkit-scrollbar': {
-      display:"none"
-    },
-    ...(isNadia && {
-      marginTop: "-30px", 
-    })
-}))
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
+  ...(isNadia && {
+    marginTop: '-30px',
+  }),
+}));
 
 export const LoginBackground = styled(Box)(({ theme }) => ({
   backgroundImage: `url('/login_signup/background.png')`,
@@ -60,15 +60,15 @@ export const LoginBackground = styled(Box)(({ theme }) => ({
   left: 0,
 }));
 
-export const NadiaPic = styled(Box)(({theme}) => ({
-    backgroundImage:`url('/login_signup/nadia_pic_intro.png')`,
-    backgroundSize: 'cover',
-    backgroundPosition: "center", 
-    borderRadius: "15px 15px 0 0", 
-    position: "relative",
-    width: "480px",
-    height: "350px", 
-}))
+export const NadiaPic = styled(Box)(({ theme }) => ({
+  backgroundImage: `url('/login_signup/nadia_pic_intro.png')`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  borderRadius: '15px 15px 0 0',
+  position: 'relative',
+  width: '480px',
+  height: '350px',
+}));
 
 export const NameLabel = styled(Typography)(({ theme }) => ({
   background: '#FB5A3F',

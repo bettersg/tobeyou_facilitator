@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     currentUser,
-    // isLoggingInFacilitator,
+    isLoggingInFacilitator, // currently unused
     signUp,
     loginEmail,
     logout,

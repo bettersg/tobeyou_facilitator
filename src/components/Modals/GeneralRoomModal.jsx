@@ -119,10 +119,10 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
       </ModalLeftSide>
       <ModalRightSide>
         <Typography variant='h3' sx={{ fontWeight: 900, mb: 1 }}>
-          What's next?
+          What&apos;s next?
         </Typography>
         <Typography variant='body' sx={{ mb: 2 }}>
-          Let's get you ready for class
+          Let&apos;s get you ready for class
         </Typography>
         <Link href='#' target='_blank'>
           <FlexBoxCenterColumnAlign>
@@ -360,7 +360,7 @@ const Step2 = ({
           variant='body2'
           sx={{ mb: '10px', maxWidth: '60%', textAlign: 'center' }}
         >
-          We'll show the instructions to your class when they play the game
+          We&apos;ll show the instructions to your class when they play the game
         </Typography>
         <FlexBoxCenterColumn>
           <GeneralTextField
