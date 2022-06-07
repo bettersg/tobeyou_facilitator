@@ -124,13 +124,16 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
         <Typography variant='body' sx={{ mb: 2 }}>
           Let&apos;s get you ready for class
         </Typography>
-        <Link href='#' target='_blank'>
+        <Link
+          href='https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
+          target='_blank'
+        >
           <FlexBoxCenterColumnAlign>
             <img src='/modal/lessonplan.png' style={{ width: '55%' }} />
           </FlexBoxCenterColumnAlign>
         </Link>
         <Typography variant='h5' sx={{ m: '20px 0' }}>
-          Check out the Lesson Plan
+          Check out the Facilitation Resources
         </Typography>
         <Link href='https://game.tobeyou.sg/' target='_blank'>
           <FlexBoxCenterColumnAlign>
@@ -138,7 +141,7 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
           </FlexBoxCenterColumnAlign>
         </Link>
         <Typography variant='h5' sx={{ mt: 2 }}>
-          Play the game
+          Play the Game
         </Typography>
       </ModalRightSide>
     </React.Fragment>

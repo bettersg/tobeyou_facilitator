@@ -28,6 +28,9 @@ export const Topbar = () => {
         <NavbarText href={'https://game.tobeyou.sg/'} variant='body2'>
           Play Game
         </NavbarText>
+        <NavbarText href={'https://youtu.be/ueY980OH_j4'} variant='body2'>
+          Platform Help
+        </NavbarText>
         <NavbarText
           variant='body2'
           component='button'
@@ -37,7 +40,7 @@ export const Topbar = () => {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          Lesson Plan
+          Facilitation Resources
         </NavbarText>
         <Menu
           id='basic-menu'
@@ -45,9 +48,30 @@ export const Topbar = () => {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>Classroom</MenuItem>
-          <MenuItem onClick={handleClose}>Corporate</MenuItem>
-          <MenuItem onClick={handleClose}>Youth Engagement</MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            href={
+              'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
+            }
+          >
+            Classroom Lesson Plan
+          </MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            href={
+              'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
+            }
+          >
+            Youth Engagement (Pending)
+          </MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            href={
+              'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
+            }
+          >
+            Corporate Training (Pending)
+          </MenuItem>
         </Menu>
         <NavbarText onClick={logout}>{currentUser.displayName}</NavbarText>
         <Sidebar />
