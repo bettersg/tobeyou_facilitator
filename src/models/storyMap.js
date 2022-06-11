@@ -1,5 +1,11 @@
 // Display order for characters
-export const CHARACTER_ORDERING = ['Nadia', 'Aman', 'Ravi'];
+export const CHARACTER_ORDERING = [
+  'Nadia',
+  'Aman',
+  'Ravi',
+  'Zhihao',
+  'Unaisah',
+];
 
 export const REFLECTION_ID_MAP = {
   1: {
@@ -65,4 +71,67 @@ export const REFLECTION_ID_MAP = {
     chapterId: 3,
     title: 'The Internship',
   },
+  11: {
+    // Zhihao 1
+    character: 'Zhihao',
+    characterId: 4,
+    chapterId: 1,
+    title: 'A Chinese New Year',
+  },
+  12: {
+    // Zhihao 2
+    character: 'Zhihao',
+    characterId: 4,
+    chapterId: 2,
+    title: 'Team Work',
+  },
+  13: {
+    // Zhihao 3
+    character: 'Zhihao',
+    characterId: 4,
+    chapterId: 3,
+    title: 'Playing to the Crowd',
+  },
+  14: {
+    // Unaisah 1
+    character: 'Unaisah',
+    characterId: 5,
+    chapterId: 1,
+    title: "Teacher's First Day",
+  },
+  15: {
+    // Unaisah 2
+    character: 'Unaisah',
+    characterId: 5,
+    chapterId: 2,
+    title: 'The Mother of All Expectations',
+  },
+  16: {
+    // Unaisah 3
+    character: 'Unaisah',
+    characterId: 5,
+    chapterId: 3,
+    title: 'To Baby or not to baby?',
+  },
+  // 17: {
+  //   // Marie 1
+  //   character: 'Marie',
+  //   characterId: 6,
+  //   chapterId: 1,
+  //   title: 'TODO: Marie 1',
+  // },
+  // 18: {
+  //   // Marie 2
+  //   character: 'Marie',
+  //   characterId: 6,
+  //   chapterId: 2,
+  //   title: 'TODO: Marie 2',
+  // },
+  // 19: {
+  //   // Marie 3
+  //   character: 'Marie',
+  //   characterId: 6,
+  //   chapterId: 3,
+  //   title: 'TODO: Marie 3',
+  // },
 };
