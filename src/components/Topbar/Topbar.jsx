@@ -53,6 +53,7 @@ export const Topbar = () => {
             href={
               'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
             }
+            component={Link}
           >
             Classroom Lesson Plan
           </MenuItem>
@@ -61,6 +62,7 @@ export const Topbar = () => {
             href={
               'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
             }
+            component={Link}
           >
             Youth Engagement (Pending)
           </MenuItem>
@@ -69,6 +71,7 @@ export const Topbar = () => {
             href={
               'https://docs.google.com/presentation/d/1XsiCXh4mgDa4O470tRjYaThRSJ4lAQ7HjrPzrMhvRZc/edit?usp=sharing'
             }
+            component={Link}
           >
             Corporate Training (Pending)
           </MenuItem>
