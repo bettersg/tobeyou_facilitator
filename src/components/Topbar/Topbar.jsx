@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { StyledTopbar, NavbarText } from './StyledTopbar';
 import { FlexBoxCenter } from '../styled/general';
-import { Box, Menu, MenuItem } from '@mui/material';
+import { Box, Link, Menu, MenuItem } from '@mui/material';
 
 export const Topbar = () => {
   const navigate = useNavigate();
