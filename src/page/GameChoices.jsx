@@ -74,9 +74,9 @@ const GameChoices = () => {
     );
     // Have to perform N+1 query unfortunately, can potentially be a performance issue
     const dbSavedStates = await Promise.all(savedStateIds.map(getDbSavedState));
-    const dbAllGlobalVariables = dbSavedStates.map(
-      (dbSavedState) => dbSavedState.globalVariables
-    );
+    const dbAllGlobalVariables = dbSavedStates
+      .map((dbSavedState) => dbSavedState.globalVariables)
+      .filter((globalVariables) => globalVariables !== undefined); // some saved states may not have globalVariables defined
     const parsedChartDatas = parseChartDatas(dbAllGlobalVariables);
     setChartDatas(parsedChartDatas);
   }
