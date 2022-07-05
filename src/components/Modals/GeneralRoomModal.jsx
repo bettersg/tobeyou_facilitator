@@ -191,7 +191,6 @@ const Step0 = ({
           <GeneralTextField
             name='organisation'
             label='Organisation:'
-            variant='filled'
             defaultValue={formData.organisation}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -199,7 +198,6 @@ const Step0 = ({
           <GeneralTextField
             name='name'
             label='Class:'
-            variant='filled'
             defaultValue={formData.name}
             onChange={handleChange}
             disabled={isSubmitting}
@@ -207,7 +205,6 @@ const Step0 = ({
           <GeneralTextField
             name='date'
             label='Date:'
-            variant='filled'
             type='date'
             defaultValue={formData.date}
             onChange={handleChange}
@@ -371,7 +368,6 @@ const Step2 = ({
             name='instructions'
             label='Message:'
             placeholder=''
-            variant='filled'
             defaultValue={formData.instructions}
             minRows={3}
             maxRows={7}

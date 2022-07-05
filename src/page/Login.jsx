@@ -109,7 +109,6 @@ const Login = () => {
           >
             <GeneralTextField
               name='email'
-              variant='filled'
               label='Email:'
               defaultValue='example@email.com'
               onChange={handleChange}
@@ -119,7 +118,6 @@ const Login = () => {
               name='password'
               label='Password:'
               type='password'
-              variant='filled'
               onChange={handleChange}
               disabled={isLoading}
             />

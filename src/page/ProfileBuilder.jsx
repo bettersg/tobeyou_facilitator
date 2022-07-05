@@ -262,8 +262,9 @@ const ProfileBuilder = () => {
                 </MenuItem>
               ))}
             </GeneralSelect>
-            <GeneralTextField // TODO: change appearance of this text field
+            <GeneralTextField
               name='organisation'
+              variant='long'
               value={formData.organisation}
               onChange={handleTextInput}
               label="What is your organisation's name?"

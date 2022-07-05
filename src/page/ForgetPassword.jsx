@@ -79,7 +79,6 @@ const ForgetPassword = () => {
           >
             <GeneralTextField
               name='email'
-              variant='filled'
               label='Email:'
               placeholder='Your email here'
               onChange={handleChange}
