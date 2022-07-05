@@ -61,7 +61,25 @@ function ModalStepIcon(props) {
 }
 
 const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
-  const gameUrl = getGameUrl(createdOrEditedRoom.code);
+  const { setSnackbar } = useSnackbar();
+  const roomCode = createdOrEditedRoom.code;
+  const gameUrl = getGameUrl(roomCode);
+
+  const copyGameUrl = () => {
+    // Note: this clipboard functionality may not be supported on some older browsers
+    navigator.clipboard.writeText(gameUrl);
+    setSnackbar({
+      message: 'Successfully copied game URL!',
+      open: true,
+      type: 'success',
+    });
+  };
+
+  const headerText = `ToBeYou.sg: Invitation to join room ${roomCode}`;
+  const bodyText = `You've been invited to join the To Be You game room ${roomCode}. Go to ${gameUrl} to get started!`;
+
+  const mailText = `mailto:email@example.com?subject=${headerText}&body=${bodyText}`;
+  const whatsappText = `https://api.whatsapp.com/send?text=${bodyText}`;
 
   return (
     <React.Fragment>
@@ -100,17 +118,31 @@ const SuccessPanel = ({ createdOrEditedRoom, handleCloseModal }) => {
           Share via:
         </Typography>
         <FlexBoxSpaceEvenly sx={{ width: '40%', mb: 2 }}>
-          <WhatsApp
-            fontSize='large'
-            sx={{ color: (theme) => theme.palette.lapis[100] }}
-          />
-          <MailOutline
-            fontSize='large'
-            sx={{ color: (theme) => theme.palette.lapis[100] }}
-          />
+          {/* TODO: there's an extra 4px height introduced by wrapping with this <a> tag, not sure why */}
+          <a
+            href={whatsappText}
+            data-action='share/whatsapp/share'
+            target='_blank'
+            rel='noreferrer'
+          >
+            <WhatsApp
+              fontSize='large'
+              sx={{ color: (theme) => theme.palette.lapis[100] }}
+            />
+          </a>
+          <a href={mailText}>
+            <MailOutline
+              fontSize='large'
+              sx={{ color: (theme) => theme.palette.lapis[100] }}
+            />
+          </a>
           <ContentCopy
             fontSize='large'
-            sx={{ color: (theme) => theme.palette.lapis[100] }}
+            sx={{
+              color: (theme) => theme.palette.lapis[100],
+              cursor: 'pointer',
+            }}
+            onClick={copyGameUrl}
           />
         </FlexBoxSpaceEvenly>
         <GeneralButton variant='contained' onClick={handleCloseModal}>
