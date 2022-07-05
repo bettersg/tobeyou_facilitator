@@ -54,6 +54,13 @@ const ProfileBuilder = () => {
     });
   };
 
+  const handleTextInput = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -184,7 +191,7 @@ const ProfileBuilder = () => {
             ))
           : null}
         {step.isForm ? (
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ marginTop: '24px', width: '100%' }}>
             <GeneralSelect
               name='age'
               value={formData.age}
@@ -255,10 +262,11 @@ const ProfileBuilder = () => {
                 </MenuItem>
               ))}
             </GeneralSelect>
-            <GeneralTextField // TODO: change appearance of this text field
+            <GeneralTextField
               name='organisation'
+              variant='long'
               value={formData.organisation}
-              onChange={handleChange}
+              onChange={handleTextInput}
               label="What is your organisation's name?"
               placeholder=''
             />

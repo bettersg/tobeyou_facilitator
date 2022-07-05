@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledTextfield } from './StyledTextField';
+import { ShortStyledTextField, LongStyledTextField } from './StyledTextField';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 
@@ -19,20 +19,31 @@ export const GeneralTextField = ({
   return (
     <Box>
       <Typography variant='h6'>{label}</Typography>
-
-      <StyledTextfield
-        select
-        multiline={multiline}
-        value={value}
-        name={name}
-        variant='filled'
-        placeholder={placeholder}
-        onChange={onChange}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </StyledTextfield>
+      {variant === 'short' ? (
+        <ShortStyledTextField
+          multiline={multiline}
+          value={value}
+          name={name}
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          {...props}
+        >
+          {children}
+        </ShortStyledTextField>
+      ) : (
+        <LongStyledTextField
+          multiline={multiline}
+          value={value}
+          name={name}
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          {...props}
+        >
+          {children}
+        </LongStyledTextField>
+      )}
     </Box>
   );
 };
@@ -40,7 +51,7 @@ export const GeneralTextField = ({
 GeneralTextField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['filled']),
+  variant: PropTypes.oneOf(['short', 'long']),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
@@ -49,7 +60,7 @@ GeneralTextField.propTypes = {
 GeneralTextField.defaultProps = {
   label: 'Label:',
   name: 'label',
-  variant: 'filled',
+  variant: 'short',
   placeholder: 'label',
   onChange: undefined,
   disabled: false,
