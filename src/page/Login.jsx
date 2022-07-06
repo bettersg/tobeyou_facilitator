@@ -141,6 +141,11 @@ const Login = () => {
             </Link>
           </Box>
         </form>
+        <Typography variant='subtitle1' style={{ marginTop: 12 }}>
+          This site is optimized for desktops or tablets
+          <br />
+          and is not mobile friendly.
+        </Typography>
       </LoginFormSection>
       <img
         src='/login_signup/logo.png'
