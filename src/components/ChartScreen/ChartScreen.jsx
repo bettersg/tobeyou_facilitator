@@ -225,12 +225,12 @@ const ChartScreen = ({
       <Typography
         variant='h3'
         sx={{
-          fontSize: '52px',
+          fontSize: '36px',
           color: 'white',
           mb: 5,
           maxWidth: '80%',
           textAlign: 'center',
-          mt: '-100px',
+          mt: '-50px',
         }}
       >
         {chartData?.title}
