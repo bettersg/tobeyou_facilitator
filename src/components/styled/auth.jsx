@@ -29,7 +29,7 @@ export const LoginButton = styled(Button)(({ theme }) => ({
 
 export const LoginFormSection = styled(Box)(({ isNadia, theme }) => ({
   maxHeight: '70%',
-  background: '#FFFFFF',
+  background: 'rgba(255,255,255,0.9)',
   padding: '40px 50px 20px 50px',
   width: '380px',
   borderRadius: '15px',
@@ -37,6 +37,7 @@ export const LoginFormSection = styled(Box)(({ isNadia, theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   overflow: 'auto',
+  zIndex: '1',
 
   '&::-webkit-scrollbar': {
     display: 'none',
