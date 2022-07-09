@@ -22,16 +22,19 @@ export const GeneralProgressBar = ({ completedStudents, totalStudents }) => {
           height: '40px',
           margin: '16px 0',
         }}
-      />
-      <Typography
-        sx={{
-          fontWeight: 700,
-          fontSize: '24px',
-          color: (theme) => theme.palette.midnight.dark1,
-        }}
       >
-        {isNaN(percentage) ? null : `${percentage}%`}
-      </Typography>
+        <Typography
+          sx={{
+            fontWeight: 700,
+            fontSize: '24px',
+            position: 'relative',
+            textAlign: 'center',
+            color: (theme) => theme.palette.midnight.dark1,
+          }}
+        >
+          {isNaN(percentage) ? null : `${percentage}%`}
+        </Typography>
+      </Box>
     </FlexBoxAlign>
   );
 };
