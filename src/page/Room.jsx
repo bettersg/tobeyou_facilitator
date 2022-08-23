@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Paper, Grid } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
+import * as XLSX from 'xlsx';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
 import { getDbRoomByCode } from '../models/roomModel';
+import { getDbQuizAnswersChartDatas } from '../models/quizAnswerModel';
+import { getDbGameChoicesChartDatas } from '../models/savedStateModel';
 import { getDbUser } from '../models/userModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
@@ -13,16 +16,113 @@ import {
   FlexBoxCenter,
   FlexBoxAlignColumn,
 } from '../components/styled/general';
-import { QrCode } from '@mui/icons-material';
+import { Download, QrCode } from '@mui/icons-material';
 import { CharacterAvatar } from '../components/CharacterAvatar/CharacterAvatar';
 import { ChapterDetailsCard } from '../components/ChapterDetailsCard/ChapterDetailsCard';
 import { GeneralProgressBar } from '../components/GeneralProgressBar/GeneralProgressBar';
 import TableModal from '../components/Modals/TableModal';
 import QrModal from '../components/Modals/QrModal';
 
+async function getAllRoomData(roomCode, reflectionIds, participantIds) {
+  // reflection responses
+  const reflectionResponsesData = [['Chapter', 'Reflection']];
+  for (const reflectionId of reflectionIds) {
+    const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
+    const chapterCell = `${character} Chapter ${chapterId}`;
+    const reflectionResponses = await getDbReflectionResponses(
+      roomCode,
+      reflectionId,
+      true
+    );
+    const filteredReflectionResponses = reflectionResponses.filter(
+      (rr) => rr.answer.length > 5
+    );
+    filteredReflectionResponses.forEach((reflectionResponse) => {
+      const reflectionCell = reflectionResponse.answer;
+      const row = [chapterCell, reflectionCell];
+      reflectionResponsesData.push(row);
+    });
+  }
+
+  // game choices
+  const gameChoicesData = [
+    ['Chapter', 'Scenario', 'Choice', 'Number of responses'],
+  ];
+  for (const reflectionId of reflectionIds) {
+    const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
+    const chapterCell = `${character} Chapter ${chapterId}`;
+    const gameChoices = await getDbGameChoicesChartDatas(
+      reflectionId,
+      participantIds
+    );
+    gameChoices.forEach((gameChoice) => {
+      const scenarioCell = gameChoice.title;
+      for (let i = 0; i < gameChoice.labels.length; i++) {
+        const choiceCell = gameChoice.labels[i];
+        const numResponsesCell = gameChoice.data[i];
+        const row = [chapterCell, scenarioCell, choiceCell, numResponsesCell];
+        gameChoicesData.push(row);
+      }
+    });
+  }
+
+  // quiz answers
+  const quizAnswersData = [
+    ['Chapter', 'Question', 'Option', 'Number of responses', 'Correct Answer?'],
+  ];
+  for (const reflectionId of reflectionIds) {
+    const { character, chapterId } = REFLECTION_ID_MAP[reflectionId];
+    const chapterCell = `${character} Chapter ${chapterId}`;
+    const quizAnswers = await getDbQuizAnswersChartDatas(
+      roomCode,
+      reflectionId
+    );
+    quizAnswers.forEach((quizAnswer) => {
+      const questionCell = quizAnswer.title;
+      for (let i = 0; i < quizAnswer.labels.length; i++) {
+        const optionCell = quizAnswer.labels[i];
+        const numResponsesCell = quizAnswer.data[i];
+        const correctAnswerCell =
+          i === quizAnswer.correctAnswerIdx ? 'True' : 'False';
+        const row = [
+          chapterCell,
+          questionCell,
+          optionCell,
+          numResponsesCell,
+          correctAnswerCell,
+        ];
+        quizAnswersData.push(row);
+      }
+    });
+  }
+
+  return { reflectionResponsesData, gameChoicesData, quizAnswersData };
+}
+
+function exportRoomData(
+  roomCode,
+  reflectionResponsesData,
+  gameChoicesData,
+  quizAnswersData
+) {
+  const wb = XLSX.utils.book_new();
+  const title = `ToBeYou Facilitator - Room ${roomCode}.xlsx`;
+  wb.SheetNames.push('Reflections');
+  wb.SheetNames.push('Game Choices');
+  wb.SheetNames.push('Quiz Answers');
+  const reflectionWs = XLSX.utils.aoa_to_sheet(reflectionResponsesData);
+  const gameChoicesWs = XLSX.utils.aoa_to_sheet(gameChoicesData);
+  const quizAnswersWs = XLSX.utils.aoa_to_sheet(quizAnswersData);
+  wb.Sheets.Reflections = reflectionWs;
+  wb.Sheets['Game Choices'] = gameChoicesWs;
+  wb.Sheets['Quiz Answers'] = quizAnswersWs;
+  XLSX.writeFile(wb, title);
+}
+
 const ClassesBar = (props) => {
-  const { room, roomCode } = props;
+  const { room, roomCode, reflectionIds, participantIds } = props;
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   return (
     <Paper
@@ -54,6 +154,33 @@ const ClassesBar = (props) => {
               cursor: 'pointer',
             }}
             onClick={() => setIsQrModalOpen(true)}
+            fontSize='large'
+          />
+          <Download
+            sx={{
+              color: (theme) =>
+                isDownloading
+                  ? theme.palette.lapis[40]
+                  : theme.palette.lapis[100],
+              marginRight: 1,
+              cursor: isDownloading ? 'default' : 'pointer',
+            }}
+            onClick={async () => {
+              if (isDownloading) return;
+              setIsDownloading(true);
+              const {
+                reflectionResponsesData,
+                gameChoicesData,
+                quizAnswersData,
+              } = await getAllRoomData(roomCode, reflectionIds, participantIds);
+              exportRoomData(
+                roomCode,
+                reflectionResponsesData,
+                gameChoicesData,
+                quizAnswersData
+              );
+              setIsDownloading(false);
+            }}
             fontSize='large'
           />
           <QrModal
@@ -323,7 +450,12 @@ const Room = () => {
         paddingBottom: '25px',
       }}
     >
-      <ClassesBar room={room} roomCode={roomCode} />
+      <ClassesBar
+        room={room}
+        roomCode={roomCode}
+        reflectionIds={room?.reflectionIds}
+        participantIds={room?.participantIds}
+      />
 
       <FlexBoxAlignColumn
         sx={{

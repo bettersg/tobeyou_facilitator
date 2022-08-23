@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
-import { getDbSavedState } from '../models/savedStateModel';
+import { getDbGameChoicesChartDatas } from '../models/savedStateModel';
 import { getDbRoomByCode } from '../models/roomModel';
-import { REFLECTION_ID_MAP } from '../models/storyMap';
-import GLOBAL_VAR_MAP from '../models/globalVarMap';
 import ChartScreen from '../components/ChartScreen/ChartScreen';
 
 const GameChoices = () => {
@@ -15,50 +13,6 @@ const GameChoices = () => {
 
   const [chartDatas, setChartDatas] = useState(null);
 
-  const chapter = GLOBAL_VAR_MAP.flatMap(
-    (character) => character.chapters
-  ).find((chapter) => chapter.reflectionId === reflectionId);
-  const gameChoices = chapter.variables;
-  const gameEndings = chapter.endings;
-
-  function getCountsForVariables(variableName, values, allGlobalVariables) {
-    const data = allGlobalVariables
-      .filter((globalVariables) =>
-        Object.keys(globalVariables).includes(variableName)
-      )
-      .map((globalVariables) => globalVariables[variableName]);
-    const counts = values.map((value) => {
-      return data.filter((dataValue) => dataValue === value).length;
-    });
-    return counts;
-  }
-
-  function parseChartDatas(allGlobalVariables) {
-    const gameChoicesDatas = gameChoices.map((gameChoice) => {
-      return {
-        title: gameChoice.description,
-        labels: gameChoice.values.map((value) => value.description),
-        data: getCountsForVariables(
-          gameChoice.name,
-          gameChoice.values.map((value) => value.value),
-          allGlobalVariables
-        ),
-        isImage: false,
-      };
-    });
-    const gameEndingData = {
-      title: 'Chapter ending',
-      labels: gameEndings.map((ending) => ending.title),
-      data: getCountsForVariables(
-        gameEndings[0].name,
-        gameEndings.map((ending) => ending.endingId),
-        allGlobalVariables
-      ),
-    };
-    const chartDatas = [...gameChoicesDatas, gameEndingData];
-    return chartDatas;
-  }
-
   async function getData() {
     const dbRoom = await getDbRoomByCode(roomCode);
     if (
@@ -68,17 +22,11 @@ const GameChoices = () => {
     ) {
       navigate('/'); // redirect if the room does not exist, or facilitator is unauthorised to access it
     }
-    const { characterId } = REFLECTION_ID_MAP[reflectionId];
-    const savedStateIds = dbRoom.participantIds.map(
-      (participantId) => `${participantId}-${characterId}`
+    const chartDatas = await getDbGameChoicesChartDatas(
+      reflectionId,
+      dbRoom.participantIds
     );
-    // Have to perform N+1 query unfortunately, can potentially be a performance issue
-    const dbSavedStates = await Promise.all(savedStateIds.map(getDbSavedState));
-    const dbAllGlobalVariables = dbSavedStates
-      .map((dbSavedState) => dbSavedState.globalVariables)
-      .filter((globalVariables) => globalVariables !== undefined); // some saved states may not have globalVariables defined
-    const parsedChartDatas = parseChartDatas(dbAllGlobalVariables);
-    setChartDatas(parsedChartDatas);
+    setChartDatas(chartDatas);
   }
 
   useEffect(() => getData(), []);
