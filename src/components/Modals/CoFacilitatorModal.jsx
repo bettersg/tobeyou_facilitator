@@ -3,15 +3,14 @@ import { Modal, Typography } from '@mui/material';
 import { ModalBox } from './StyledRoomModalComponents';
 import { GeneralButton } from '../GeneralButton/GeneralButton';
 import { GeneralTextField } from '../GeneralTextField/GeneralTextField';
-import { getDbUser, getDbUserFromEmail } from '../../models/userModel';
-import { updateDbRoom } from '../../models/roomModel';
-import { useAuth } from '../../contexts/AuthContext';
+import {
+  getCoFacilitatorEmailsForRoom,
+  inviteUserToBeCofacilitatorForRoom,
+} from '../../models/functions';
 import { useSnackbar } from '../../contexts/SnackbarContext';
-import { sendFacilitatorEmail } from '../../utils';
 
 const CoFacilitatorModal = (props) => {
   const { isModalOpen, setIsModalOpen, room, loadRooms } = props;
-  const { currentUser } = useAuth();
   const { setSnackbar } = useSnackbar();
 
   const [formData, setFormData] = useState({ email: '' });
@@ -32,67 +31,34 @@ const CoFacilitatorModal = (props) => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    const email = formData.email;
-    const fromEmail = currentUser?.email || '<no-email>';
-    try {
-      const coFacilitator = await getDbUserFromEmail(email);
-      if (coFacilitator === null) {
-        // Failure (co-facilitator does not exist): send failure email
-        const message = `
-          You were invited by your colleague at ${fromEmail} to be a co-facilitator for the room ${room.code} for ToBeYou.sg.
-          Unfortunately, you do not yet have an account in the game.
-          Creating an account is free and easy -
-          just go to https://game.tobeyou.sg and create an account,
-          then let your colleague know the email address that you used to register so that they can add you again.
-          Once they have added you, you can go to your facilitator dashboard to access the room.
-        `;
-        sendFacilitatorEmail(room.code, email, message);
-        handleCloseModal();
-        setSnackbar({
-          message: `There is no account with email ${email}. We've sent them an email inviting them to sign up with us.`,
-          open: true,
-          type: 'warning',
-        });
-      } else if (!room.facilitatorIds.includes(coFacilitator.id)) {
-        // Success (co-facilitator exists): add co-facilitator to room and send success email
-        const newFacilitatorIds = [...room.facilitatorIds, coFacilitator.id];
-        const newRoom = { ...room, facilitatorIds: newFacilitatorIds };
-        await updateDbRoom(newRoom);
-        await loadRooms();
-        const message = `
-          You have been added by your colleague at ${fromEmail} as a co-facilitator for room ${room.code} for ToBeYou.sg.
-          The room should now be available in your facilitator dashboard.
-        `;
-        sendFacilitatorEmail(room.code, email, message);
-        handleCloseModal();
-        setSnackbar({
-          message: `Success! We've sent an email to ${email} to notify them that they've been added to the room.`,
-          open: true,
-          type: 'success',
-        });
-      } else {
-        // Failure (co-facilitator already in room)
-        throw new Error(
-          `The facilitator with email '${email}' is already in the room.`
-        );
-      }
-    } catch (error) {
+    const toEmail = formData.email;
+    const { success, message } = (
+      await inviteUserToBeCofacilitatorForRoom({ roomId: room.id, toEmail })
+    ).data;
+    if (success) {
+      await loadRooms();
+      handleCloseModal();
       setSnackbar({
-        message: error.message,
+        message,
+        open: true,
+        type: 'success',
+      });
+    } else {
+      setSnackbar({
+        message,
         open: true,
         type: 'error',
       });
-    } finally {
-      setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   const getData = async () => {
     if (!isModalOpen) return;
-    const facilitators = await Promise.all(
-      room.facilitatorIds.map((facilId) => getDbUser(facilId))
-    );
-    setFacilitatorEmails(facilitators.map((facil) => facil.email));
+    const facilEmails = (
+      await getCoFacilitatorEmailsForRoom({ roomId: room.id })
+    ).data;
+    setFacilitatorEmails(facilEmails);
   };
 
   useEffect(() => getData(), [isModalOpen]);
