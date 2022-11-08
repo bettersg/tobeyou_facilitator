@@ -4,20 +4,21 @@ import { firestore } from '../firebase';
  * Creates a user and sets it to be a facilitator, if the user does not exist.
  */
 export const createDbUserIfNotExists = async (id, email) => {
-  const obj = {
-    id,
-    email,
-  };
+  const userObj = { id };
+  const emailObj = { email };
 
   try {
-    const userRef = firestore.collection('users').doc(obj.id);
+    const userRef = firestore.collection('users').doc(userObj.id);
+    const emailRef = firestore.collection('emails').doc(userObj.id);
     const user = await userRef.get();
     if (user.exists) {
       // Give the existing user new facilitator fields
-      await userRef.update(obj, { merge: true });
+      await userRef.update(userObj, { merge: true });
+      await emailRef.update(emailObj, { merge: true });
     } else {
       // Create the new facilitator
-      await userRef.set(obj);
+      await userRef.set(userObj);
+      await emailRef.set(emailObj);
     }
   } catch (err) {
     throw new Error(`Error at createDbUserIfNotExists: ${err}`);
@@ -40,17 +41,4 @@ export const getDbUser = async (id) => {
   } catch (err) {
     throw new Error(`Error at getDbUser: ${err}`);
   }
-};
-
-export const getDbUserFromEmail = async (email) => {
-  const snapshot = await firestore
-    .collection('users')
-    .where('email', '==', email)
-    .get();
-  if (snapshot.docs.length === 0) {
-    return null;
-  }
-  const userDoc = snapshot.docs[0];
-  const userData = { id: userDoc.id, ...userDoc.data() };
-  return userData;
 };

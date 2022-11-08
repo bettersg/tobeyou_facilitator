@@ -4,10 +4,10 @@ import { useNavigate, useParams } from 'react-router';
 import * as XLSX from 'xlsx';
 import { useAuth } from '../contexts/AuthContext';
 import { getDbReflectionResponses } from '../models/reflectionResponseModel';
+import { getParticipantIdsToEmailsForRoom } from '../models/functions';
 import { getDbRoomByCode } from '../models/roomModel';
 import { getDbQuizAnswersChartDatas } from '../models/quizAnswerModel';
 import { getDbGameChoicesChartDatas } from '../models/savedStateModel';
-import { getDbUser } from '../models/userModel';
 import { REFLECTION_ID_MAP } from '../models/storyMap';
 import GLOBAL_VAR_MAP from '../models/globalVarMap';
 import { GeneralBreadcrumbs } from '../components/GeneralBreadcrumbs/GeneralBreadcrumbs';
@@ -391,14 +391,10 @@ const Room = () => {
     setCompletionRateNumeratorIds(numeratorIds);
     setCompletionRateDenominatorIds(dbRoom.participantIds);
 
-    // Get participant emails for completion rate - have to perform N+1 query unfortunately
-    const participants = await Promise.all(
-      dbRoom.participantIds.map((participantId) => getDbUser(participantId))
-    );
-    const participantsIdToEmailMap = {};
-    for (let participant of participants) {
-      participantsIdToEmailMap[participant.id] = participant.email;
-    }
+    // Get participant emails for completion rate
+    const participantsIdToEmailMap = (
+      await getParticipantIdsToEmailsForRoom({ roomId: dbRoom.id })
+    ).data;
     setParticipantsIdToEmailMap(participantsIdToEmailMap);
   }
 
