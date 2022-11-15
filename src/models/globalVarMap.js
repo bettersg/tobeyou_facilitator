@@ -1376,25 +1376,283 @@ const GLOBAL_VAR_MAP = [
       },
     ],
   },
+
   {
     characterId: 5,
+    name: 'Unaisah Begum',
+    linkName: 'unaisah',
+    characterIntroImage: '/character_choice_page/unaisah.png',
+    jsonLink: '../stories/unaisah.ink.json',
+    playable: true,
+    shareImage: '/shareable_avatars/unaisah_share.svg',
+    description:
+      'Unaisah wants to excel as a new teacher - but can she break the glass ceiling while dealing with things at home?',
+    chapters: [
+      {
+        chapterId: 1,
+        number: 1,
+        reflectionId: 14,
+        title: 'A Chinese New Year',
+        knotTag: 'unaisah_1_intro',
+        summary:
+          'Unaisah embarks on a new life as a teacher - but awkward questions about her past and identity confront her',
+        playable: true,
+        endings: [
+          {
+            endingId: 1,
+            title: 'Unaisah accepts Malay Dance',
+            name: 'chapter_1_ending',
+          },
+          {
+            endingId: 2,
+            title: 'Unaisah chooses Robotics',
+            name: 'chapter_1_ending',
+          },
+        ],
+        variables: [
+          {
+            name: 'unaisah_1_silent',
+            description: 'Unaisah chooses whether to reply to the taxi driver',
+            values: [
+              {
+                value: 0,
+                description: 'Engaged him in conversation',
+              },
+              {
+                value: 1,
+                description: 'Gave up chatting with him later',
+              },
+              {
+                value: 2,
+                description: 'Gave up chatting with him early',
+              },
+              {
+                value: 3,
+                description: 'Remain silent',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_1_correctveronica',
+            description:
+              'Unaisah corrects Veronica on the pronunciation of her name',
+            values: [
+              {
+                value: '1',
+                description: 'true',
+              },
+              {
+                value: '0',
+                description: 'false',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_1_teachingreason',
+            description: 'Unaisah explains why she joined teaching',
+            values: [
+              {
+                value: 'love teaching',
+                description: 'She loves teaching',
+              },
+              {
+                value: 'not happy',
+                description: 'She was not happy in her previous job',
+              },
+              {
+                value: 'harassment',
+                description: 'She was harassed by her previous boss',
+              },
+            ],
+          },
+        ],
+      },
+
+      {
+        chapterId: 2,
+        number: 2,
+        reflectionId: 15,
+        title: 'The Mother of All Expectations',
+        knotTag: 'unaisah_2_intro',
+        summary:
+          'Even as Unaisah progresses in her teaching career, she must make a crucial life decision',
+        playable: true,
+        images: ['/images/bg_launch.jpg', '/images/bg_reflections.jpg'],
+        endings: [
+          {
+            endingId: 1,
+            title: 'Unaisah chooses to have a child',
+            name: 'chapter_2_ending',
+          },
+          {
+            endingId: 2,
+            title: 'Unaisah chooses not to have a child',
+            name: 'chapter_2_ending',
+          },
+        ],
+        variables: [
+          {
+            name: 'unaisah_2_feeling',
+            description:
+              'Unaisah reflects on whether she is ready to be a parent',
+            values: [
+              {
+                value: 'discouraged',
+                description: 'She is discouraged',
+              },
+              {
+                value: 'hopeful',
+                description: 'She is hopeful',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_2_progression',
+            description: 'Unaisah talks to her supervisor about her career',
+            values: [
+              {
+                value: 'ask',
+                description: 'She asks about future progression',
+              },
+              {
+                value: 'nothing',
+                description: 'She does not ask about progression',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        chapterId: 3,
+        number: 3,
+        reflectionId: 16,
+        title: 'A Labour of Love',
+        knotTag: 'unaisah_3_intro',
+        summary:
+          'Managing the consequences of her previous choices proves to be harder than she realised.',
+        playable: true,
+        images: ['/images/bg_launch.jpg', '/images/bg_reflections.jpg'],
+        endings: [
+          {
+            endingId: 1,
+            title: 'Unaisah has no baby and is a JC teacher',
+            name: 'chapter_3_ending',
+          },
+          {
+            endingId: 2,
+            title: 'Unaisah has no baby and is a Sec. School Vice Principal',
+            name: 'chapter_3_ending',
+          },
+          {
+            endingId: 3,
+            title: 'Unaisah has a baby and identifies as a mother',
+            name: 'chapter_3_ending',
+          },
+          {
+            endingId: 4,
+            title: 'Unaisah has a baby and identifies as a teacher',
+            name: 'chapter_3_ending',
+          },
+        ],
+        variables: [
+          {
+            name: 'unaisah_3_applynewjob',
+            description: '[No baby] Unaisah applies for a new job',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_3_stayinsjc',
+            description:
+              'Unaisah stays in JC instead of applying for a higher role in a Sec School',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_3a_promotion',
+            description: 'Unaisah asks about a promotion',
+            values: [
+              {
+                value: 0,
+                description: 'False',
+              },
+              {
+                value: 1,
+                description: 'True',
+              },
+            ],
+          },
+          {
+            name: 'unaisah_3b_motherscore',
+            description:
+              'Unaisah deals positively with being a young mother [6 is the highest score]',
+            values: [
+              {
+                value: -2,
+                description: '-2',
+              },
+              {
+                value: -1,
+                description: '-1',
+              },
+              {
+                value: 0,
+                description: '0',
+              },
+              {
+                value: 1,
+                description: '1',
+              },
+              {
+                value: 2,
+                description: '2',
+              },
+              {
+                value: 3,
+                description: '3',
+              },
+              {
+                value: 4,
+                description: '4',
+              },
+              {
+                value: 5,
+                description: '5',
+              },
+              {
+                value: 6,
+                description: '6',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    characterId: 6,
     name: 'Marie da Costa',
     linkName: '',
     profileImage: '/images/profile_blank.png',
     characterIntroImage: '/images/instagram_blank.png',
     description:
       'Marie wants to open her own cafe - but will her heritage and gender stand in the way of her success?',
-    jsonLink: '../stories/nadia.ink.json',
-    playable: false,
-  },
-  {
-    characterId: 6,
-    name: 'Unaisah Begum',
-    linkName: '',
-    profileImage: '/images/profile_blank.png',
-    characterIntroImage: '/images/instagram_blank.png',
-    description:
-      'Unaisah wants to excel as a new teacher - but can she break the glass ceiling while dealing with things at home?',
     jsonLink: '../stories/nadia.ink.json',
     playable: false,
   },
@@ -1494,3 +1752,30 @@ export default GLOBAL_VAR_MAP;
 // zhihao_3_replyfirst: "gavin"
 // zhihao_3_tellma: 1
 // zhihao_3_tweetstorm: 4
+
+// unaisah
+// chapter_1_ending: 1
+// chapter_2_ending: 1
+// chapter_3_ending: 1
+// chapter_id: 3
+// character_id: 5
+// unaisah_1_cca: "malaydance"
+// unaisah_1_correctveronica: 1 ++
+// unaisah_1_driverrating: 5
+// unaisah_1_instagram: 0
+// unaisah_1_replyelderly: "correct"
+// unaisah_1_silent: 3 ++
+// unaisah_1_teachingreason: "not happy" ++
+
+// unaisah_2_baby: "no"
+// unaisah_2_feeling: "discouraged" ++
+// unaisah_2_progression: "ask" ++
+// unaisah_2_smell: "ignore"
+// unaisah_2_trash: "" ++
+
+// unaisah_3_applynewjob:  1 ++
+// unaisah_3_stayinsjc :  1 ++
+// unaisah_3a_promotion: 1 ++
+// unaisah_3b_breastfeed :  1
+// unaisah_3b_motherscore :  6 ++
+// unaisah_3b_volunteer :  "mother"
