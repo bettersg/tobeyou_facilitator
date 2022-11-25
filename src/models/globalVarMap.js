@@ -1438,11 +1438,11 @@ const GLOBAL_VAR_MAP = [
               'Unaisah corrects Veronica on the pronunciation of her name',
             values: [
               {
-                value: '1',
+                value: 1,
                 description: 'true',
               },
               {
-                value: '0',
+                value: 0,
                 description: 'false',
               },
             ],
